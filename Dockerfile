@@ -19,8 +19,8 @@ COPY . .
 # Garante a existência do arquivo .env para que o dotenv não cause falha (undefined) no quasar.config.js
 RUN cp .env.example .env
 
-# Compila o projeto Quasar. Os arquivos minificados e otimizados serão gerados na pasta 'dist/spa'
-RUN npm run build
+# Compila o projeto Quasar com alocação extra de memória para evitar Heap Out of Memory do Vite
+RUN NODE_OPTIONS=--max-old-space-size=4096 npm run build
 
 
 # ==============================================================================
