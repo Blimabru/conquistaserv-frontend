@@ -16,6 +16,9 @@ RUN npm install
 # Copia o restante dos arquivos do projeto
 COPY . .
 
+# Garante a existência do arquivo .env para que o dotenv não cause falha (undefined) no quasar.config.js
+RUN cp .env.example .env
+
 # Compila o projeto Quasar. Os arquivos minificados e otimizados serão gerados na pasta 'dist/spa'
 RUN npm run build
 
