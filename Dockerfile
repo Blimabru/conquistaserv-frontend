@@ -1,8 +1,8 @@
 # ==============================================================================
 # ESTÁGIO 1: Build (Construção da Aplicação)
 # ==============================================================================
-# Utiliza a imagem do Node.js para compilar o código fonte da interface
-FROM node:20-alpine as build-stage
+# Utiliza a imagem do Node.js 18 (versão mais compatível com Quasar Vite) para compilar o código
+FROM node:18-alpine AS build-stage
 
 # Define o diretório de trabalho onde o código ficará dentro do container
 WORKDIR /app
@@ -27,7 +27,7 @@ RUN npm run build
 # ESTÁGIO 2: Servidor Web (Nginx)
 # ==============================================================================
 # Utiliza um servidor web super leve para servir os arquivos estáticos gerados no estágio anterior
-FROM nginx:alpine as production-stage
+FROM nginx:alpine AS production-stage
 
 # Copia a pasta 'dist/spa' (resultado do build da Etapa 1) para a pasta pública do Nginx
 COPY --from=build-stage /app/dist/spa /usr/share/nginx/html
