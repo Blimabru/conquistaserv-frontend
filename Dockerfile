@@ -1,8 +1,8 @@
 # ==============================================================================
 # ESTÁGIO 1: Build (Construção da Aplicação)
 # ==============================================================================
-# Utiliza a imagem do Node.js 18 (versão mais compatível com Quasar Vite) para compilar o código
-FROM node:18-alpine AS build-stage
+# Força a execução nativa em amd64 para que a compilação pesada não passe pelo emulador ARM64 (QEMU) que causa crashes constantes.
+FROM --platform=linux/amd64 node:20 AS build-stage
 
 # Define o diretório de trabalho onde o código ficará dentro do container
 WORKDIR /app
