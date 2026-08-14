@@ -1,0 +1,39 @@
+# ==============================================================================
+# ESTÁGIO 1: Build (Construção da Aplicação)
+# ==============================================================================
+# Utiliza a imagem do Node.js para compilar o código fonte da interface
+FROM node:20-alpine as build-stage
+
+# Define o diretório de trabalho onde o código ficará dentro do container
+WORKDIR /app
+
+# Copia os arquivos de dependência primeiro (isso ajuda no cache do Docker, deixando builds futuros mais rápidos)
+COPY package*.json ./
+
+# Instala todas as dependências do frontend
+RUN npm install
+
+# Copia o restante dos arquivos do projeto
+COPY . .
+
+# Compila o projeto Quasar. Os arquivos minificados e otimizados serão gerados na pasta 'dist/spa'
+RUN npm run build
+
+
+# ==============================================================================
+# ESTÁGIO 2: Servidor Web (Nginx)
+# ==============================================================================
+# Utiliza um servidor web super leve para servir os arquivos estáticos gerados no estágio anterior
+FROM nginx:alpine as production-stage
+
+# Copia a pasta 'dist/spa' (resultado do build da Etapa 1) para a pasta pública do Nginx
+COPY --from=build-stage /app/dist/spa /usr/share/nginx/html
+
+# Copia a configuração personalizada do Nginx para garantir que as rotas (URLs) funcionem corretamente
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Informa ao Docker que o Nginx escutará na porta 80 do container
+EXPOSE 80
+
+# Inicia o servidor Nginx e o mantém rodando em primeiro plano
+CMD ["nginx", "-g", "daemon off;"]
