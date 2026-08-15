@@ -1,6 +1,7 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import 'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap';
 
 
 :root {
@@ -18,3 +19,18 @@
     border-color: currentColor;
   }
 }
+
+// Classes para os componentes do Quasar usarem as cores novas na prop 'color'
+.text-primary-light { color: $primary-light !important; }
+.bg-primary-light   { background: $primary-light !important; }
+
+.text-primary-dark { color: $primary-dark !important; }
+.bg-primary-dark   { background: $primary-dark !important; }
+
+.text-secondary-light { color: $secondary-light !important; }
+.bg-secondary-light   { background: $secondary-light !important; }
+
+.text-accent-light { color: $accent-light !important; }
+.bg-accent-light   { background: $accent-light !important; }
+
+

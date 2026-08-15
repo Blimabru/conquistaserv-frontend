@@ -1,4 +1,5 @@
 <template>
+  <!-- Item Principal sem Submenu -->
   <q-item
     v-if="!linksListSubMenu"
     clickable
@@ -6,10 +7,10 @@
     :to="link"
     exact
     :active="isActive(link)"
-    active-class="bg-blue-2 text-blue-10"
+    class="text-white"
+    active-class="bg-primary text-white"
     style="border-radius: 10px"
   >
-    {{}}
     <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
     </q-item-section>
@@ -19,7 +20,14 @@
     </q-item-section>
   </q-item>
 
-  <q-expansion-item v-else :icon="icon" :label="title">
+  <!-- Item com Submenu -->
+  <q-expansion-item
+    v-else
+    :icon="icon"
+    :label="title"
+    class="text-white"
+    header-class="text-white"
+  >
     <q-list class="q-pl-lg">
       <q-item
         v-for="linkSubmenu in linksListSubMenu"
@@ -28,10 +36,15 @@
         tag="router-link"
         :to="linkSubmenu.link"
         exact
+        :active="isActive(linkSubmenu.link)"
+        class="text-white"
+        active-class="bg-primary text-white"
+        style="border-radius: 10px"
       >
-        <q-item-section avatar>
+        <q-item-section v-if="linkSubmenu.icon" avatar>
           <q-icon :name="linkSubmenu.icon" />
         </q-item-section>
+
         <q-item-section>
           <q-item-label>{{ linkSubmenu.title }}</q-item-label>
         </q-item-section>
@@ -50,22 +63,18 @@ const props = defineProps({
     type: String,
     required: true,
   },
-
   caption: {
     type: String,
     default: '',
   },
-
   link: {
     type: String,
     default: '#',
   },
-
   icon: {
     type: String,
     default: '',
   },
-
   linksListSubMenu: {
     type: Array,
     required: false,
@@ -73,6 +82,7 @@ const props = defineProps({
 });
 
 function isActive(link) {
-  return route.path.startsWith(link);
+  if (!link || link === '#') return false;
+  return route.path === link || route.path.startsWith(link + '/');
 }
 </script>

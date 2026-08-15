@@ -1,69 +1,68 @@
 <template>
   <q-layout view="hHh Lpr lff">
     <q-header>
-      <q-toolbar class="row justify-around bg-blue-10">
-        <div class="col-xs-6 col-sm-1">
+      <q-toolbar class="row justify-between items-center bg-primary px-8">
+        <div>
           <q-btn
             flat
-            dense
             round
             icon="menu"
-            aria-label="Menu"
-            size="lg"
+            label="Menu"
             @click="leftDrawerOpen = !leftDrawerOpen"
           />
         </div>
 
-        <div class="xs-hide col-sm-5">
+        <div>
           <q-toolbar-title style="line-height: normal">
-            <q-icon size="25px" name="feed" class="q-mr-xs" />
-            Modelo Front-end CTI
+            <LogoServConquista />
           </q-toolbar-title>
         </div>
 
-        <div
-          class="xs-hide col-sm-4 flex justify-center content-center"
-          style="font-size: 1.1rem; color: white"
-        >
-          Olá
-          <strong class="q-ml-xs"> {{ userName }}</strong
-          >, seja bem vindo!
+        <div class="py-4 gap-4 row flex justify-end">
+            <q-input
+              rounded
+              dense
+              standout
+              bg-color="primary-light"
+              class=""
+              v-model="text"
+              label="Buscar" >
+                <template v-slot:prepend>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+          
+
+            <q-avatar
+              font-size="40px"
+              icon="account_circle"
+            >
+              <q-menu fit anchor="bottom left" self="top left" :offset="[2, 2]">
+                <q-item
+                  clickable
+                  tag="a"
+                  @click="profile"
+                  exact
+                  class="row items-center"
+                >
+                  <q-item-section>Perfil</q-item-section>
+                  <q-icon name="account_circle" size="sm" />
+                </q-item>
+                <q-item
+                  clickable
+                  tag="a"
+                  @click="logout"
+                  exact
+                  class="row items-center"
+                >
+                  <q-item-section>Sair</q-item-section>
+                  <q-icon name="logout" size="sm" />
+                </q-item>
+              </q-menu>
+            </q-avatar>
+          
         </div>
 
-        <div
-          class="col-xs-6 col-sm-2 items-center flex justify-end content-center q-py-xs"
-          style="text-align: right"
-        >
-          <q-btn
-            color="white"
-            class="text-blue"
-            :label="access"
-            icon="account_circle"
-          >
-            <q-menu fit anchor="bottom left" self="top left" :offset="[2, 2]">
-              <q-item
-                clickable
-                tag="a"
-                @click="profile"
-                exact
-                class="row items-center"
-              >
-                <q-item-section>Perfil</q-item-section>
-                <q-icon name="account_circle" size="sm" />
-              </q-item>
-              <q-item
-                clickable
-                tag="a"
-                @click="logout"
-                exact
-                class="row items-center"
-              >
-                <q-item-section>Sair</q-item-section>
-                <q-icon name="logout" size="sm" />
-              </q-item>
-            </q-menu>
-          </q-btn>
-        </div>
       </q-toolbar>
     </q-header>
 
@@ -71,7 +70,7 @@
       v-model="leftDrawerOpen"
       show-if-above
       bordered
-      class="bg-blue-1 10 q-py-md"
+      class="bg-blue-1 10 q-py-md q-px-md bg-primary-dark w-fit"
     >
       <q-list>
         <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
@@ -94,6 +93,8 @@ import EssentialLink from 'components/common/EssentialLink.vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useAuthStore } from '../stores/authStore';
+
+import LogoServConquista from 'components/common/LogoServConquista.vue';
 
 onMounted(() => {
   configurarMenu();
@@ -121,7 +122,7 @@ function configurarMenu() {
 
     links.value.push(
       {
-        title: 'Início',
+        title: 'Home',
         icon: 'home',
         link: `/admin/`,
       },
@@ -134,6 +135,31 @@ function configurarMenu() {
         title: 'Usuários',
         icon: 'group',
         link: '/usuarios',
+      },
+      {
+        title: 'Comunicação',
+        icon: 'campaign',
+        link: '/comunicacao',
+      },
+      {
+        title: 'Benefícios',
+        icon: 'loyalty',
+        link: '/beneficios',
+      },
+      {
+        title: 'Documentos',
+        icon: 'article',
+        link: '/documentos',
+      },
+      {
+        title: 'Serviços',
+        icon: 'apps',
+        link: '/servicos',
+      },
+      {
+        title: 'Feedback',
+        icon: 'chat_bubble_outline',
+        link: '/feedback',
       },
     );
 

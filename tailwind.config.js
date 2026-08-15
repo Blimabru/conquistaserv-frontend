@@ -16,6 +16,7 @@ module.exports = {
         primary: {
           DEFAULT: 'var(--q-primary)',
           light: 'var(--q-primary-light)',
+          dark: 'var(--q-primary-dark)',
         },
         secondary: {
           DEFAULT: 'var(--q-secondary)',
