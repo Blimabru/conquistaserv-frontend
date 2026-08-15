@@ -1,4 +1,4 @@
-﻿# ConquistaServ — Front-End
+# ConquistaServ — Front-End
 
 Interface web do sistema **ConquistaServ**, desenvolvida com [Quasar Framework v2](https://quasar.dev/) sobre [Vue.js 3](https://vuejs.org/).
 
@@ -84,12 +84,12 @@ O pipeline é gerenciado pelo **GitHub Actions** e executa automaticamente a cad
 ### Fluxo de execução
 
 1. **Checkout** do repositório
-2. **Configuração do Node.js 22** via `actions/setup-node@v4`
+2. **Configuração do Node.js 22** com cache de dependências (`cache: 'npm'`)
 3. **Instalação das dependências** com `npm install`
 4. **Build da aplicação** com `NODE_OPTIONS=--max-old-space-size=4096 npm run build`
 5. **Login no GitHub Container Registry (GHCR)**
 6. **Build e push da imagem Docker** para `ghcr.io` (plataforma `linux/arm64`)
-7. **Deploy na VM Oracle** via SSH
+7. **Deploy na VM Oracle** via SSH (escreve o compose e inicia a stack com `docker compose up -d`)
 
 ### Secrets necessários no repositório GitHub
 
