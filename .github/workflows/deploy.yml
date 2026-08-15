@@ -89,29 +89,27 @@ jobs:
             mkdir -p /srv/stacks/conquistaserv/frontend
             cd /srv/stacks/conquistaserv/frontend
             
-            cat << 'EOF' > docker-compose.yml
-version: '3.8'
-services:
-  frontend:
-    image: ghcr.io/blimabru/conquistaserv-frontend:main
-    container_name: conquistaserv_frontend
-    restart: unless-stopped
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
-    environment:
-      - TZ=America/Bahia
-    networks:
-      - global-network
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-networks:
-  global-network:
-    external: true
-EOF
+            echo 'version: "3.8"
+            services:
+              frontend:
+                image: ghcr.io/blimabru/conquistaserv-frontend:main
+                container_name: conquistaserv_frontend
+                restart: unless-stopped
+                volumes:
+                  - /etc/localtime:/etc/localtime:ro
+                  - /etc/timezone:/etc/timezone:ro
+                environment:
+                  - TZ=America/Bahia
+                networks:
+                  - global-network
+                logging:
+                  driver: "json-file"
+                  options:
+                    max-size: "10m"
+                    max-file: "3"
+            networks:
+              global-network:
+                external: true' | sed 's/^            //' > docker-compose.yml
             
             docker compose pull
             docker compose up -d --remove-orphans
