@@ -6,7 +6,7 @@
         :column="columns"
         :rows="rows"
         :acoes="acoes"
-        routeAdd="/usuarios/adicionar"
+        routeAdd="/admin/usuarios/adicionar"
         titleButtonAdd="Adicionar Usuário"
         @getUsers="getUsers"
         :itemsPerPage="10"
@@ -50,11 +50,11 @@ const filters = ref([
       },
       {
         label: 'Administrador',
-        value: 'Administrador',
+        value: 'ADMIN',
       },
       {
         label: 'Usuário',
-        value: 'Usuário',
+        value: 'USUARIO',
       },
     ],
     actions: (filter) => {
@@ -72,11 +72,11 @@ const filters = ref([
       },
       {
         label: 'Ativo',
-        value: 'Ativo',
+        value: 'ATIVO',
       },
       {
-        label: 'Inativo',
-        value: 'Inativo',
+        label: 'Bloqueado',
+        value: 'BLOQUEADO',
       },
     ],
     actions: (filter) => {
@@ -93,14 +93,14 @@ const acoes = ref([
     color: 'primary',
     administrator: true,
     action: (row) => {
-      router.push(`/usuarios/editar/${row.id}`);
+      router.push(`/admin/usuarios/editar/${row.id}`);
     },
   },
   {
     label: 'Excluir',
     icon: 'delete',
     color: 'negative',
-    administrator: level_access === 'Administrador' ? true : false,
+    administrator: level_access === 'ADMIN' ? true : false,
     action: (row) => {
       deleteUser(row);
     },

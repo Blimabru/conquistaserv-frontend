@@ -3,12 +3,7 @@
     <q-header>
       <q-toolbar class="row justify-between items-center bg-primary px-8">
         <div>
-          <q-btn
-            flat
-            icon="menu"
-            label="Menu"
-            @click="leftDrawerOpen = !leftDrawerOpen"
-          />
+          <q-btn flat icon="menu" label="Menu" @click="leftDrawerOpen = !leftDrawerOpen" />
         </div>
 
         <div>
@@ -18,19 +13,12 @@
         </div>
 
         <div class="py-4 gap-4 row flex justify-end">
-            <q-input
-              rounded
-              dense
-              standout
-              bg-color="primary-light"
-              class=""
-              v-model="text"
-              label="Buscar" >
-                <template v-slot:prepend>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
-          
+          <q-input rounded dense standout bg-color="primary-light" class="" v-model="text" label="Buscar">
+            <template v-slot:prepend>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+
 
             <q-btn round flat>
               <q-avatar
@@ -52,13 +40,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      :width="220"
-      class="q-py-md q-px-md bg-primary-dark w"
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered :width="220" class="q-py-md q-px-md bg-primary-dark w">
       <q-list>
         <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
       </q-list>
@@ -112,7 +94,7 @@ function configurarMenu() {
       {
         title: 'Home',
         icon: 'home',
-        link: `/admin/`,
+        link: `/admin/dashboard`,
       },
       {
         title: 'Perfil',
@@ -122,7 +104,7 @@ function configurarMenu() {
       {
         title: 'Usuários',
         icon: 'group',
-        link: '/usuarios',
+        link: '/admin/usuarios',
       },
       {
         title: 'Comunicação',
@@ -159,12 +141,32 @@ function configurarMenu() {
       {
         title: 'Início',
         icon: 'home',
-        link: `/usuario/`,
+        link: `/inicio`,
       },
       {
-        title: 'Perfil',
-        icon: 'account_circle',
-        link: `/perfil`,
+        title: 'Comunicação',
+        icon: 'campaign',
+        link: '/comunicacao',
+      },
+      {
+        title: 'Benefícios',
+        icon: 'loyalty',
+        link: '/beneficios',
+      },
+      {
+        title: 'Documentos',
+        icon: 'article',
+        link: '/documentos',
+      },
+      {
+        title: 'Serviços',
+        icon: 'apps',
+        link: '/servicos',
+      },
+      {
+        title: 'Feedback',
+        icon: 'chat_bubble_outline',
+        link: '/feedback',
       },
     );
 

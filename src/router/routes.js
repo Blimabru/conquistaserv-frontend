@@ -9,39 +9,41 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
-        path: '/',
+        path: '',
         component: () => import('pages/RedirectPage.vue'),
         meta: { requiredLogin: true },
       },
       {
-        path: '/perfil',
+        path: 'perfil',
         component: () => import('pages/common/Profile.vue'),
         meta: { requiredLogin: true },
       },
       {
-        path: '/admin/',
+        // Rotas administrativas: sempre prefixadas com /admin/*
+        path: 'admin',
         meta: { requiredLogin: true, requiredAdminLevel: true },
         children: [
           {
-            path: '',
+            path: 'dashboard',
             component: () => import('pages/Admin/Dashboard.vue'),
           },
           {
-            path: '/usuarios',
+            path: 'usuarios',
             component: () => import('pages/Admin/users/ListUsers.vue'),
           },
           {
-            path: '/usuarios/adicionar',
+            path: 'usuarios/adicionar',
             component: () => import('pages/Admin/users/UserActionsForm.vue'),
           },
           {
-            path: '/usuarios/editar/:id',
+            path: 'usuarios/editar/:id',
             component: () => import('pages/Admin/users/UserActionsForm.vue'),
           },
         ],
       },
       {
-        path: '/usuario/',
+        // Rotas de usuário comum: nunca prefixadas com /admin
+        path: 'inicio',
         meta: { requiredLogin: true },
         children: [
           {
@@ -49,7 +51,7 @@ const routes = [
             component: () => import('pages/user/HomeUser.vue'),
           },
           {
-            path: '/editar/:id',
+            path: 'editar/:id',
             component: () => import('pages/Admin/users/UserActionsForm.vue'),
           },
         ],

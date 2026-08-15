@@ -27,10 +27,7 @@ export const useAuthStore = defineStore('auth', {
           'Bearer ' + response.data.accessToken;
 
         // Busca os dados completos do usuário antes de redirecionar
-        await this.getUserAccessLevel(
-          response.data.userId,
-          response.data.accessToken,
-        );
+        await this.getUserAccessLevel(response.data.accessToken);
 
         if (response.data.accessToken) {
           Notify.create({
@@ -71,7 +68,7 @@ export const useAuthStore = defineStore('auth', {
 
     setAccessLevel(level) {
       window.sessionStorage.setItem('access_level', level);
-      if (level === 'Administrador') {
+      if (level === 'ADMIN') {
         this.isAdmin = true;
       }
     },
@@ -103,12 +100,9 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    async getUserAccessLevel(payloadId, payloadToken) {
-      const id = payloadId;
-      const token = payloadToken;
-      api.defaults.headers.common.Authorization = 'Bearer ' + token;
-      const { data } = await api.get(`usuarios/${id}`);
-      console.log(data);
+    async getUserAccessLevel(payloadToken) {
+      api.defaults.headers.common.Authorization = 'Bearer ' + payloadToken;
+      const { data } = await api.get('usuarios/me');
       this.setAccessLevel(data.nivel);
       this.setUser(data.id, data.nome);
       return data.nivel;
