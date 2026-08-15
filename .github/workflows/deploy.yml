@@ -85,9 +85,23 @@ jobs:
           script: |
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+            
             CONTAINER_ID=$(docker ps -q -f name=conquistaserv_frontend)
             if [ ! -z "$CONTAINER_ID" ]; then
               docker stop $CONTAINER_ID
               docker rm $CONTAINER_ID
             fi
+            
+            docker run -d \
+              --name conquistaserv_frontend \
+              --restart unless-stopped \
+              -v /etc/localtime:/etc/localtime:ro \
+              -v /etc/timezone:/etc/timezone:ro \
+              -e TZ=America/Bahia \
+              --network global-network \
+              --log-driver json-file \
+              --log-opt max-size=10m \
+              --log-opt max-file=3 \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+              
             docker image prune -af
