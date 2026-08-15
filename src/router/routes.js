@@ -24,19 +24,19 @@ const routes = [
         children: [
           {
             path: '',
-            component: () => import('pages/admin/Dashboard.vue'),
+            component: () => import('pages/Admin/Dashboard.vue'),
           },
           {
             path: '/usuarios',
-            component: () => import('pages/admin/users/ListUsers.vue'),
+            component: () => import('pages/Admin/users/ListUsers.vue'),
           },
           {
             path: '/usuarios/adicionar',
-            component: () => import('pages/admin/users/UserActionsForm.vue'),
+            component: () => import('pages/Admin/users/UserActionsForm.vue'),
           },
           {
             path: '/usuarios/editar/:id',
-            component: () => import('pages/admin/users/UserActionsForm.vue'),
+            component: () => import('pages/Admin/users/UserActionsForm.vue'),
           },
         ],
       },
@@ -50,7 +50,7 @@ const routes = [
           },
           {
             path: '/editar/:id',
-            component: () => import('pages/admin/users/UserActionsForm.vue'),
+            component: () => import('pages/Admin/users/UserActionsForm.vue'),
           },
         ],
       },
