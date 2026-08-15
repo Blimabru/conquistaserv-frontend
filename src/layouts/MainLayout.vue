@@ -5,7 +5,6 @@
         <div>
           <q-btn
             flat
-            round
             icon="menu"
             label="Menu"
             @click="leftDrawerOpen = !leftDrawerOpen"
@@ -70,7 +69,8 @@
       v-model="leftDrawerOpen"
       show-if-above
       bordered
-      class="bg-blue-1 10 q-py-md q-px-md bg-primary-dark w-fit"
+      :width="220"
+      class="q-py-md q-px-md bg-primary-dark w"
     >
       <q-list>
         <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
