@@ -1,4 +1,4 @@
-﻿name: Deploy Frontend to Oracle VM
+name: Deploy Frontend to Oracle VM
 
 on:
   push:
@@ -23,10 +23,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '22'
 
-      - name: Criar arquivo .env para o build
-        run: cp .env.example .env
+      - name: Criar arquivo .env de producao para o build
+        run: |
+          cat > .env << 'EOF'
+          APP_NAME="ConquistaServ"
+          VERSION=1.0.0
+          PORT=8080
+          PROTOCOL=https
+          BASE_URL=https://conquistaserv.brainstormlabs.online/
+          API_BASE_URL=https://conquistaserv.brainstormlabs.online/api/
+          EOF
 
       - name: Instalar Quasar CLI globalmente
         run: npm install -g @quasar/cli
@@ -55,6 +63,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
+            type=raw,value=main
             type=raw,value=latest
             type=sha
 
@@ -74,23 +83,11 @@ jobs:
           username: ${{ secrets.ORACLE_USERNAME }}
           key: ${{ secrets.ORACLE_SSH_KEY }}
           script: |
-            # Autenticacao no GHCR
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            
-            # Download da nova imagem
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
-            
-            # Captura do ID do container atual
             CONTAINER_ID=$(docker ps -q -f name=conquistaserv_frontend)
             if [ ! -z "$CONTAINER_ID" ]; then
               docker stop $CONTAINER_ID
               docker rm $CONTAINER_ID
             fi
-            
-            # NOTA: O metodo corporativo recomendado consiste em habilitar o "Webhook" da Stack no Portainer
-            # e realizar uma requisicao via curl neste ponto. Na ausencia desta configuracao, a 
-            # atualizacao deve ser finalizada via opcao "Pull and redeploy" na interface do Portainer, 
-            # ou mediante a configuracao posterior do Webhook.
-            
-            # Remocao de imagens obsoletas
             docker image prune -af
