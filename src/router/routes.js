@@ -19,6 +19,21 @@ const routes = [
         meta: { requiredLogin: true },
       },
       {
+        path: 'beneficios',
+        component: () => import('pages/Admin/users/Beneficios.vue'),
+        meta: { requiredLogin: true },
+      },
+      {
+        path: 'documentos',
+        component: () => import('pages/Admin/users/Documentos.vue'),
+        meta: { requiredLogin: true },
+      },
+      {
+        path: 'servicos',
+        component: () => import('pages/Admin/users/Servicos.vue'),
+        meta: { requiredLogin: true },
+      },
+      {
         // Rotas administrativas: sempre prefixadas com /admin/*
         path: 'admin',
         meta: { requiredLogin: true, requiredAdminLevel: true },

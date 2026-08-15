@@ -1,14 +1,14 @@
 import { defineStore } from 'pinia';
 import { api } from 'src/boot/axios';
-import { Notify, Loading, QSpinnerBall, useQuasar } from 'quasar';
+import { Notify, Loading, QSpinnerBall } from 'quasar';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    idUser: '',
-    nameUser: '',
-    token: '',
-    isAuthenticated: false,
-    isAdmin: false,
+    idUser: window.sessionStorage.getItem('user_id') || '',
+    nameUser: window.sessionStorage.getItem('name_user') || '',
+    token: window.sessionStorage.getItem('token') || '',
+    isAuthenticated: !!window.sessionStorage.getItem('token'),
+    isAdmin: window.sessionStorage.getItem('access_level') === 'ADMIN',
   }),
 
   actions: {
@@ -22,23 +22,32 @@ export const useAuthStore = defineStore('auth', {
       });
       try {
         const response = await api.post('/auth/login', payload);
-        this.setToken(response.data.accessToken);
-        api.defaults.headers.common.Authorization =
-          'Bearer ' + response.data.accessToken;
+        const accessToken = response.data?.accessToken || response.data?.token || response.data;
 
-        // Busca os dados completos do usuário antes de redirecionar
-        await this.getUserAccessLevel(response.data.accessToken);
-
-        if (response.data.accessToken) {
-          Notify.create({
-            color: 'green-10',
-            icon: 'done_all',
-            position: 'top',
-            timeout: 2000,
-            message: 'Bem vindo de volta',
-          });
+        if (!accessToken) {
+          throw new Error('Token não retornado pelo servidor');
         }
+
+        this.setToken(accessToken);
+        api.defaults.headers.common.Authorization = 'Bearer ' + accessToken;
+
+        // Busca dados do usuário após login
+        try {
+          await this.getUserAccessLevel(accessToken);
+        } catch (e) {
+          console.warn('Não foi possível obter dados imediatos de perfil:', e);
+        }
+
+        Notify.create({
+          color: 'green-10',
+          icon: 'done_all',
+          position: 'top',
+          timeout: 2000,
+          message: 'Bem vindo de volta',
+        });
+
         Loading.hide();
+        return response;
       } catch (error) {
         console.log('Erro ao fazer login', error);
         Loading.hide();
@@ -46,8 +55,8 @@ export const useAuthStore = defineStore('auth', {
           color: 'negative',
           icon: 'close',
           position: 'top',
-          timeout: 2000,
-          message: error.response.data.message,
+          timeout: 2500,
+          message: error?.response?.data?.message || 'Usuário ou senha incorretos',
         });
         throw error;
       }
@@ -55,21 +64,31 @@ export const useAuthStore = defineStore('auth', {
 
     setToken(token) {
       this.token = token;
-      this.isAuthenticated = true;
-      window.sessionStorage.setItem('token', token);
+      this.isAuthenticated = !!token;
+      if (token) {
+        window.sessionStorage.setItem('token', token);
+      } else {
+        window.sessionStorage.removeItem('token');
+      }
     },
 
     setUser(userId, userName = '') {
       this.idUser = userId;
       this.nameUser = userName;
-      window.sessionStorage.setItem('user_id', userId);
-      window.sessionStorage.setItem('name_user', userName);
+      if (userId) {
+        window.sessionStorage.setItem('user_id', userId);
+      }
+      if (userName) {
+        window.sessionStorage.setItem('name_user', userName);
+      }
     },
 
     setAccessLevel(level) {
-      window.sessionStorage.setItem('access_level', level);
-      if (level === 'ADMIN') {
-        this.isAdmin = true;
+      this.isAdmin = level === 'ADMIN';
+      if (level) {
+        window.sessionStorage.setItem('access_level', level);
+      } else {
+        window.sessionStorage.removeItem('access_level');
       }
     },
 
@@ -95,17 +114,33 @@ export const useAuthStore = defineStore('auth', {
       const token = window.sessionStorage.getItem('token');
       if (token) {
         this.setToken(token);
+        const accessLevel = window.sessionStorage.getItem('access_level');
+        if (accessLevel) {
+          this.setAccessLevel(accessLevel);
+        }
+        const userId = window.sessionStorage.getItem('user_id');
+        const userName = window.sessionStorage.getItem('name_user');
+        if (userId) {
+          this.setUser(userId, userName || '');
+        }
       } else {
-        this.removeToken();
+        this.logout();
       }
     },
 
     async getUserAccessLevel(payloadToken) {
-      api.defaults.headers.common.Authorization = 'Bearer ' + payloadToken;
+      const token = payloadToken || this.token || window.sessionStorage.getItem('token');
+      if (!token) return '';
+
+      api.defaults.headers.common.Authorization = 'Bearer ' + token;
       const { data } = await api.get('usuarios/me');
-      this.setAccessLevel(data.nivel);
-      this.setUser(data.id, data.nome);
-      return data.nivel;
+
+      if (data) {
+        this.setAccessLevel(data.nivel);
+        this.setUser(data.id, data.nome);
+        return data.nivel;
+      }
+      return '';
     },
 
     logout() {

@@ -1,5 +1,7 @@
 <template>
-  <span></span>
+  <div class="flex flex-center" style="height: 100vh">
+    <q-spinner-dots size="48px" color="primary" />
+  </div>
 </template>
 
 <script setup>
@@ -10,35 +12,29 @@ import { useRouter } from 'vue-router';
 onMounted(async () => {
   const authStore = useAuthStore();
   const router = useRouter();
-  const id = window.sessionStorage.getItem('user_id');
   const token = window.sessionStorage.getItem('token');
+  let accessLevel = window.sessionStorage.getItem('access_level');
 
-  if (!id || !token) {
+  if (!token) {
     console.log('Usuário não autenticado, redirecionando para login');
-    router.push('/login');
+    router.replace('/login');
     return;
   }
 
   try {
-    const res = await authStore.getUserAccessLevel(token);
-    switch (res) {
-      case 'ADMIN': {
-        router.push('/admin/dashboard');
-        break;
-      }
-      case 'USUARIO': {
-        router.push('/inicio');
-        break;
-      }
-      default: {
-        router.push('/login');
-        console.log('erro ao redirecionar');
-        break;
-      }
+    if (!accessLevel) {
+      accessLevel = await authStore.getUserAccessLevel(token);
+    }
+
+    if (accessLevel === 'ADMIN') {
+      router.replace('/admin/dashboard');
+    } else {
+      router.replace('/inicio');
     }
   } catch (error) {
-    console.error('Erro ao obter nível de acesso:', error);
-    router.push('/login');
+    console.error('Erro ao redirecionar usuário:', error);
+    authStore.logout();
+    router.replace('/login');
   }
 });
 </script>

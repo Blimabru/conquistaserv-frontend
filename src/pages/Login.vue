@@ -20,16 +20,16 @@
         <q-form ref="form" @submit.prevent.stop="login">
           <div class="row q-py-lg">
             <div class="col-xs-10 col-12 q-mb-md">
-              <label class="label text-font">Usuário</label>
+              <label class="label text-font">Usuário / E-mail</label>
               <q-input
                 filled
-                ref="login"
+                ref="loginInput"
                 outlined
                 name="usuario"
                 type="text"
                 v-model="data.login"
                 lazy-rules
-                :rules="usernameRules"
+                :rules="[(val) => (val && val.trim().length > 0) || 'Digite o seu nome de usuário ou e-mail']"
               />
             </div>
             <div class="col-12 q-mb-md">
@@ -41,7 +41,7 @@
                 name="password"
                 type="password"
                 v-model="data.senha"
-                :rules="passwordRules"
+                :rules="[(val) => (val && val.length > 0) || 'Digite a sua senha']"
                 autocomplete="off"
               />
             </div>
@@ -76,19 +76,23 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useQuasar } from 'quasar';
 import { useAuthStore } from '../stores/authStore';
 import { useRouter, useRoute } from 'vue-router';
 
 const authStore = useAuthStore();
-const $q = useQuasar();
 const router = useRouter();
 const route = useRoute();
 const app_name = process.env.APP_NAME;
 
 onMounted(() => {
-  if (authStore.isAuthenticated) {
-    router.push('/');
+  const token = window.sessionStorage.getItem('token');
+  if (token) {
+    const accessLevel = (window.sessionStorage.getItem('access_level') || (authStore.isAdmin ? 'ADMIN' : 'USUARIO')).toUpperCase();
+    if (accessLevel === 'ADMIN') {
+      router.replace('/admin/dashboard');
+    } else {
+      router.replace('/inicio');
+    }
   }
 });
 
@@ -97,27 +101,18 @@ const data = ref({
   senha: '',
 });
 
-const usernameRules = [
-  (val) => (val && val.length > 0) || 'Digite o seu nome de usuário',
-  (val) =>
-    validateName(val) ||
-    "*Proibido o uso dos seguintes caracteres [!@#$%*()_+=-?°``''~©,.;<>:], valores numéricos ou espaços",
-];
-
-const passwordRules = [
-  (val) => (val && val.length > 0) || 'Digite a sua senha',
-];
-
-function validateName(name) {
-  const regexText = /[^a-zA-Zs]/g;
-  return !regexText.test(name);
-}
-
 async function login() {
   try {
     await authStore.doLogin(data.value);
-    const toPath = route.query.to || '/';
-    router.push(toPath);
+    const accessLevel = (window.sessionStorage.getItem('access_level') || (authStore.isAdmin ? 'ADMIN' : 'USUARIO')).toUpperCase();
+
+    if (route.query.to && route.query.to !== '/' && route.query.to !== '/login') {
+      router.push(route.query.to);
+    } else if (accessLevel === 'ADMIN') {
+      router.push('/admin/dashboard');
+    } else {
+      router.push('/inicio');
+    }
   } catch (error) {
     console.error('Erro no login:', error);
   }

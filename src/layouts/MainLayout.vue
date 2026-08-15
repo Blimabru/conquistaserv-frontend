@@ -53,49 +53,57 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import EssentialLink from 'components/common/EssentialLink.vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useAuthStore } from '../stores/authStore';
 
 import LogoServConquista from 'components/common/LogoServConquista.vue';
 import UserMenu from 'components/common/UserMenu.vue';
 
-onMounted(() => {
-  configurarMenu();
-});
-
 const router = useRouter();
+const route = useRoute();
 const $q = useQuasar();
 const authStore = useAuthStore();
 const leftDrawerOpen = ref(false);
 const access = ref('');
 const userName = ref('');
+const text = ref('');
 const links = ref([]);
 
+onMounted(() => {
+  configurarMenu();
+});
+
+watch(() => route.path, () => {
+  configurarMenu();
+});
+
 function getFirstName(name) {
-  const firstName = name.split(' ')[0];
+  const firstName = (name || '').split(' ')[0];
   return (userName.value = firstName);
 }
 
 function configurarMenu() {
-  const accessLevel = window.sessionStorage.getItem('access_level');
-  const userName = window.sessionStorage.getItem('name_user');
-  getFirstName(userName ? userName : 'Maria Silva');
+  const accessLevel = (window.sessionStorage.getItem('access_level') || (authStore.isAdmin ? 'ADMIN' : '')).toUpperCase();
+  const rawUserName = window.sessionStorage.getItem('name_user') || authStore.nameUser;
+  getFirstName(rawUserName ? rawUserName : 'Maria Silva');
+  
+  links.value = [];
+
   if (accessLevel === 'ADMIN') {
     // ITENS DE NAVEGAÇÃO ADMIN
-
     links.value.push(
       {
         title: 'Home',
         icon: 'home',
-        link: `/admin/dashboard`,
+        link: '/admin/dashboard',
       },
       {
         title: 'Perfil',
         icon: 'account_circle',
-        link: `/perfil`,
+        link: '/perfil',
       },
       {
         title: 'Usuários',
@@ -132,12 +140,11 @@ function configurarMenu() {
     access.value = 'admin';
   } else {
     // ITENS DE NAVEGAÇÃO USUARIO
-
     links.value.push(
       {
         title: 'Início',
         icon: 'home',
-        link: `/inicio`,
+        link: '/inicio',
       },
       {
         title: 'Comunicação',

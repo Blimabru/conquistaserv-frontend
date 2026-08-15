@@ -23,40 +23,34 @@ export default route(function (/*{ store, ssrContext }*/) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
-  Router.beforeEach(async (to, from, next) => {
+  Router.beforeEach((to, from, next) => {
     try {
-      //verifica a autenticação do usuário
-      if (to.meta.requiredLogin && !authStore.$state.isAuthenticated) {
+      const token = window.sessionStorage.getItem('token');
+      const accessLevel = window.sessionStorage.getItem('access_level');
+
+      // Se houver token mas a store não estiver inicializada
+      if (token && !authStore.isAuthenticated) {
+        authStore.initSystem();
+      }
+
+      // Se a rota exige login e não há token
+      if (to.meta.requiredLogin && !token) {
         next({ name: 'login' });
         return;
       }
 
-      //verifica os níveis de acesso
-      if (to.path !== '/login' && to.path !== '/' && to.meta.requiredLogin) {
-        const token = window.sessionStorage.getItem('token');
-
-        if (!token) {
-          next({ name: 'login' });
-          return;
-        }
-
-        await authStore.getUserAccessLevel(token);
-
-        const accessLevel = window.sessionStorage.getItem('access_level');
-
-        if (
-          to.meta.requiredAdminLevel &&
-          accessLevel !== 'ADMIN'
-          // || ((to?.meta.requiredOutroNivelDeAcesso) && accessLevel !== "OutroNivelDeAcesso")
-        ) {
-          next({
-            name: 'error',
-          });
-          return;
-        }
+      // Se já está autenticado e tenta acessar a página de login
+      if (to.path === '/login' && token) {
+        next({ path: '/' });
+        return;
       }
 
-      //se passar por todas as verificações, segue a navegação
+      // Se a rota exige nível administrativo e o usuário não for ADMIN
+      if (to.meta.requiredAdminLevel && accessLevel && accessLevel !== 'ADMIN') {
+        next({ path: '/inicio' });
+        return;
+      }
+
       next();
     } catch (error) {
       console.error('Erro no router guard:', error);
