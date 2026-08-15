@@ -23,15 +23,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
 
       - name: Criar arquivo .env para o build
         run: cp .env.example .env
 
+      - name: Instalar Quasar CLI globalmente
+        run: npm install -g @quasar/cli
+
       - name: Install Dependencies and Build (Native AMD64)
         run: |
           npm install
-          NODE_OPTIONS=--max-old-space-size=4096 npm run build
+          NODE_OPTIONS=--max-old-space-size=4096 quasar build
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
