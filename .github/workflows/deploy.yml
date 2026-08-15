@@ -90,6 +90,7 @@ jobs:
             cd /srv/stacks/conquistaserv/frontend
             
             echo 'version: "3.8"
+            name: conquistaserv-frontend
             services:
               frontend:
                 image: ghcr.io/blimabru/conquistaserv-frontend:main
