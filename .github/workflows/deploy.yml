@@ -25,6 +25,9 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Criar arquivo .env para o build
+        run: cp .env.example .env
+
       - name: Install Dependencies and Build (Native AMD64)
         run: |
           npm install
