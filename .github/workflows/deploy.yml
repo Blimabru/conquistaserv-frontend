@@ -85,24 +85,34 @@ jobs:
           key: ${{ secrets.ORACLE_SSH_KEY }}
           script: |
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker pull ghcr.io/blimabru/conquistaserv-frontend:main
             
-            CONTAINER_ID=$(docker ps -q -f name=conquistaserv_frontend)
-            if [ ! -z "$CONTAINER_ID" ]; then
-              docker stop $CONTAINER_ID
-              docker rm $CONTAINER_ID
-            fi
+            mkdir -p /srv/stacks/conquistaserv-frontend
+            cd /srv/stacks/conquistaserv-frontend
             
-            docker run -d \
-              --name conquistaserv_frontend \
-              --restart unless-stopped \
-              -v /etc/localtime:/etc/localtime:ro \
-              -v /etc/timezone:/etc/timezone:ro \
-              -e TZ=America/Bahia \
-              --network global-network \
-              --log-driver json-file \
-              --log-opt max-size=10m \
-              --log-opt max-file=3 \
-              ghcr.io/blimabru/conquistaserv-frontend:main
-              
+            cat << 'EOF' > docker-compose.yml
+version: '3.8'
+services:
+  frontend:
+    image: ghcr.io/blimabru/conquistaserv-frontend:main
+    container_name: conquistaserv_frontend
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    environment:
+      - TZ=America/Bahia
+    networks:
+      - global-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+networks:
+  global-network:
+    external: true
+EOF
+            
+            docker compose pull
+            docker compose up -d --remove-orphans
             docker image prune -af
