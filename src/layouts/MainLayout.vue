@@ -32,33 +32,20 @@
               </q-input>
           
 
-            <q-avatar
-              font-size="40px"
-              icon="account_circle"
-            >
-              <q-menu fit anchor="bottom left" self="top left" :offset="[2, 2]">
-                <q-item
-                  clickable
-                  tag="a"
-                  @click="profile"
-                  exact
-                  class="row items-center"
-                >
-                  <q-item-section>Perfil</q-item-section>
-                  <q-icon name="account_circle" size="sm" />
-                </q-item>
-                <q-item
-                  clickable
-                  tag="a"
-                  @click="logout"
-                  exact
-                  class="row items-center"
-                >
-                  <q-item-section>Sair</q-item-section>
-                  <q-icon name="logout" size="sm" />
-                </q-item>
+            <q-btn round flat>
+              <q-avatar
+                size="43px"
+                icon="account_circle" />
+              
+              <q-menu 
+                auto-close 
+                :offset="[10, 15]" 
+                class="bg-transparent shadow-0 no-shadow"
+                style="border-radius: 28px; overflow: visible;"
+              >
+                <UserMenu />
               </q-menu>
-            </q-avatar>
+            </q-btn>
           
         </div>
 
@@ -95,6 +82,7 @@ import { useQuasar } from 'quasar';
 import { useAuthStore } from '../stores/authStore';
 
 import LogoServConquista from 'components/common/LogoServConquista.vue';
+import UserMenu from 'components/common/UserMenu.vue';
 
 onMounted(() => {
   configurarMenu();
