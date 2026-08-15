@@ -56,6 +56,24 @@ const routes = [
           },
         ],
       },
+      {
+        path: 'comunicacao',
+        meta: { requiredLogin: true },
+        children: [
+          {
+            path: '',
+            component: () => import('pages/servidor/comunicacao/FeedComunicacao.vue'),
+          },
+          {
+            path: 'canais/:id',
+            component: () => import('pages/servidor/comunicacao/CanalDetalhe.vue'),
+          },
+          {
+            path: 'publicacao/:id',
+            component: () => import('pages/servidor/comunicacao/DetalhePublicacao.vue'),
+          },
+        ],
+      },
     ],
   },
   {
