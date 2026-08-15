@@ -21,8 +21,12 @@
           v-for="g in grupos"
           :key="g.tipo"
           :name="g.tipo"
-          :label="`${g.emoji} ${g.quantidade}`"
-        />
+        >
+          <div class="flex flex-nowrap items-center gap-1.5">
+            <q-icon :name="g.icone" size="18px" :color="g.cor" />
+            <span>{{ g.quantidade }}</span>
+          </div>
+        </q-tab>
       </q-tabs>
 
       <q-separator />
@@ -37,9 +41,12 @@
             </q-item-section>
             <q-item-section>{{ p.nome }}</q-item-section>
             <q-item-section side>
-              <span class="text-xl" :aria-label="labelTipo(p.tipo)">
-                {{ emojiTipo(p.tipo) }}
-              </span>
+              <q-icon
+                :name="iconeTipo(p.tipo)"
+                size="20px"
+                :color="corTipo(p.tipo)"
+                :aria-label="labelTipo(p.tipo)"
+              />
             </q-item-section>
           </q-item>
 
@@ -97,8 +104,11 @@ function iniciais(nome = '') {
     .join('')
     .toUpperCase();
 }
-function emojiTipo(tipo) {
-  return MAPA_REACAO[tipo]?.emoji || '';
+function iconeTipo(tipo) {
+  return MAPA_REACAO[tipo]?.icone || 'thumb_up';
+}
+function corTipo(tipo) {
+  return MAPA_REACAO[tipo]?.cor || '';
 }
 function labelTipo(tipo) {
   return MAPA_REACAO[tipo]?.label || tipo;

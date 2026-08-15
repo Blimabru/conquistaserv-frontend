@@ -1,9 +1,9 @@
 export const TIPOS_REACAO = [
-  { tipo: 'curtir', label: 'Curtir', emoji: '👍', cor: 'primary' },
-  { tipo: 'amei', label: 'Amei', emoji: '❤️', cor: 'secondary' },
-  { tipo: 'parabens', label: 'Parabéns', emoji: '👏', cor: 'positive' },
-  { tipo: 'apoio', label: 'Apoio', emoji: '🤝', cor: 'info' },
-  { tipo: 'genial', label: 'Genial', emoji: '💡', cor: 'warning' },
+  { tipo: 'curtir', label: 'Curtir', icone: 'thumb_up', cor: 'primary' },
+  { tipo: 'amei', label: 'Amei', icone: 'favorite', cor: 'negative' },
+  { tipo: 'parabens', label: 'Parabéns', icone: 'celebration', cor: 'positive' },
+  { tipo: 'apoio', label: 'Apoio', icone: 'handshake', cor: 'info' },
+  { tipo: 'genial', label: 'Genial', icone: 'lightbulb', cor: 'warning' },
 ];
 
 export const MAPA_REACAO = TIPOS_REACAO.reduce((acc, r) => {

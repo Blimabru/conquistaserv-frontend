@@ -16,9 +16,12 @@
             :title="r.label"
             @click.stop="escolher(r.tipo)"
           >
-            <span class="text-2xl leading-none transition-transform duration-100 group-hover/btn:scale-125">
-              {{ r.emoji }}
-            </span>
+            <q-icon
+              :name="r.icone"
+              size="20px"
+              :color="r.cor"
+              class="transition-transform duration-100 group-hover/btn:scale-125"
+            />
           </button>
 
           <button
@@ -40,7 +43,11 @@
         :class="minhaDef ? 'text-primary bg-primary/10 hover:bg-primary/20' : 'text-gray-600 hover:bg-gray-100'"
         @click="cliquePadrao"
       >
-        <span class="text-base leading-none">{{ minhaDef ? minhaDef.emoji : '👍' }}</span>
+        <q-icon
+          :name="minhaDef ? minhaDef.icone : 'thumb_up'"
+          size="18px"
+          :color="minhaDef ? minhaDef.cor : ''"
+        />
         <span>{{ minhaDef ? minhaDef.label : 'Curtir' }}</span>
       </button>
     </div>
@@ -58,7 +65,7 @@
             :key="r.tipo"
             class="-ml-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-white text-[13px] first:ml-0 shadow-sm border border-white"
           >
-            {{ r.emoji }}
+            <q-icon :name="r.icone" size="13px" :color="r.cor" />
           </span>
         </div>
         <span class="font-medium text-gray-600 ml-1">{{ total }}</span>
