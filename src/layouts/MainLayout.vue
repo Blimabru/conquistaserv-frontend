@@ -80,10 +80,6 @@
     <q-page-container>
       <router-view />
     </q-page-container>
-
-    <q-footer elevated class="bg-grey-10 q-pa-xs text-white text-center">
-      <span>Desenvolvido por CTI</span>
-    </q-footer>
   </q-layout>
 </template>
 
