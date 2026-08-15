@@ -86,12 +86,38 @@ jobs:
           script: |
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
-            mkdir -p /srv/stacks/conquistaserv/frontend
-            cd /srv/stacks/conquistaserv/frontend
+            mkdir -p /srv/stacks/conquistaserv
+            cd /srv/stacks/conquistaserv
             
             echo 'version: "3.8"
-            name: conquistaserv-frontend
+            name: conquistaserv
             services:
+              backend:
+                image: ghcr.io/blimabru/conquistaserv-backend:main
+                container_name: conquistaserv_backend
+                restart: unless-stopped
+                volumes:
+                  - /etc/localtime:/etc/localtime:ro
+                  - /etc/timezone:/etc/timezone:ro
+                environment:
+                  - TZ=America/Bahia
+                  - NODE_ENV=production
+                  - DATABASE_URL=${DATABASE_URL}
+                  - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+                  - ACCESS_TOKEN_EXPIRATION=86400s
+                  - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+                  - REFRESH_TOKEN_EXPIRATION=604800s
+                  - HTTP_PORT=3006
+                  - APP_HOSTNAME=conquistaserv.brainstormlabs.online
+                  - APP_NAME=conquistaserv-backend
+                networks:
+                  - global-network
+                logging:
+                  driver: "json-file"
+                  options:
+                    max-size: "10m"
+                    max-file: "3"
+
               frontend:
                 image: ghcr.io/blimabru/conquistaserv-frontend:main
                 container_name: conquistaserv_frontend
@@ -108,10 +134,11 @@ jobs:
                   options:
                     max-size: "10m"
                     max-file: "3"
+
             networks:
               global-network:
                 external: true' | sed 's/^            //' > docker-compose.yml
             
-            docker compose pull
-            docker compose up -d --remove-orphans
+            docker compose pull frontend
+            docker compose up -d frontend
             docker image prune -af
