@@ -13,9 +13,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: 'var(--q-primary)',
-        secondary: 'var(--q-secondary)',
-        accent: 'var(--q-accent)',
+        primary: {
+          DEFAULT: 'var(--q-primary)',
+          light: 'var(--q-primary-light)',
+        },
+        secondary: {
+          DEFAULT: 'var(--q-secondary)',
+          light: 'var(--q-secondary-light)',
+        },
+        accent: {
+          DEFAULT: 'var(--q-accent)',
+          light: 'var(--q-accent-light)',
+        },
         positive: 'var(--q-positive)',
         negative: 'var(--q-negative)',
         info: 'var(--q-info)',

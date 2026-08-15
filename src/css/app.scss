@@ -2,6 +2,13 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+
+:root {
+  --q-primary-light: #{$primary-light};
+  --q-secondary-light: #{$secondary-light};
+  --q-accent-light: #{$accent-light};
+}
+
 @layer base {
   *,
   ::before,
