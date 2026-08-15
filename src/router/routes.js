@@ -1,8 +1,16 @@
+import path from 'node:path';
+
 const routes = [
   {
-    name: 'login',
     path: '/login',
-    component: () => import('pages/Login.vue'),
+    component: () => import('layouts/LoginPageLayout.vue'),
+    children: [
+      {
+        name: 'login',
+        path: '',
+        component: () => import ('src/pages/Login.vue')
+      }
+    ]
   },
   {
     path: '/',
