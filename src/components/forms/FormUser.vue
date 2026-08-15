@@ -35,6 +35,8 @@
           dense
           v-model="form.nivel"
           :options="level_access_options"
+          emit-value
+          map-options
           lazy-rules
           label="Nível"
           hint="Informe o nível de acesso"
@@ -51,6 +53,8 @@
           outlined
           v-model="form.situacao"
           :options="situation_options"
+          emit-value
+          map-options
           lazy-rules
           label="Situação"
           hint="Informe a situação"
@@ -124,7 +128,7 @@
         label="Cancelar"
         color="grey-2"
         text-color="grey-10"
-        to="/usuarios"
+        to="/admin/usuarios"
       />
     </div>
   </q-form>
@@ -168,8 +172,14 @@ const props = defineProps({
 });
 
 const password_confirmation = ref('');
-const level_access_options = ref(['Usuário', 'Administrador']);
-const situation_options = ref(['Ativo', 'Inativo']);
+const level_access_options = ref([
+  { label: 'Usuário', value: 'USUARIO' },
+  { label: 'Administrador', value: 'ADMIN' },
+]);
+const situation_options = ref([
+  { label: 'Ativo', value: 'ATIVO' },
+  { label: 'Bloqueado', value: 'BLOQUEADO' },
+]);
 const empty_field_rules = [(val) => !!val || '*Campo obrigatório'];
 
 function validateName(val) {

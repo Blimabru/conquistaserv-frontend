@@ -3,7 +3,7 @@
     <CtiCard :title="define_title" iconName="person_add">
       <FormUser
         :userId="id ? id : null"
-        :administrator="level_access === 'Administrador' ? true : false"
+        :administrator="level_access === 'ADMIN' ? true : false"
         :labelButtonSave="id ? 'Atualizar' : 'Cadastrar'"
         :showBackButton="true"
         @submitData="submitData"
@@ -41,7 +41,7 @@ async function createUser(data) {
     const { status } = await api.post('usuarios', data);
     if (status == 201) {
       showNotification('positive', 'Usuário cadastrado com sucesso!', 'top');
-      router.push('/usuarios');
+      router.push('/admin/usuarios');
     }
     $q.loading.hide();
   } catch (error) {
@@ -58,10 +58,10 @@ async function updateUser(data) {
     if (data.senha === '') {
       delete data.senha;
     }
-    const { status } = await api.put(`usuarios/${id}`, data);
+    const { status } = await api.patch(`usuarios/${id}`, data);
     if (status == 200) {
       showNotification('positive', 'Usuário atualizado com sucesso!', 'top');
-      router.push('/usuarios');
+      router.push('/admin/usuarios');
     }
     $q.loading.hide();
   } catch (error) {

@@ -20,15 +20,14 @@ onMounted(async () => {
   }
 
   try {
-    const res = await authStore.getUserAccessLevel(id, token);
-    // console.log(id, token)
+    const res = await authStore.getUserAccessLevel(token);
     switch (res) {
       case 'ADMIN': {
-        router.push('/admin/');
+        router.push('/admin/dashboard');
         break;
       }
       case 'USUARIO': {
-        router.push('/usuario/');
+        router.push('/inicio');
         break;
       }
       default: {

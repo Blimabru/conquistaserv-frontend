@@ -21,9 +21,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const id = window.sessionStorage.getItem('user_id');
 const administrador =
-  window.sessionStorage.getItem('access_level') === 'Administrador'
-    ? true
-    : false;
+  window.sessionStorage.getItem('access_level') === 'ADMIN' ? true : false;
 
 async function updateData(dados) {
   try {
@@ -32,9 +30,9 @@ async function updateData(dados) {
     if (data.senha === '') {
       delete data.senha;
     }
-    const { status } = await api.put(`usuarios/${id}`, data);
+    const { status } = await api.patch(`usuarios/${id}`, data);
 
-    const define_route = administrador ? '/admin/' : '/usuario/';
+    const define_route = administrador ? '/admin/dashboard' : '/inicio';
 
     if (status == 200)
       showNotification('positive', 'Usuário atualizado com sucesso!', 'top');

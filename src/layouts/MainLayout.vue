@@ -3,12 +3,7 @@
     <q-header>
       <q-toolbar class="row justify-between items-center bg-primary px-8">
         <div>
-          <q-btn
-            flat
-            icon="menu"
-            label="Menu"
-            @click="leftDrawerOpen = !leftDrawerOpen"
-          />
+          <q-btn flat icon="menu" label="Menu" @click="leftDrawerOpen = !leftDrawerOpen" />
         </div>
 
         <div>
@@ -18,60 +13,34 @@
         </div>
 
         <div class="py-4 gap-4 row flex justify-end">
-            <q-input
-              rounded
-              dense
-              standout
-              bg-color="primary-light"
-              class=""
-              v-model="text"
-              label="Buscar" >
-                <template v-slot:prepend>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
-          
+          <q-input rounded dense standout bg-color="primary-light" class="" v-model="text" label="Buscar">
+            <template v-slot:prepend>
+              <q-icon name="search" />
+            </template>
+          </q-input>
 
-            <q-avatar
-              font-size="40px"
-              icon="account_circle"
-            >
-              <q-menu fit anchor="bottom left" self="top left" :offset="[2, 2]">
-                <q-item
-                  clickable
-                  tag="a"
-                  @click="profile"
-                  exact
-                  class="row items-center"
-                >
-                  <q-item-section>Perfil</q-item-section>
-                  <q-icon name="account_circle" size="sm" />
-                </q-item>
-                <q-item
-                  clickable
-                  tag="a"
-                  @click="logout"
-                  exact
-                  class="row items-center"
-                >
-                  <q-item-section>Sair</q-item-section>
-                  <q-icon name="logout" size="sm" />
-                </q-item>
+
+            <q-btn round flat>
+              <q-avatar
+                size="43px"
+                icon="account_circle" />
+              
+              <q-menu 
+                auto-close 
+                :offset="[10, 15]" 
+                class="bg-transparent shadow-0 no-shadow"
+                style="border-radius: 28px; overflow: visible;"
+              >
+                <UserMenu />
               </q-menu>
-            </q-avatar>
+            </q-btn>
           
         </div>
 
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      :width="220"
-      class="q-py-md q-px-md bg-primary-dark w"
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered :width="220" class="q-py-md q-px-md bg-primary-dark w">
       <q-list>
         <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
       </q-list>
@@ -91,6 +60,7 @@ import { useQuasar } from 'quasar';
 import { useAuthStore } from '../stores/authStore';
 
 import LogoServConquista from 'components/common/LogoServConquista.vue';
+import UserMenu from 'components/common/UserMenu.vue';
 
 onMounted(() => {
   configurarMenu();
@@ -120,7 +90,7 @@ function configurarMenu() {
       {
         title: 'Home',
         icon: 'home',
-        link: `/admin/`,
+        link: `/admin/dashboard`,
       },
       {
         title: 'Perfil',
@@ -130,7 +100,7 @@ function configurarMenu() {
       {
         title: 'Usuários',
         icon: 'group',
-        link: '/usuarios',
+        link: '/admin/usuarios',
       },
       {
         title: 'Comunicação',
@@ -167,12 +137,32 @@ function configurarMenu() {
       {
         title: 'Início',
         icon: 'home',
-        link: `/usuario/`,
+        link: `/inicio`,
       },
       {
-        title: 'Perfil',
-        icon: 'account_circle',
-        link: `/perfil`,
+        title: 'Comunicação',
+        icon: 'campaign',
+        link: '/comunicacao',
+      },
+      {
+        title: 'Benefícios',
+        icon: 'loyalty',
+        link: '/beneficios',
+      },
+      {
+        title: 'Documentos',
+        icon: 'article',
+        link: '/documentos',
+      },
+      {
+        title: 'Serviços',
+        icon: 'apps',
+        link: '/servicos',
+      },
+      {
+        title: 'Feedback',
+        icon: 'chat_bubble_outline',
+        link: '/feedback',
       },
     );
 

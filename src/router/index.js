@@ -14,8 +14,8 @@ export default route(function (/*{ store, ssrContext }*/) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : process.env.VUE_ROUTER_MODE === 'history'
-    ? createWebHistory
-    : createWebHashHistory;
+      ? createWebHistory
+      : createWebHashHistory;
 
   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
@@ -33,15 +33,14 @@ export default route(function (/*{ store, ssrContext }*/) {
 
       //verifica os níveis de acesso
       if (to.path !== '/login' && to.path !== '/' && to.meta.requiredLogin) {
-        const id = window.sessionStorage.getItem('user_id');
         const token = window.sessionStorage.getItem('token');
 
-        if (!id || !token) {
+        if (!token) {
           next({ name: 'login' });
           return;
         }
 
-        await authStore.getUserAccessLevel(id, token);
+        await authStore.getUserAccessLevel(token);
 
         const accessLevel = window.sessionStorage.getItem('access_level');
 
