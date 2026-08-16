@@ -2,23 +2,14 @@
   <q-page class="bg-[#F8FAFC] min-h-screen py-8 px-4 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-[1280px]">
 
-      <!-- Topo: Cabeçalho com Botões de Ação Rápida -->
-      <div class="mb-8 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+      <!-- Cabeçalho (Padrão das páginas de Documentos e Benefícios) -->
+      <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <div class="flex items-center gap-2.5">
-            <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-0.5 text-xs font-bold text-[#045DA5] uppercase tracking-wide">
-              NAST
-            </span>
-            <span class="text-xs text-gray-500 font-medium">
-              Prefeitura de Vitória da Conquista
-            </span>
-          </div>
-
-          <h1 class="mt-1.5 text-3xl sm:text-4xl font-extrabold tracking-tight text-[#045DA5]">
+          <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#045DA5]">
             Bem-Estar do Servidor
           </h1>
-          <p class="mt-1 text-sm sm:text-base text-gray-600 font-normal max-w-2xl leading-relaxed">
-            Núcleo de Atenção à Saúde e de Segurança no Trabalho (NAST). Cuidando da saúde física, mental e segurança dos servidores municipais.
+          <p class="mt-1 text-sm sm:text-base text-gray-500 font-normal">
+            Núcleo de Atenção à Saúde e de Segurança no Trabalho (NAST).
           </p>
         </div>
 
@@ -26,7 +17,7 @@
         <div class="flex flex-wrap items-center gap-3 shrink-0">
           <button
             type="button"
-            class="inline-flex items-center gap-2 rounded-2xl border-2 border-[#045DA5] bg-white px-5 py-3 text-sm font-bold text-[#045DA5] shadow-xs transition-all hover:bg-blue-50 hover:shadow-md active:scale-95 cursor-pointer"
+            class="inline-flex items-center gap-2 rounded-2xl border-2 border-[#045DA5] bg-white px-5 py-2.5 text-sm font-bold text-[#045DA5] shadow-xs transition-all hover:bg-blue-50 hover:shadow-md active:scale-95 cursor-pointer"
             @click="openAgendamentoModal(null)"
           >
             <q-icon name="calendar_month" size="20px" />
@@ -36,7 +27,7 @@
           <!-- Botão direto "Preciso de ajuda agora" (Sem modal) -->
           <button
             type="button"
-            class="inline-flex items-center gap-2 rounded-2xl bg-[#E2007A] px-5 py-3 text-sm font-bold text-white shadow-md transition-all hover:bg-[#c20069] hover:shadow-lg active:scale-95 cursor-pointer border-none animate-pulse-subtle"
+            class="inline-flex items-center gap-2 rounded-2xl bg-[#E2007A] px-5 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:bg-[#c20069] hover:shadow-lg active:scale-95 cursor-pointer border-none animate-pulse-subtle"
           >
             <q-icon name="crisis_alert" size="20px" />
             <span>Preciso de ajuda agora</span>
