@@ -9,7 +9,7 @@
         class="flex flex-col flex-none items-center gap-1.5 w-[72px] group no-underline"
         aria-label="Feed Geral"
       >
-        <div class="flex h-[64px] w-[64px] items-center justify-center rounded-full transition-transform duration-200 group-hover:scale-105"
+        <div class="flex h-[64px] w-[64px] items-center justify-center rounded-full"
              :class="ehGeral ? 'border-[3px] border-primary p-1' : 'border-[3px] border-transparent p-1'">
           <div class="flex h-full w-full items-center justify-center rounded-full border border-gray-100 bg-primary text-white shadow-sm overflow-hidden">
             <q-icon name="home" size="30px" />
@@ -39,13 +39,14 @@
             class="flex flex-col items-center gap-1.5 w-full no-underline"
             :aria-label="canal.nome"
           >
-            <div class="flex h-[64px] w-[64px] items-center justify-center rounded-full transition-transform duration-200 group-hover:scale-105"
+            <div class="flex h-[64px] w-[64px] items-center justify-center rounded-full"
                  :class="canalAtivoId === canal.id ? 'border-[3px] border-primary p-1' : 'border-[3px] border-transparent p-1'">
               <!-- canal.cor é um hexadecimal (ex: #045DA5) — CSS puro via :style,
                    não dá pra virar classe Tailwind/Quasar :color dinamicamente. -->
-              <q-avatar :style="{ backgroundColor: canal.cor }" text-color="white" size="56px">
+              <div class="flex h-full w-full items-center justify-center rounded-full border border-gray-100 text-white shadow-sm overflow-hidden"
+                   :style="{ backgroundColor: canal.cor }">
                 <q-icon :name="canal.icone" size="30px" />
-              </q-avatar>
+              </div>
             </div>
             <span class="text-[13px] font-medium text-gray-700 truncate w-full text-center"
                   :class="canalAtivoId === canal.id ? 'text-primary font-medium' : ''">{{ canal.nome }}</span>
@@ -74,7 +75,7 @@
         aria-label="Ver todos os canais"
         @click="modalDescobrirAberto = true"
       >
-        <div class="flex h-[64px] w-[64px] items-center justify-center rounded-full transition-transform duration-200 group-hover:scale-105 border-[3px] border-transparent p-1">
+        <div class="flex h-[64px] w-[64px] items-center justify-center rounded-full border-[3px] border-transparent p-1">
           <div class="flex h-full w-full items-center justify-center rounded-full border-2 border-dashed border-gray-300 bg-white text-gray-500 group-hover:border-gray-400 group-hover:text-gray-500 group-hover:bg-gray-50">
             <q-icon name="add" size="28px" />
           </div>
@@ -109,13 +110,14 @@ const canalAtivoId = computed(() =>
 const canaisAtalhos = computed(() => {
   triggerUpdate.value; 
   
-  const atalhosIds = (localStorage.getItem('conquistaserv_atalhos_canais') || '').split(',').filter(Boolean);
+  const saved = localStorage.getItem('conquistaserv_atalhos_canais');
   
-  if (atalhosIds.length > 0) {
-    return atalhosIds.map(id => todosCanais.value.find(c => c.id.toString() === id)).filter(Boolean);
-  } else {
+  if (saved === null) {
     return todosCanais.value.slice(0, 5);
   }
+  
+  const atalhosIds = saved.split(',').filter(Boolean);
+  return atalhosIds.map(id => todosCanais.value.find(c => c.id.toString() === id)).filter(Boolean);
 });
 
 function forceUpdate() {
@@ -123,9 +125,16 @@ function forceUpdate() {
 }
 
 function removerAtalho(id) {
-  let atalhosIds = (localStorage.getItem('conquistaserv_atalhos_canais') || '').split(',').filter(Boolean);
+  let saved = localStorage.getItem('conquistaserv_atalhos_canais');
+  
+  if (saved === null) {
+    saved = todosCanais.value.slice(0, 5).map(c => c.id.toString()).join(',');
+  }
+
+  let atalhosIds = saved.split(',').filter(Boolean);
   atalhosIds = atalhosIds.filter(a => a !== id.toString());
   localStorage.setItem('conquistaserv_atalhos_canais', atalhosIds.join(','));
+  
   forceUpdate();
   window.dispatchEvent(new Event('atalhosCanaisAtualizados'));
 }
