@@ -85,7 +85,7 @@ const routes = [
         children: [
           {
             path: '',
-            component: () => import('pages/user/HomeUser.vue'),
+            component: () => import('pages/Admin/Dashboard.vue'),
           },
           {
             path: 'editar/:id',

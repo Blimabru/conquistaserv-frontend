@@ -48,7 +48,7 @@
             class="relative rounded-3xl overflow-hidden shadow-sm h-48 group cursor-pointer block text-inherit no-underline"
             >
                 <img
-                src="/public/images/FotoDimas.jpeg"
+                src="/images/FotoDimas.jpeg"
                 alt="Secretaria de Transformação Pública"
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -69,7 +69,7 @@
             class="relative rounded-3xl overflow-hidden shadow-sm h-48 group cursor-pointer block text-inherit no-underline"
             >
                 <img
-                src="/public/images/FotoFerias.jpeg"
+                src="/images/FotoFerias.jpeg"
                 alt="Papo com o RH"
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
