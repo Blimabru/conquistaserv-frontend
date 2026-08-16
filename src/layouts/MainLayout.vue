@@ -61,6 +61,35 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <!-- FOOTER ADICIONADO -->
+    <q-footer class="bg-dark text-white q-py-md">
+      <div class="row justify-center items-center q-gutter-xl">
+        <!-- Logo Hackathon -->
+        <img 
+          src="/images/Code4City.png" 
+          alt="Logo Hackathon" 
+          class="object-contain"
+          style="max-height: 60px; width: auto;"
+        />
+
+        <!-- Logo Hub -->
+        <img 
+          src="/images/LOGO_HUB.png" 
+          alt="Logo Hub" 
+          class="object-contain"
+          style="max-height: 60px; width: auto;"
+        />
+
+        <!-- Logo Prefeitura -->
+        <img 
+          src="/images/LogoPMVC.jpg" 
+          alt="Logo Prefeitura" 
+          class="object-contain"
+          style="max-height: 60px; width: auto;"
+        />
+      </div>
+    </q-footer>
   </q-layout>
 </template>
 
