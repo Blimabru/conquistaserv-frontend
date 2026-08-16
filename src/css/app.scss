@@ -94,5 +94,15 @@
 .text-accent-light { color: $accent-light !important; }
 .bg-accent-light   { background: $accent-light !important; }
 
+// O cabeçalho tem altura fracionária (74,99px) e o menu lateral começa em 75px:
+// essa fração deixava ~1px do fundo da página aparecendo como um risco claro
+// entre os dois. O menu sobe 1px para cobrir a fresta.
+// O fundo também é definido aqui porque a classe passada em `class` no q-drawer
+// vai para o .q-drawer__content, não para o elemento raiz (que é branco).
+.q-drawer {
+  background-color: $primary-dark;
+  margin-top: -1px;
+}
+
 // Assistente Virtual Vitória
 @import './vitoria-chat.scss';
