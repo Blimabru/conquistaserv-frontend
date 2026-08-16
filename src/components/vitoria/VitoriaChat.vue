@@ -25,15 +25,21 @@
         <div class="vitoria-voice-screen">
           <h2 class="vitoria-voice-screen__title">Vitória</h2>
           <p class="vitoria-voice-screen__subtitle">
-            {{ isAiSpeaking ? 'Falando...' : (isListening ? 'Ouvindo você...' : 'Modo de voz') }}
+            {{ isAiSpeaking ? 'Falando...' : (isRecording ? 'Ouvindo você...' : 'Modo de voz') }}
           </p>
           <div
             class="vitoria-voice-screen__blob"
             :class="{
               'vitoria-voice-screen__blob--speaking': isAiSpeaking,
-              'vitoria-voice-screen__blob--listening': isListening
+              'vitoria-voice-screen__blob--listening': isRecording
             }"
           ></div>
+          
+          <!-- Transcrição em tempo real -->
+          <div class="vitoria-voice-screen__transcript" v-if="isRecording && inputText">
+            <p>"{{ inputText }}"</p>
+          </div>
+
           <button class="vitoria-voice-screen__close" @click="toggleVoiceMode">
             <q-icon name="close" size="22px" />
           </button>
@@ -75,16 +81,31 @@
               @keydown.enter="sendMessage"
             />
             <button
+              v-if="!isRecording"
               class="vitoria-input__voice"
               @click="toggleVoiceMode"
               aria-label="Conversar por voz">
               <q-icon name="record_voice_over" />
             </button>
             <button
-              v-if="!inputText.trim() || isRecording"
+              v-else
+              class="vitoria-input__stop"
+              @click="cancelRecording"
+              aria-label="Cancelar gravação">
+              <q-icon name="delete" />
+            </button>
+
+            <button
+              v-if="isRecording"
+              class="vitoria-input__listen"
+              aria-label="Gravando">
+              <q-icon name="graphic_eq" />
+            </button>
+
+            <button
+              v-if="!inputText.trim() && !isRecording"
               class="vitoria-input__mic"
-              :class="{'vitoria-input__mic--active': isRecording}"
-              @click="toggleMic"
+              @click="startRecording"
               aria-label="Microfone">
               <q-icon name="mic" />
             </button>
@@ -92,7 +113,7 @@
               v-else
               class="vitoria-input__send"
               :disabled="vitoriaStore.isLoading"
-              @click="sendMessage"
+              @click="isRecording ? sendRecording() : sendMessage()"
               aria-label="Enviar"
             >
               <q-icon name="send" />
@@ -130,8 +151,12 @@
             <!-- Avatar só para assistente -->
             <div v-if="msg.role === 'assistant'" class="vitoria-msg__avatar"></div>
 
-            <div v-if="msg.type === 'audio'" class="vitoria-msg__bubble bg-transparent !p-0">
-              <audio :src="msg.audioUrl" controls class="w-full max-w-[220px]" style="height: 40px;"></audio>
+            <div v-if="msg.type === 'audio'" style="display: flex; flex-direction: column; gap: 6px; max-width: 100%; align-items: flex-end;">
+              <div v-if="msg.content && msg.content !== 'Áudio gravado' && msg.content !== 'Áudio enviado'" 
+                   class="vitoria-msg__bubble" 
+                   v-html="formatMessage(msg.content)">
+              </div>
+              <VitoriaAudioPlayer :src="msg.audioUrl" />
             </div>
             <div v-else class="vitoria-msg__bubble" v-html="formatMessage(msg.content)">
             </div>
@@ -163,16 +188,31 @@
               @keydown.enter="sendMessage"
             />
             <button
+              v-if="!isRecording"
               class="vitoria-input__voice"
               @click="toggleVoiceMode"
               aria-label="Conversar por voz">
               <q-icon name="record_voice_over" />
             </button>
             <button
-              v-if="!inputText.trim() || isRecording"
+              v-else
+              class="vitoria-input__stop"
+              @click="cancelRecording"
+              aria-label="Cancelar gravação">
+              <q-icon name="delete" />
+            </button>
+
+            <button
+              v-if="isRecording"
+              class="vitoria-input__listen"
+              aria-label="Gravando">
+              <q-icon name="graphic_eq" />
+            </button>
+
+            <button
+              v-if="!inputText.trim() && !isRecording"
               class="vitoria-input__mic"
-              :class="{'vitoria-input__mic--active': isRecording}"
-              @click="toggleMic"
+              @click="startRecording"
               aria-label="Microfone">
               <q-icon name="mic" />
             </button>
@@ -180,7 +220,7 @@
               v-else
               class="vitoria-input__send"
               :disabled="vitoriaStore.isLoading"
-              @click="sendMessage"
+              @click="isRecording ? sendRecording() : sendMessage()"
               aria-label="Enviar"
             >
               <q-icon name="send" />
@@ -199,6 +239,7 @@ import { useVitoriaStore } from 'src/stores/vitoriaStore';
 import { useAuthStore } from 'src/stores/authStore';
 import { vitoriaService } from 'src/services/vitoriaService';
 import { marked } from 'marked';
+import VitoriaAudioPlayer from './VitoriaAudioPlayer.vue';
 
 const route = useRoute();
 const vitoriaStore = useVitoriaStore();
@@ -407,9 +448,9 @@ function toggleVoiceMode() {
   isVoiceMode.value = !isVoiceMode.value;
   if (!isVoiceMode.value) {
     if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-    if (isRecording.value && mediaRecorder) toggleMic();
+    if (isRecording.value && mediaRecorder) cancelRecording();
   } else {
-    if (!isRecording.value) toggleMic();
+    if (!isRecording.value) startRecording();
   }
 }
 
@@ -461,13 +502,10 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   };
 }
 
-async function toggleMic() {
-  if (isRecording.value && mediaRecorder) {
-    mediaRecorder.stop();
-    if (recognition) recognition.stop();
-    return;
-  }
+let isRecordingCancelled = false;
 
+async function startRecording() {
+  isRecordingCancelled = false;
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     mediaRecorder = new MediaRecorder(stream);
@@ -485,12 +523,16 @@ async function toggleMic() {
     };
 
     mediaRecorder.onstop = async () => {
+      isRecording.value = false;
+      stream.getTracks().forEach(track => track.stop());
+
+      if (isRecordingCancelled) {
+        inputText.value = '';
+        return;
+      }
+
       const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
       const audioUrl = URL.createObjectURL(audioBlob);
-      isRecording.value = false;
-      
-      // Para as faixas do microfone
-      stream.getTracks().forEach(track => track.stop());
 
       const finalTranscript = inputText.value.trim();
       inputText.value = ''; // limpa a barra de digitação ao enviar
@@ -535,6 +577,21 @@ async function toggleMic() {
   } catch (error) {
     console.error('Erro ao acessar microfone:', error);
     alert('Não foi possível acessar seu microfone. Verifique as permissões.');
+  }
+}
+
+function sendRecording() {
+  if (isRecording.value && mediaRecorder) {
+    mediaRecorder.stop();
+    if (recognition) recognition.stop();
+  }
+}
+
+function cancelRecording() {
+  if (isRecording.value && mediaRecorder) {
+    isRecordingCancelled = true;
+    mediaRecorder.stop();
+    if (recognition) recognition.stop();
   }
 }
 
