@@ -1,77 +1,118 @@
 <template>
-  <main class="row justify-center">
-    <div class="col-xs-12 col-md-6">
-      <div class="row text-center q-mt-xl">
-        <div class="col-xs-11 col-12 flex justify-center items-center">
-          <img
-            class="pmvc-logo"
-            src="../assets/images/logo.png"
-            alt="Logo da PMVC"
-          />
-        </div>
-        <div class="col-xs-11 col-12 flex justify-center items-center">
-          <q-icon name="apps" class="" size="lg" color="blue-9" />
-          <h1 class="text-bold text-blue-9 text-h4 q-ml-md">
-            {{ app_name }}
+  <q-page class="flex flex-center p-4 sm:p-8">
+    <!-- Card Principal -->
+    <div
+      class="w-full max-w-6xl min-h-[640px] bg-white rounded-[40px] md:rounded-[56px] shadow-2xl overflow-hidden flex flex-col md:flex-row relative"
+    >
+      <!-- LADO ESQUERDO: Imagem de fundo / Marca d'água e Tipografia -->
+      <div
+        class="w-full md:w-1/2 relative min-h-[280px] md:min-h-full flex items-center justify-start p-8 md:p-14 overflow-hidden bg-slate-50"
+      >
+        <img
+          src="../assets/images/imagem-de-fundo.svg"
+          alt=""
+          class="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none"
+        />
+
+        <div class="relative z-10 select-none">
+          <h1 class="text-4xl md:text-6xl font-bold leading-tight tracking-tight">
+            <span class="text-[#f43f5e] block">Serv</span>
+            <span class="text-[#075985] block">Conquista</span>
           </h1>
         </div>
       </div>
-      <div class="row justify-center">
-        <q-form ref="form" @submit.prevent.stop="login">
-          <div class="row q-py-lg">
-            <div class="col-xs-10 col-12 q-mb-md">
-              <label class="label text-font">Usuário / E-mail</label>
+
+      <!-- LADO DIREITO: Painel de Autenticação -->
+      <div
+        class="w-full md:w-1/2 flex items-center justify-center p-6 sm:p-10 md:p-12 bg-gradient-to-b from-slate-50/50 to-white md:bg-none"
+      >
+        <!-- Card Interno do Formulário -->
+        <div
+          class="w-full max-w-md bg-white rounded-[32px] md:rounded-[40px] p-6 sm:p-10 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.12)] border border-slate-100 flex flex-col"
+        >
+          <!-- Cabeçalho -->
+          <div class="text-center mb-8">
+            <h2 class="text-2xl sm:text-3xl font-semibold text-slate-700">
+              Faça seu acesso
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">
+              Use o seu usuário para acessar o sistema;
+            </p>
+          </div>
+
+          <!-- Formulário -->
+          <q-form ref="form" @submit.prevent.stop="login" class="space-y-6">
+            <!-- Campo: Usuário -->
+            <div class="flex flex-col">
+              <label class="text-xs font-semibold text-slate-500 mb-1">
+                Usuário
+              </label>
+
               <q-input
-                filled
-                ref="loginInput"
-                outlined
+                v-model="data.login"
                 name="usuario"
                 type="text"
-                v-model="data.login"
+                placeholder="seu-usuario"
+                borderless
+                dense
                 lazy-rules
-                :rules="[(val) => (val && val.trim().length > 0) || 'Digite o seu nome de usuário ou e-mail']"
-              />
+                class="login-input bg-transparent border-b border-slate-300 transition-colors focus-within:border-slate-800"
+                :rules="usernameRules"
+                hide-bottom-space
+              >
+                <template #prepend>
+                  <q-icon name="mail" color="pink-6" size="20px" class="q-mr-xs" />
+                </template>
+              </q-input>
             </div>
-            <div class="col-12 q-mb-md">
-              <label class="label text-font">Senha</label>
+
+            <!-- Campo: Senha -->
+            <div class="flex flex-col">
+              <label class="text-xs font-semibold text-slate-500 mb-1">
+                Senha
+              </label>
+
               <q-input
-                filled
-                ref="password"
-                outlined
-                name="password"
-                type="password"
                 v-model="data.senha"
-                :rules="[(val) => (val && val.length > 0) || 'Digite a sua senha']"
+                name="password"
+                :type="isPwdVisible ? 'text' : 'password'"
+                placeholder="••••••"
                 autocomplete="off"
-              />
+                borderless
+                dense
+                class="login-input bg-transparent border-b border-slate-300 transition-colors focus-within:border-slate-800"
+                :rules="passwordRules"
+                hide-bottom-space
+              >
+                <template #prepend>
+                  <q-icon name="lock" color="pink-6" size="20px" class="q-mr-xs" />
+                </template>
+                <template #append>
+                  <q-icon
+                    :name="isPwdVisible ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer text-slate-400 hover:text-slate-600"
+                    size="18px"
+                    @click="isPwdVisible = !isPwdVisible"
+                  />
+                </template>
+              </q-input>
             </div>
-            <div class="col-12">
+
+            <!-- Botão de Ação -->
+            <div class="pt-4 flex justify-center">
               <q-btn
-                class="text-font full-width"
                 type="submit"
-                color="primary"
                 label="Entrar"
+                no-caps
+                unelevated
+                class="w-44 py-2.5 rounded-full bg-[#075985] hover:bg-[#0369a1] text-white font-medium text-base transition-all shadow-md active:scale-95"
               />
             </div>
-          </div>
-        </q-form>
-      </div>
-      <div class="cti-logo-container flex justify-center items-center">
-        <img
-          class="cti-logo"
-          src="../assets/images/cti-logo2.png"
-          alt="cti logo"
-        />
+          </q-form>
+        </div>
       </div>
     </div>
-    <div class="aside col-xs-0 col-md-6 column justify-end">
-      <img
-        src="../assets/images/logo_CTI.png"
-        alt="logo do cti"
-        style="width: 500px; margin: 10px auto"
-      />
-    </div>
-  </main>
+  </q-page>
 </template>
 
 <script setup>
@@ -82,7 +123,8 @@ import { useRouter, useRoute } from 'vue-router';
 const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
-const app_name = process.env.APP_NAME;
+
+const isPwdVisible = ref(false);
 
 onMounted(() => {
   const token = window.sessionStorage.getItem('token');
@@ -100,6 +142,14 @@ const data = ref({
   login: '',
   senha: '',
 });
+
+const usernameRules = [
+  (val) => (val && val.trim().length > 0) || 'Digite o seu nome de usuário ou e-mail',
+];
+
+const passwordRules = [
+  (val) => (val && val.length > 0) || 'Digite a sua senha',
+];
 
 async function login() {
   try {
@@ -120,48 +170,17 @@ async function login() {
 </script>
 
 <style scoped>
-.pmvc-logo {
-  height: 8.2rem;
-  object-fit: cover;
+:deep(.login-input .q-field__control) {
+  height: 38px;
+  padding: 0;
 }
 
-.aside {
-  background: linear-gradient(
-      to bottom,
-      rgba(50, 113, 166, 0.85),
-      rgba(183, 215, 86, 0.85)
-    ),
-    url(../assets/images/imagem-de-fundo.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100%;
-  height: 100vh;
+:deep(.login-input input) {
+  font-size: 0.95rem;
+  color: #334155;
 }
 
-.text-font {
-  font-family: 'Gothic A1', sans-serif;
-}
-
-.label {
-  font-size: 1.2rem;
-}
-
-.cti-logo-container {
-  display: none;
-}
-.cti-logo {
-  height: 7.5rem;
-  object-fit: cover;
-}
-
-@media (max-width: 1024px) {
-  .aside {
-    display: none;
-  }
-  .cti-logo-container {
-    width: 100%;
-    display: flex;
-    margin-top: 1rem;
-  }
+:deep(.login-input input::placeholder) {
+  color: #94a3b8;
 }
 </style>
