@@ -10,7 +10,7 @@
     </div>
 
     <!-- Listagem Principal de Benefícios -->
-    <div v-else class="mx-auto max-w-[1280px]">
+    <div v-else class="mx-auto max-w-[1280px]" data-tour="beneficios-secao">
 
       <!-- Cabeçalho -->
       <div class="mb-6">

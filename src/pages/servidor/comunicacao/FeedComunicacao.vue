@@ -1,7 +1,7 @@
 <template>
   <q-page class="bg-gray-50 pb-8">
     <CanaisAtalhos />
-    <div class="mx-auto max-w-[760px] px-4 pt-6">
+    <div class="mx-auto max-w-[760px] px-4 pt-6" data-tour="comunicacao-feed">
       
       <div v-if="buscaAtual" class="mb-4 flex flex-nowrap items-center justify-between">
         <h1 class="text-xl font-medium text-gray-800">Comunicação</h1>

@@ -61,6 +61,7 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+    <OnboardingTour />
 
     <!-- FOOTER ADICIONADO -->
     <q-footer class="bg-dark text-white q-py-md">
@@ -99,15 +100,18 @@ import EssentialLink from 'components/common/EssentialLink.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useAuthStore } from '../stores/authStore';
+import { useOnboardingStore } from '../stores/onboardingStore';
 
 import LogoServConquista from 'components/common/LogoServConquista.vue';
 import UserMenu from 'components/common/UserMenu.vue';
 import NotificationOpen from 'components/common/NotificationOpen.vue';
+import OnboardingTour from 'components/common/OnboardingTour.vue';
 
 const router = useRouter();
 const route = useRoute();
 const $q = useQuasar();
 const authStore = useAuthStore();
+const onboardingStore = useOnboardingStore();
 const leftDrawerOpen = ref(false);
 const access = ref('');
 const userName = ref('');
@@ -116,6 +120,10 @@ const links = ref([]);
 
 onMounted(() => {
   configurarMenu();
+
+  if (authStore.needsOnboarding) {
+    setTimeout(() => onboardingStore.start(router), 600);
+  }
 });
 
 watch(() => route.path, () => {

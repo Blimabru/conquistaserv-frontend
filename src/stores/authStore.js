@@ -9,7 +9,12 @@ export const useAuthStore = defineStore('auth', {
     token: window.sessionStorage.getItem('token') || '',
     isAuthenticated: !!window.sessionStorage.getItem('token'),
     isAdmin: window.sessionStorage.getItem('access_level') === 'ADMIN',
+    onboardingConcluido: window.sessionStorage.getItem('onboarding_concluido') === 'true',
   }),
+
+  getters: {
+    needsOnboarding: (state) => state.isAuthenticated && !state.isAdmin && !state.onboardingConcluido,
+  },
 
   actions: {
     async doLogin(payload) {
@@ -110,6 +115,21 @@ export const useAuthStore = defineStore('auth', {
       window.sessionStorage.removeItem('access_level');
     },
 
+    setOnboardingConcluido(concluido) {
+      this.onboardingConcluido = !!concluido;
+      window.sessionStorage.setItem('onboarding_concluido', this.onboardingConcluido ? 'true' : 'false');
+    },
+
+    async concluiOnboarding() {
+      try {
+        await api.patch('usuarios/me/onboarding');
+      } catch (error) {
+        console.warn('Não foi possível registrar a conclusão do onboarding:', error);
+      } finally {
+        this.setOnboardingConcluido(true);
+      }
+    },
+
     setSecretariaId(secretariaId) {
       window.sessionStorage.setItem('secretaria_id', secretariaId || '');
     },
@@ -153,6 +173,7 @@ export const useAuthStore = defineStore('auth', {
         this.setUser(data.id, data.nome);
         this.setSecretariaId(data.secretariaId);
         this.setSecretariaNome(data.secretaria?.nome);
+        this.setOnboardingConcluido(data.onboardingConcluido);
         return data.nivel;
       }
       return '';
@@ -164,6 +185,8 @@ export const useAuthStore = defineStore('auth', {
       this.removeToken();
       this.removeAccessLevel();
       this.removeSecretariaId();
+      window.sessionStorage.removeItem('onboarding_concluido');
+      this.onboardingConcluido = false;
     },
   },
 });
