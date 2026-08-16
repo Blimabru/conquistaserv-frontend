@@ -5,7 +5,7 @@
       flat
       no-caps
       class="relative overflow-hidden bg-white border border-slate-200 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all flex items-center justify-between text-left h-20 w-full"
-      to="/Servicos"
+      to="/servicos"
     >
       <!-- Conteúdo de texto acima do ícone -->
       <div class="font-bold text-blue-900 leading-tight text-sm z-10 flex justify-left text-left">
@@ -24,7 +24,7 @@
       flat
       no-caps
       class="relative overflow-hidden bg-white border border-slate-200 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all flex items-center justify-between text-left h-20 w-full"
-      to="/Beneficios"
+      to="/beneficios"
     >
       <!-- Conteúdo de texto acima do ícone -->
       <div class="font-bold text-blue-900 leading-tight text-sm z-10 flex justify-left text-left">
@@ -43,7 +43,7 @@
       flat
       no-caps
       class="relative overflow-hidden bg-white border border-slate-200 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all flex items-center justify-between text-left h-20 w-full"
-      to="/Servicos"
+      to="/servicos"
     >
       <!-- Conteúdo de texto acima do ícone -->
       <div class="font-bold text-blue-900 leading-tight text-sm z-10 flex justify-left text-left">
@@ -63,7 +63,7 @@
       flat
       no-caps
       class="relative overflow-hidden bg-white border border-slate-200 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all flex items-center justify-between text-left h-20 w-full"
-      to="/Beneficios"
+      to="/beneficios"
     >
       <!-- Conteúdo de texto acima do ícone -->
       <div class="font-bold text-blue-900 leading-tight text-sm z-10 flex justify-left text-left">
@@ -83,7 +83,7 @@
       flat
       no-caps
       class="relative overflow-hidden bg-white border border-slate-200 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all flex items-center justify-between text-left h-20 w-full"
-      to="/Servicos"
+      to="/servicos"
     >
       <!-- Conteúdo de texto acima do ícone -->
       <div class="font-bold text-blue-900 leading-tight text-sm z-10 flex justify-left text-left">

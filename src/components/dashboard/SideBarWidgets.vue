@@ -57,7 +57,7 @@
         </div>
 
         <div class="mt-4 pt-3 border-t border-slate-100 text-center">
-            <q-btn flat no-caps dense label="Ver mais" aria-label="Ver mais benefícios" color="primary" class="text-xs font-bold" />
+            <q-btn flat no-caps dense label="Ver mais" aria-label="Ver mais benefícios" color="primary" class="text-xs font-bold" to="/beneficios" />
         </div>
         </div>
 
@@ -112,7 +112,7 @@
         </div>
 
         <div class="mt-4 pt-3 border-t border-slate-100 text-center">
-            <q-btn flat no-caps dense label="Ver mais" aria-label="Ver mais utilitários" color="primary" class="text-xs font-bold" />
+            <q-btn flat no-caps dense label="Ver mais" aria-label="Ver mais utilitários" color="primary" class="text-xs font-bold" to="/servicos" />
         </div>
         </div>
 
