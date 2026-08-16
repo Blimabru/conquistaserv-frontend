@@ -427,18 +427,41 @@ function formatMessage(text) {
   if (!text) return '';
   // Corrige problema comum da IA inserir espaço indesejado no markdown
   const sanitizedText = text.replace(/\]\s+\(/g, '](');
-  return marked.parse(sanitizedText);
+  return marked.parse(sanitizedText, { breaks: true, gfm: true });
 }
 
 // Navegação em links internos injetados pela IA
 function handleLinkClick(event) {
   const target = event.target.closest('a');
   if (target) {
-    const href = target.getAttribute('href');
-    if (href && href.startsWith('/')) {
-      event.preventDefault();
-      router.push(href);
-      vitoriaStore.closeChat(); // Fecha o chat após redirecionar
+    let href = target.getAttribute('href');
+    if (href) {
+      if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) {
+        return; // Deixa o navegador abrir e-mail, telefone ou âncoras locais
+      }
+
+      if (href.startsWith('http://') || href.startsWith('https://')) {
+        if (href.includes(window.location.host)) {
+          event.preventDefault();
+          try {
+            const url = new URL(href);
+            router.push(url.pathname + url.search + url.hash);
+            vitoriaStore.closeChat();
+          } catch(e) {}
+        } else {
+          // Link externo real
+          target.setAttribute('target', '_blank');
+          target.setAttribute('rel', 'noopener noreferrer');
+        }
+      } else {
+        // Link relativo (ex: /beneficios ou beneficios)
+        event.preventDefault();
+        if (!href.startsWith('/')) {
+          href = '/' + href; 
+        }
+        router.push(href);
+        vitoriaStore.closeChat();
+      }
     }
   }
 }
