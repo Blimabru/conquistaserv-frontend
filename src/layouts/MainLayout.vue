@@ -3,9 +3,16 @@
     <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo</a>
 
     <q-header>
-      <q-toolbar class="row justify-between items-center bg-primary px-8">
+      <q-toolbar class="row justify-between items-center bg-primary px-3 sm:px-8">
         <div>
-          <q-btn flat icon="menu" label="Menu" @click="leftDrawerOpen = !leftDrawerOpen" />
+          <!-- No celular fica só o ícone: o rótulo "Menu" roubava espaço do logo -->
+          <q-btn
+            flat
+            icon="menu"
+            :label="$q.screen.gt.xs ? 'Menu' : ''"
+            aria-label="Abrir menu de navegação"
+            @click="leftDrawerOpen = !leftDrawerOpen"
+          />
         </div>
 
         <div class="absolute left-1/2 -translate-x-1/2">
@@ -14,38 +21,35 @@
           </q-toolbar-title>
         </div>
 
-        <div class="py-4 gap-4 row flex justify-end">
-          <q-input rounded dense standout bg-color="primary-light" class="" v-model="text" label="Buscar">
+        <div class="py-4 gap-4 row flex justify-end items-center">
+          <!-- Em telas pequenas a busca sai do cabeçalho (onde sobrepunha o logo)
+               e passa para o topo do menu lateral. -->
+          <q-input
+            rounded
+            dense
+            standout
+            bg-color="primary-light"
+            class="hidden lg:block"
+            v-model="text"
+            label="Buscar"
+          >
             <template v-slot:prepend>
               <q-icon name="search" />
             </template>
           </q-input>
 
-          <q-btn
-            round
-            flat
-            aria-label="Notificações">
-              <q-icon
-                name="notifications"
-                size="24px"
-                class="text-white bg-white/10 rounded-full p-2"
-              />
+          <q-btn round flat aria-label="Notificações">
+            <q-icon name="notifications" size="24px" class="text-white bg-white/10 rounded-full p-2" />
             <q-menu anchor="bottom end" self="top end" :offset="[0, 10]">
               <NotificationOpen />
             </q-menu>
           </q-btn>
 
           <q-btn round flat aria-label="Menu do usuário">
-            <q-avatar
-              size="43px"
-              icon="account_circle" />
+            <q-avatar size="43px" icon="account_circle" />
 
-            <q-menu
-              auto-close
-              :offset="[10, 15]"
-              class="bg-transparent shadow-0 no-shadow"
-              style="border-radius: 28px; overflow: visible;"
-            >
+            <q-menu auto-close :offset="[10, 15]" class="bg-transparent shadow-0 no-shadow"
+              style="border-radius: 28px; overflow: visible;">
               <UserMenu />
             </q-menu>
           </q-btn>
@@ -55,7 +59,16 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered :width="220" class="q-py-md q-px-md bg-primary-dark w">
+    <q-drawer v-model="leftDrawerOpen" show-if-above :width="220" class="q-py-md q-px-md bg-primary-dark w">
+      <!-- Busca no menu: só abaixo de lg, onde ela foi removida do cabeçalho -->
+      <div class="lg:hidden q-mb-md">
+        <q-input rounded dense standout bg-color="primary-light" v-model="text" label="Buscar">
+          <template v-slot:prepend>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </div>
+
       <nav aria-label="Menu principal">
         <!-- role="list" explícito: o q-list renderiza uma <div> sem role, e os itens
              recebem role="listitem", que exige um pai "list" (WCAG 1.3.1). -->
@@ -77,28 +90,15 @@
     <q-footer class="bg-dark text-white q-py-md">
       <div class="row justify-center items-center q-gutter-xl">
         <!-- Logo Hackathon -->
-        <img
-          src="/images/Code4City.png"
-          alt="Logo Hackathon"
-          class="object-contain"
-          style="max-height: 60px; width: auto;"
-        />
+        <img src="/images/Code4City.png" alt="Logo Hackathon" class="object-contain"
+          style="max-height: 60px; width: auto;" />
 
         <!-- Logo Hub -->
-        <img
-          src="/images/LOGO_HUB.png"
-          alt="Logo Hub"
-          class="object-contain"
-          style="max-height: 60px; width: auto;"
-        />
+        <img src="/images/LOGO_HUB.png" alt="Logo Hub" class="object-contain" style="max-height: 60px; width: auto;" />
 
         <!-- Logo Prefeitura -->
-        <img
-          src="/images/LogoPMVC.jpg"
-          alt="Logo Prefeitura"
-          class="object-contain"
-          style="max-height: 60px; width: auto;"
-        />
+        <img src="/images/LogoPMVC.jpg" alt="Logo Prefeitura" class="object-contain"
+          style="max-height: 60px; width: auto;" />
       </div>
     </q-footer>
   </q-layout>

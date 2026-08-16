@@ -1,6 +1,8 @@
 <template>
-  <div class="flex flex-row items-center justify-center h-20 w-[14rem]">
-    <div class="relative flex flex-col text-2xl/[15px] font-bold items-start">
+  <!-- Larguras/tamanhos reduzidos no celular: em 390px o logo de 14rem cobria
+       o botão de menu e os ícones do cabeçalho. -->
+  <div class="flex flex-row items-center justify-center h-14 w-[8.5rem] sm:h-20 sm:w-[14rem]">
+    <div class="relative flex flex-col text-base/[11px] sm:text-2xl/[15px] font-bold items-start">
       <!-- Texto atrás do SVG -->
         <span class="text-secondary relative z-20">Serv</span>
         <span class="relative z-0 text-white">Conquista</span>
@@ -11,7 +13,7 @@
         data-name="Camada 1"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 444.53 643.77"
-        class="absolute -bottom-1 -left-9 z-10 w-7 fill-[#ffea00]"
+        class="absolute -bottom-1 -left-5 w-4 sm:-left-9 sm:w-7 z-10 fill-[#ffea00]"
       >
         <path
           d="M97.46,559.65l60.93,60.93c30.92,30.92,81.05,30.92,111.97,0l67.77-67.77c21.84-21.84,28.99-54.39,18.3-83.37l-64.79-175.78c-11.47-31.12-41.12-51.8-74.29-51.8h0c-33.65,0-63.62,21.26-74.73,53.02l-63.92,182.61c-10.05,28.71-2.76,60.64,18.75,82.14Z"
