@@ -88,7 +88,7 @@
             <div class="py-3 relative overflow-hidden cursor-pointer hover:bg-slate-50 rounded-xl px-2 -mx-2 transition-all">
             <div class="z-10 relative">
                 <p class="font-bold text-slate-800 text-sm">RDV</p>
-                <p class="text-[11px] text-slate-400">Requerimento de Direitos e Vantagens. Declaração e Termos.</p>
+                <p class="text-[11px] text-slate-400">Requerimento de Direitos e Vantagens. <br/> Declaração e Termos.</p>
             </div>
             <!-- ÍCONE DE FUNDO DECORATIVO (Novo) -->
             <q-icon
