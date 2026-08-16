@@ -2,7 +2,7 @@
   <q-card flat bordered class="m-4 rounded-xl">
     <div class="flex items-center gap-2 px-5 pt-4 pb-3">
       <q-icon :name="icon || iconName" size="28px" class="text-primary" />
-      <span class="text-lg font-medium text-gray-800">{{ title }}</span>
+      <h1 class="text-lg font-medium text-gray-800 m-0">{{ title }}</h1>
     </div>
 
     <q-separator />

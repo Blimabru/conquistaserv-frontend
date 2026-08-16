@@ -13,7 +13,7 @@
         :options="chartOptions" 
         :series="series" 
       />
-      <div v-else class="h-full flex items-center justify-center text-gray-400">
+      <div v-else class="h-full flex items-center justify-center text-gray-500">
         <div class="text-center">
           <q-icon name="pie_chart" size="lg" class="mb-2 opacity-50" />
           <p>Sem dados de categorias</p>

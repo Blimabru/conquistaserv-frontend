@@ -9,7 +9,7 @@
         <h3 class="flex-1 min-w-0 text-sm md:text-base font-bold text-gray-900 leading-snug break-words">
           {{ title }}
         </h3>
-        <span v-if="version" class="shrink-0 text-xs font-normal text-gray-400 whitespace-nowrap pt-0.5">
+        <span v-if="version" class="shrink-0 text-xs font-normal text-gray-500 whitespace-nowrap pt-0.5">
           {{ version }}
         </span>
       </div>

@@ -7,6 +7,7 @@
     :to="link"
     exact
     :active="isActive(link)"
+    :aria-current="isActive(link) ? 'page' : undefined"
     class="text-white"
     active-class="bg-primary text-white"
     style="border-radius: 10px"
@@ -37,6 +38,7 @@
         :to="linkSubmenu.link"
         exact
         :active="isActive(linkSubmenu.link)"
+        :aria-current="isActive(linkSubmenu.link) ? 'page' : undefined"
         class="text-white"
         active-class="bg-primary text-white"
         style="border-radius: 10px"

@@ -26,7 +26,7 @@
           @update:model-value="carregarDados"
         >
           <template v-slot:prepend>
-            <q-icon name="calendar_today" size="xs" class="text-gray-400" />
+            <q-icon name="calendar_today" size="xs" class="text-gray-500" />
           </template>
         </q-select>
       </div>

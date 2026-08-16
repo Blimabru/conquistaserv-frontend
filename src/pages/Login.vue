@@ -35,7 +35,7 @@
             <h2 class="text-2xl sm:text-3xl font-semibold text-slate-700">
               Faça seu acesso
             </h2>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">
               Use o seu usuário para acessar o sistema;
             </p>
           </div>
@@ -44,14 +44,14 @@
           <q-form ref="form" @submit.prevent.stop="login" class="space-y-6">
             <!-- Campo: Usuário -->
             <div class="flex flex-col">
-              <label class="text-xs font-semibold text-slate-500 mb-1">
-                Usuário
-              </label>
-
               <q-input
                 v-model="data.login"
                 name="usuario"
                 type="text"
+                label="Usuário"
+                stack-label
+                autocomplete="username"
+                aria-required="true"
                 placeholder="seu-usuario"
                 borderless
                 dense
@@ -68,16 +68,15 @@
 
             <!-- Campo: Senha -->
             <div class="flex flex-col">
-              <label class="text-xs font-semibold text-slate-500 mb-1">
-                Senha
-              </label>
-
               <q-input
                 v-model="data.senha"
                 name="password"
                 :type="isPwdVisible ? 'text' : 'password'"
+                label="Senha"
+                stack-label
+                autocomplete="current-password"
+                aria-required="true"
                 placeholder="••••••"
-                autocomplete="off"
                 borderless
                 dense
                 class="login-input bg-transparent border-b border-slate-300 transition-colors focus-within:border-slate-800"
@@ -88,10 +87,15 @@
                   <q-icon name="lock" color="pink-6" size="20px" class="q-mr-xs" />
                 </template>
                 <template #append>
-                  <q-icon
-                    :name="isPwdVisible ? 'visibility_off' : 'visibility'"
-                    class="cursor-pointer text-slate-400 hover:text-slate-600"
-                    size="18px"
+                  <q-btn
+                    flat
+                    dense
+                    round
+                    size="sm"
+                    :icon="isPwdVisible ? 'visibility_off' : 'visibility'"
+                    :aria-label="isPwdVisible ? 'Ocultar senha' : 'Mostrar senha'"
+                    :aria-pressed="isPwdVisible"
+                    class="text-slate-500 hover:text-slate-700"
                     @click="isPwdVisible = !isPwdVisible"
                   />
                 </template>
@@ -181,6 +185,6 @@ async function login() {
 }
 
 :deep(.login-input input::placeholder) {
-  color: #94a3b8;
+  color: #64748b; /* slate-500: 4,76:1 sobre branco (WCAG 1.4.3) */
 }
 </style>

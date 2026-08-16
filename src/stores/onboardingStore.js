@@ -84,8 +84,22 @@ export const useOnboardingStore = defineStore('onboarding', {
 
     async _goToStepRoute(router) {
       const targetRoute = this.step?.route;
-      if (targetRoute && router && router.currentRoute.value.path !== targetRoute) {
+      if (!targetRoute || !router) return;
+      if (router.currentRoute.value.path === targetRoute) return;
+
+      try {
         await router.push(targetRoute);
+      } catch (erro) {
+        const tipo = erro?.type;
+        const ehAbortoEsperado =
+          tipo === 4 ||
+          tipo === 8 ||
+          tipo === 16 ||
+          tipo === 2;
+
+        if (!ehAbortoEsperado) {
+          console.error('Onboarding: falha ao navegar para', targetRoute, erro);
+        }
       }
     },
   },

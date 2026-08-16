@@ -2,7 +2,7 @@
   <div class="relative bg-transparent pt-2 pb-1">
     
     <q-btn flat round dense icon="close" color="grey-6" size="sm"
-      class="absolute top-0 right-0 text-gray-400 hover:text-gray-600" aria-label="Fechar pesquisa"
+      class="absolute top-0 right-0 text-gray-500 hover:text-gray-600" aria-label="Fechar pesquisa"
       @click="$emit('fechar')">
       <q-tooltip>Fechar pesquisa</q-tooltip>
     </q-btn>
@@ -33,9 +33,10 @@
     <div v-else>
       <p class="mb-3 text-xs font-medium text-gray-700">{{ pergunta }}</p>
 
-      <div class="mb-3 grid grid-cols-5 gap-1">
+      <div class="mb-3 grid grid-cols-5 gap-1" role="radiogroup" :aria-label="pergunta">
         <button v-for="c in carinhas" :key="c.nota" type="button"
-          class="flex flex-col items-center justify-center rounded-xl p-1.5 transition-all duration-150 focus:outline-none"
+          role="radio" :aria-checked="nota === c.nota"
+          class="flex flex-col items-center justify-center rounded-xl p-1.5 transition-all duration-150"
           :class="[
             nota === c.nota
               ? 'bg-primary/10 text-primary font-medium scale-105'
@@ -53,7 +54,7 @@
         counter maxlength="500" placeholder="Quer comentar algo? (opcional)" class="mb-3 text-xs" />
 
       <div class="flex items-center justify-between">
-        <div class="flex items-center gap-1 text-[11px] text-gray-400">
+        <div class="flex items-center gap-1 text-[11px] text-gray-500">
           <q-icon name="lock" size="13px" />
           <span>Resposta anônima</span>
         </div>

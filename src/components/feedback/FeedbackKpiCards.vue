@@ -7,7 +7,7 @@
         <q-icon name="chat_bubble_outline" size="xs" class="text-primary bg-blue-50 p-1.5 rounded-lg" />
       </div>
       <div class="text-2xl font-bold text-gray-800">{{ metrics.total || 0 }}</div>
-      <p class="text-xs text-gray-400 mt-1">No período selecionado</p>
+      <p class="text-xs text-gray-500 mt-1">No período selecionado</p>
     </div>
 
     <!-- Média de Satisfação -->
@@ -18,9 +18,9 @@
       </div>
       <div class="text-2xl font-bold text-gray-800 flex items-baseline gap-1">
         {{ metrics.media || '0.0' }}
-        <span class="text-sm font-medium text-gray-400">/ 5.0</span>
+        <span class="text-sm font-medium text-gray-500">/ 5.0</span>
       </div>
-      <p class="text-xs text-gray-400 mt-1">Satisfação dos cidadãos</p>
+      <p class="text-xs text-gray-500 mt-1">Satisfação dos cidadãos</p>
     </div>
 
     <!-- % Positivas -->
@@ -30,7 +30,7 @@
         <q-icon name="thumb_up_alt" size="xs" class="text-green-500 bg-green-50 p-1.5 rounded-lg" />
       </div>
       <div class="text-2xl font-bold text-gray-800">{{ metrics.positivasPct || 0 }}%</div>
-      <p class="text-xs text-green-600 mt-1 font-medium flex items-center gap-1">
+      <p class="text-xs text-green-700 mt-1 font-medium flex items-center gap-1">
         <q-icon name="check_circle" size="12px" />
         Notas 4 e 5
       </p>
@@ -43,7 +43,7 @@
         <q-icon name="thumb_down_alt" size="xs" class="text-red-500 bg-red-50 p-1.5 rounded-lg" />
       </div>
       <div class="text-2xl font-bold text-gray-800">{{ metrics.negativasPct || 0 }}%</div>
-      <p class="text-xs text-red-500 mt-1 font-medium flex items-center gap-1">
+      <p class="text-xs text-red-700 mt-1 font-medium flex items-center gap-1">
         <q-icon name="warning" size="12px" />
         Notas 1 a 3
       </p>
