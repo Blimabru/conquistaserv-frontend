@@ -54,8 +54,12 @@ import { useAuthStore } from 'stores/authStore';
 const router = useRouter();
 const authStore = useAuthStore();
 
-const userName = ref(window.sessionStorage.getItem('name_user') || 'Dimas');
-const department = ref('Secretaria CTI');
+const userName = ref(window.sessionStorage.getItem('name_user') || 'Usuário');
+const accessLevel = window.sessionStorage.getItem('access_level');
+const secretariaNome = window.sessionStorage.getItem('secretaria_nome');
+const department = ref(
+  secretariaNome || (accessLevel === 'ADMIN' ? 'Administrador Global' : ''),
+);
 
 function goTo(route) {
     router.push(route);

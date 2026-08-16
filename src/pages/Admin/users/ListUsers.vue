@@ -25,7 +25,7 @@ import { api } from 'src/boot/axios';
 import showNotification from 'src/utils/quasarPlugins/notifyMessage';
 import CtiCard from '../../../components/common/CtiCard.vue';
 import TableList from 'src/components/tables/TableList.vue';
-import showModal from 'src/utils/quasarPlugins/dialogMessage';
+import confirmDialog from 'src/utils/quasarPlugins/confirmDialog';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 
@@ -185,7 +185,12 @@ async function clearFilters() {
 }
 
 async function deleteUser(user) {
-  showModal(`Tem certeza que deseja excluir o usuário`, user.nome).onOk(
+  confirmDialog({
+    title: 'Excluir usuário',
+    message: `Deseja realmente excluir "${user.nome}"?`,
+    detail: 'Essa ação não pode ser desfeita.',
+    confirmLabel: 'Excluir',
+  }).onOk(
     async () => {
       $q.loading.show({
         message: 'Aguarde, excluindo usuário...',

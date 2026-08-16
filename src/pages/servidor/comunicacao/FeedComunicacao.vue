@@ -43,7 +43,7 @@ const chaveFeed = computed(() => `${aba.value}|${buscaAtual.value}`);
 const mensagemVazio = computed(() => {
   if (buscaAtual.value) return 'Nenhuma publicação encontrada para essa busca.';
   if (aba.value === 'destaques') return 'Sem destaques no momento.';
-  return 'Você ainda não segue canais com publicações. Explore os canais disponíveis.';
+  return 'Nenhuma publicação por aqui ainda.';
 });
 
 function carregarFonte({ pagina, itensPorPagina }) {

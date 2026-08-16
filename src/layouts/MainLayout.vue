@@ -101,19 +101,19 @@ function configurarMenu() {
         link: '/admin/dashboard',
       },
       {
-        title: 'Perfil',
-        icon: 'account_circle',
-        link: '/perfil',
+        title: 'Secretarias',
+        icon: 'account_balance',
+        link: '/admin/secretarias',
       },
       {
-        title: 'Usuários',
-        icon: 'group',
-        link: '/admin/usuarios',
+        title: 'Gerenciar Publicações',
+        icon: 'article',
+        link: '/admin/comunicacao/publicacoes',
       },
-      {
-        title: 'Comunicação',
-        icon: 'campaign',
-        link: '/comunicacao',
+       {
+        title: 'Gerenciar Canais',
+        icon: 'list_alt',
+        link: '/admin/comunicacao/canais',
       },
       {
         title: 'Benefícios',
@@ -134,6 +134,11 @@ function configurarMenu() {
         title: 'Feedback',
         icon: 'chat_bubble_outline',
         link: '/feedback',
+      },
+            {
+        title: 'Usuários',
+        icon: 'group',
+        link: '/admin/usuarios',
       },
     );
 
@@ -165,11 +170,6 @@ function configurarMenu() {
         title: 'Serviços',
         icon: 'apps',
         link: '/servicos',
-      },
-      {
-        title: 'Feedback',
-        icon: 'chat_bubble_outline',
-        link: '/feedback',
       },
     );
 

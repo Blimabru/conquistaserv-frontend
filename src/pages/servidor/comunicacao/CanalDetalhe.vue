@@ -22,7 +22,7 @@
         <q-card flat bordered class="mb-4 rounded-lg">
           <q-card-section class="flex flex-nowrap items-center">
             <q-avatar
-              :color="canal.cor"
+              :style="{ backgroundColor: canal.cor }"
               text-color="white"
               :icon="canal.icone"
               size="52px"
@@ -30,7 +30,9 @@
             <div class="ml-4 grow">
               <div class="flex flex-nowrap items-center gap-1">
                 <span class="text-lg font-medium">{{ canal.nome }}</span>
-                <q-icon v-if="canal.oficial" name="verified" color="primary" size="18px" />
+                <q-icon v-if="canal.oficial" name="verified" color="primary" size="18px">
+                  <q-tooltip>Canal principal</q-tooltip>
+                </q-icon>
                 <q-icon v-if="canal.tipo === 'PRIVADO'" name="lock" color="grey-6" size="16px" />
               </div>
               <div class="text-xs text-gray-600">{{ canal.descricao }}</div>

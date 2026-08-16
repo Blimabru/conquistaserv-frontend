@@ -64,6 +64,24 @@
           behavior="menu"
         />
       </div>
+      <div v-if="form.nivel === 'USUARIO'" class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+        <q-select
+          :disable="!administrator"
+          dense
+          outlined
+          v-model="form.secretariaId"
+          :options="secretaria_options"
+          emit-value
+          map-options
+          lazy-rules
+          label="Secretaria"
+          hint="Obrigatório para usuários"
+          clearable
+          clear-icon="close"
+          :rules="empty_field_rules"
+          behavior="menu"
+        />
+      </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
         <q-input
           :disable="!administrator"
@@ -135,9 +153,10 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
+import { listarSecretarias } from 'src/services/comunicacao/secretariasAdminService';
 
 const $q = useQuasar();
 
@@ -150,7 +169,16 @@ const form = ref({
   situacao: '',
   login: '',
   senha: '',
+  secretariaId: '',
 });
+
+// ADMIN é global — não tem secretaria. Limpa se o nível mudar pra ADMIN.
+watch(
+  () => form.value.nivel,
+  (nivel) => {
+    if (nivel === 'ADMIN') form.value.secretariaId = '';
+  },
+);
 
 const props = defineProps({
   userId: {
@@ -180,6 +208,7 @@ const situation_options = ref([
   { label: 'Ativo', value: 'ATIVO' },
   { label: 'Bloqueado', value: 'BLOQUEADO' },
 ]);
+const secretaria_options = ref([]);
 const empty_field_rules = [(val) => !!val || '*Campo obrigatório'];
 
 function validateName(val) {
@@ -250,13 +279,25 @@ function fillInFields(data) {
   form.value.nivel = data.nivel;
   form.value.situacao = data.situacao;
   form.value.login = data.login;
+  form.value.secretariaId = data.secretariaId || '';
 }
 
 function sendData() {
   emits('submitData', form.value);
 }
 
+async function loadSecretarias() {
+  try {
+    const { data } = await listarSecretarias(1, 100);
+    secretaria_options.value = data.map((s) => ({ label: s.nome, value: s.id }));
+  } catch (e) {
+    console.error('Erro ao carregar secretarias', e);
+  }
+}
+
 onMounted(async () => {
+  loadSecretarias();
+
   if (props.userId) {
     const data = await findUser(props.userId);
 

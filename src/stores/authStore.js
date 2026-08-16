@@ -110,6 +110,19 @@ export const useAuthStore = defineStore('auth', {
       window.sessionStorage.removeItem('access_level');
     },
 
+    setSecretariaId(secretariaId) {
+      window.sessionStorage.setItem('secretaria_id', secretariaId || '');
+    },
+
+    setSecretariaNome(nome) {
+      window.sessionStorage.setItem('secretaria_nome', nome || '');
+    },
+
+    removeSecretariaId() {
+      window.sessionStorage.removeItem('secretaria_id');
+      window.sessionStorage.removeItem('secretaria_nome');
+    },
+
     async initSystem() {
       const token = window.sessionStorage.getItem('token');
       if (token) {
@@ -138,6 +151,8 @@ export const useAuthStore = defineStore('auth', {
       if (data) {
         this.setAccessLevel(data.nivel);
         this.setUser(data.id, data.nome);
+        this.setSecretariaId(data.secretariaId);
+        this.setSecretariaNome(data.secretaria?.nome);
         return data.nivel;
       }
       return '';
@@ -148,6 +163,7 @@ export const useAuthStore = defineStore('auth', {
       this.removeUser();
       this.removeToken();
       this.removeAccessLevel();
+      this.removeSecretariaId();
     },
   },
 });

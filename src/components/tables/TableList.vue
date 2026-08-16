@@ -4,136 +4,147 @@
     :columns="column"
     row-key="name"
     v-model:pagination="pagination_initial"
+    flat
+    bordered
+    class="rounded-2xl shadow-sm border border-gray-100"
+    table-header-class="bg-gray-50/70 text-gray-600 font-semibold uppercase text-xs tracking-wider"
   >
     <template v-slot:top>
-      <div class="full-width row flex justify-between items-center">
-        <div
-          class="col-xs-12 col-sm-5 col-md-3 col-lg-2 col-xl-2"
-          :style="{
-            margin: $q.screen.xs || $q.screen.sm ? '0 0 10px 0' : '0 0 0 0',
-          }"
-        >
+      <div class="w-full flex flex-col md:flex-row justify-between items-center gap-4 py-2">
+        <!-- Botão Adicionar -->
+        <div class="w-full md:w-auto">
           <q-btn
             color="primary"
             :label="titleButtonAdd"
-            @click="router.push(routeAdd)"
+            @click="routeAdd ? router.push(routeAdd) : $emit('add')"
             no-caps
             icon="add"
             unelevated
-            dense
+            class="rounded-lg font-medium px-4 py-2 w-full md:w-auto"
           />
         </div>
-        <div
-          class="col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-4"
-          :style="{
-            margin: $q.screen.xs || $q.screen.sm ? '0 0 10px 0' : '0 0 0 0',
-          }"
-        >
-          <div class="row full-width justify-between">
-            <div
-              class="col-xs-6"
-              v-for="filterOption in filters"
-              :key="filterOption.label"
-            >
-              <q-select
-                filled
-                dense
-                v-model:model-value="filterOption.model"
-                :options="filterOption.options"
-                :label="filterOption.label"
-                @update:model-value="filterOption.actions"
-                :class="
-                  (filterOption.model !== '' ? 'bg-blue-grey-2' : 'bg-grey-2',
-                  'styleCard')
-                "
-                color="blue-10"
-                style="border-radius: 5px; margin-right: 10px"
-              />
-            </div>
+
+        <!-- Filtros Dinâmicos -->
+        <div v-if="filters && filters.length" class="flex-1 flex flex-wrap gap-3 items-center justify-center w-full md:w-auto">
+          <div v-for="filterOption in filters" :key="filterOption.label" class="min-w-[140px] flex-1 md:flex-none">
+            <q-select
+              outlined
+              dense
+              v-model:model-value="filterOption.model"
+              :options="filterOption.options"
+              :label="filterOption.label"
+              @update:model-value="filterOption.actions"
+              color="primary"
+              class="rounded-lg bg-white"
+            />
           </div>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 col-xl-4">
-          <div class="full-width row flex items-center justify-between">
-            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 col-xl-11">
-              <q-input
-                v-model="filter"
-                debounce="500"
-                placeholder="Pesquisar"
-                dense
-                filled
-                @update:model-value="findInfomaion"
-                ref="searchInput"
-              >
-                <template v-slot:prepend>
-                  <q-icon
-                    name="search"
-                    style="color: #a2a2a2"
-                    @click="focusSearchInput"
-                  />
-                </template>
-              </q-input>
-            </div>
-            <div
-              class="col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 flex justify-center"
-            >
-              <q-btn
-                :disable="checkFilter"
-                flat
-                dense
-                size="md"
-                title="Limpar filtros"
-                color="grey-"
-                @click="clearAllFilters"
-              >
-                <q-img src="/images/vassoura.png" width="20px" />
-              </q-btn>
-            </div>
-          </div>
+
+        <!-- Busca e Limpar Filtros -->
+        <div class="w-full md:w-auto flex flex-1 items-center justify-end gap-2">
+          <q-input
+            v-model="filter"
+            debounce="500"
+            placeholder="Pesquisar..."
+            dense
+            outlined
+            class="rounded-lg bg-white flex-1 md:max-w-[250px]"
+            @update:model-value="findInfomaion"
+            ref="searchInput"
+          >
+            <template v-slot:prepend>
+              <q-icon
+                name="search"
+                class="text-gray-400 cursor-pointer hover:text-primary transition-colors"
+                @click="focusSearchInput"
+              />
+            </template>
+          </q-input>
+          
+          <q-btn
+            :disable="checkFilter"
+            flat
+            dense
+            round
+            color="grey-6"
+            class="hover:text-primary hover:bg-blue-50 transition-colors"
+            @click="clearAllFilters"
+          >
+            <q-tooltip class="bg-gray-800 text-xs">Limpar filtros</q-tooltip>
+            <q-icon name="cleaning_services" size="20px" />
+          </q-btn>
         </div>
       </div>
     </template>
 
     <template v-slot:body-cell-situacao="props">
       <q-td :props="props">
-        <div>
-          <q-badge :color="defineColor(props.value)" :label="props.value" />
-        </div>
+        <q-chip
+          :color="defineColor(props.value)"
+          text-color="white"
+          size="sm"
+          class="font-medium rounded-full px-3 py-0.5 shadow-sm"
+        >
+          {{ props.value }}
+        </q-chip>
+      </q-td>
+    </template>
+
+    <template v-slot:body-cell-principal="props">
+      <q-td :props="props" class="text-center">
+        <q-chip
+          v-if="props.value"
+          color="amber-8"
+          text-color="white"
+          size="sm"
+          icon="star"
+          class="font-medium rounded-full px-3 py-0.5 shadow-sm"
+        >
+          Principal
+        </q-chip>
+        <span v-else class="text-gray-400 text-xs">—</span>
       </q-td>
     </template>
 
     <template v-slot:body-cell-acoes="scope">
-      <q-td
-        class="row flex justify-center items-center q-pa-md q-gutter-x-sm text-center"
-      >
-        <div
-          class="col-2 flex justify-center items-center text-center"
-          v-for="acao in acoes"
-          :key="acao.name"
-        >
-          <q-btn
-            :title="acao.label"
-            dense
-            unelevated
-            v-if="acao.administrator"
-            :color="acao.color"
-            :icon="acao.icon"
-            @click="acao.action(scope.row)"
-            size="sm"
-          />
+      <q-td :props="scope">
+        <div class="flex justify-center items-center gap-1">
+          <template v-for="acao in acoes" :key="acao.name">
+            <q-btn
+              v-if="acao.administrator"
+              flat
+              round
+              dense
+              :color="acao.color"
+              :icon="acao.icon"
+              size="sm"
+              class="hover:bg-gray-100 transition-colors duration-200"
+              @click="acao.action(scope.row)"
+            >
+              <q-tooltip class="bg-gray-800 text-xs font-medium">{{ acao.label }}</q-tooltip>
+            </q-btn>
+          </template>
         </div>
       </q-td>
     </template>
+
     <template v-slot:bottom>
-      <div class="full-width row justify-center q-mt-md">
+      <div class="w-full flex justify-center items-center py-4 border-t border-gray-50 mt-2">
         <q-pagination
           v-model="pagination_initial.page"
           @update:model-value="findInfomaion"
-          color="info"
+          color="grey-8"
           active-color="primary"
+          active-text-color="white"
           :max="maxPages"
-          :max-pages="5"
+          :max-pages="3"
           direction-links
-          size="md"
+          boundary-links
+          boundary-numbers
+          round
+          size="14px"
+          gutter="sm"
+          class="font-medium"
         />
       </div>
     </template>
@@ -200,6 +211,11 @@ const props = defineProps({
     required: false,
     default: 0,
   },
+  sortBy: {
+    type: String,
+    required: false,
+    default: 'nome',
+  },
 });
 
 //referencia para o input de pesquisa
@@ -211,7 +227,7 @@ const focusSearchInput = () => {
 //paginação
 const filter = ref('');
 const pagination_initial = ref({
-  sortBy: 'nome',
+  sortBy: props.sortBy,
   descending: false,
   page: 1,
   rowsPerPage: props.itemsPerPage,
@@ -238,7 +254,7 @@ function clearAllFilters() {
   emits('clearFilters');
 }
 
-const emits = defineEmits(['getUsers', 'clearFilters']);
+const emits = defineEmits(['getUsers', 'clearFilters', 'add']);
 
 function findInfomaion() {
   emits('getUsers', filter.value, pagination_initial.value.page);

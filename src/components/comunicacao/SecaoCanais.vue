@@ -21,8 +21,6 @@
         :key="canal.id"
         :canal="canal"
         :contexto="contexto"
-        @seguir="$emit('seguir', canal)"
-        @deixar="$emit('deixar', canal)"
         @abrir="$emit('abrir', canal)"
         @toggle-notificacao="$emit('toggle-notificacao', canal, $event)"
       />
@@ -41,5 +39,5 @@ defineProps({
   contexto: { type: String, required: true },
   vazio: { type: String, default: 'Nada por aqui.' },
 });
-defineEmits(['seguir', 'deixar', 'abrir', 'toggle-notificacao']);
+defineEmits(['abrir', 'toggle-notificacao']);
 </script>

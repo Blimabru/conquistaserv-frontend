@@ -84,18 +84,6 @@ export async function buscarCanal(id) {
   return data;
 }
 
-export async function seguirCanal(id) {
-  if (USE_MOCK) return comDelay(mock.seguirCanal(id), 150);
-  const { data } = await api.post(`comunicacao/canais/${id}/inscricao`);
-  return data;
-}
-
-export async function deixarCanal(id) {
-  if (USE_MOCK) return comDelay(mock.deixarCanal(id), 150);
-  const { data } = await api.delete(`comunicacao/canais/${id}/inscricao`);
-  return data;
-}
-
 export async function configurarNotificacao(id, ativo) {
   if (USE_MOCK) return comDelay(mock.configurarNotificacao(id, ativo), 120);
   const { data } = await api.put(`comunicacao/canais/${id}/notificacao`, {
@@ -126,8 +114,6 @@ export const comunicacaoService = {
   responderPesquisa,
   listarCanais,
   buscarCanal,
-  seguirCanal,
-  deixarCanal,
   configurarNotificacao,
   resumoNaoLidas,
   publicacaoAleatoriaParaNotificar,

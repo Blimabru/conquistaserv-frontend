@@ -10,7 +10,7 @@
     
     <q-card-section class="flex flex-nowrap items-center pb-2">
       <q-avatar
-        :color="publicacao.canal.cor"
+        :style="{ backgroundColor: publicacao.canal.cor }"
         text-color="white"
         :icon="publicacao.canal.icone"
         size="40px"

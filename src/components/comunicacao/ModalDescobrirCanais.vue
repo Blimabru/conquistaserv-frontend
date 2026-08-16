@@ -3,7 +3,7 @@
     <div class="bg-white rounded-lg overflow-hidden flex flex-col flex-nowrap" style="max-height: 80vh; width: 700px; max-width: 90vw; margin: 0 auto;">
       <div class="flex justify-between items-center p-4 border-b border-gray-200">
         <h2 class="text-xl font-medium text-gray-800 flex items-center m-0">
-          <q-icon name="hub" size="24px" color="primary" class="mr-2" /> Descobrir Canais
+          <q-icon name="hub" size="24px" color="primary" class="mr-2" /> Canais
         </h2>
         <q-btn flat round dense icon="close" v-close-popup />
       </div>
@@ -37,9 +37,9 @@
         <template v-else>
           <SecaoCanais
             titulo="Canais Públicos"
-            subtitulo="Acompanhe as publicações abertas a todos os servidores."
+            subtitulo="Abertos a todos os servidores — gerencie notificações e fixe nos atalhos."
             icone="public"
-            :canais="todosPublicosFiltrados"
+            :canais="publicosFiltrados"
             contexto="publico"
             vazio="Nenhum canal público encontrado."
             @toggle-notificacao="onToggleNotificacao"
@@ -84,21 +84,23 @@ const visivel = computed({
 
 const carregando = ref(true);
 const textoBusca = ref('');
-const canais = ref({ meus: [], disponiveis: [], privados: [] });
+// Array plano: canais públicos (visíveis a todos, sem exigir inscrição) +
+// canais privados dos quais o usuário já é membro (gerido pelo admin).
+const canais = ref([]);
 
-const todosPublicosFiltrados = computed(() => {
-  const lista = [...(canais.value.meus || []), ...(canais.value.disponiveis || [])];
+function filtrarPorTexto(lista) {
   if (!textoBusca.value) return lista;
   const termo = textoBusca.value.toLowerCase();
   return lista.filter(c => c.nome.toLowerCase().includes(termo) || (c.descricao && c.descricao.toLowerCase().includes(termo)));
-});
+}
 
-const privadosFiltrados = computed(() => {
-  const lista = canais.value.privados || [];
-  if (!textoBusca.value) return lista;
-  const termo = textoBusca.value.toLowerCase();
-  return lista.filter(c => c.nome.toLowerCase().includes(termo) || (c.descricao && c.descricao.toLowerCase().includes(termo)));
-});
+const publicosFiltrados = computed(() =>
+  filtrarPorTexto(canais.value.filter(c => c.tipo === 'PUBLICO')),
+);
+
+const privadosFiltrados = computed(() =>
+  filtrarPorTexto(canais.value.filter(c => c.tipo === 'PRIVADO')),
+);
 
 async function carregar() {
   carregando.value = true;

@@ -41,9 +41,11 @@
           >
             <div class="flex h-[64px] w-[64px] items-center justify-center rounded-full transition-transform duration-200 group-hover:scale-105"
                  :class="canalAtivoId === canal.id ? 'border-[3px] border-primary p-1' : 'border-[3px] border-transparent p-1'">
-              <div :class="`flex h-full w-full items-center justify-center rounded-full text-white shadow-sm bg-${canal.cor}`">
+              <!-- canal.cor é um hexadecimal (ex: #045DA5) — CSS puro via :style,
+                   não dá pra virar classe Tailwind/Quasar :color dinamicamente. -->
+              <q-avatar :style="{ backgroundColor: canal.cor }" text-color="white" size="56px">
                 <q-icon :name="canal.icone" size="30px" />
-              </div>
+              </q-avatar>
             </div>
             <span class="text-[13px] font-medium text-gray-700 truncate w-full text-center"
                   :class="canalAtivoId === canal.id ? 'text-primary font-medium' : ''">{{ canal.nome }}</span>
@@ -68,7 +70,7 @@
       <div
         v-if="!textoBusca"
         class="flex flex-col flex-none items-center gap-1.5 w-[72px] group cursor-pointer ml-1"
-        aria-label="Descobrir canais"
+        aria-label="Ver todos os canais"
         @click="modalDescobrirAberto = true"
       >
         <div class="flex h-[64px] w-[64px] items-center justify-center rounded-full transition-transform duration-200 group-hover:scale-105 border-[3px] border-transparent p-1">
@@ -76,7 +78,7 @@
             <q-icon name="add" size="28px" />
           </div>
         </div>
-        <span class="text-[13px] font-medium text-gray-400 truncate w-full text-center group-hover:text-gray-500">Descobrir</span>
+        <span class="text-[13px] font-medium text-gray-400 truncate w-full text-center group-hover:text-gray-500">Canais</span>
       </div>
 
     </div>
@@ -130,8 +132,9 @@ function removerAtalho(id) {
 async function carregar() {
   carregando.value = true;
   try {
-    const { meus, disponiveis } = await listarCanais();
-    todosCanais.value = [...(meus || []), ...(disponiveis || [])];
+    // listarCanais() já devolve todo canal público (não exige mais "seguir")
+    // mais os privados dos quais o usuário é membro.
+    todosCanais.value = await listarCanais();
   } finally {
     carregando.value = false;
   }

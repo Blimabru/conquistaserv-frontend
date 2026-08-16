@@ -1,7 +1,7 @@
 <template>
   <q-card flat bordered class="flex flex-nowrap h-full flex-col rounded-xl border-gray-200/80 transition-shadow duration-200 hover:shadow-md cursor-pointer" @click="$emit('abrir')">
     <q-card-section class="flex flex-nowrap items-center">
-      <q-avatar :color="canal.cor" text-color="white" :icon="canal.icone" size="48px" />
+      <q-avatar :style="{ backgroundColor: canal.cor }" text-color="white" :icon="canal.icone" size="48px" />
 
       <div class="ml-4 grow">
         <div class="flex flex-nowrap items-center gap-1">

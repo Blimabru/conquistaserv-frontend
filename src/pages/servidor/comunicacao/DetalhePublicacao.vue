@@ -13,13 +13,13 @@
         @click="voltar"
       />
 
-      
+      <!-- skeleton / loading -->
       <div v-if="carregando" class="flex flex-col flex-nowrap items-center py-16 text-gray-500">
         <q-spinner-dots color="primary" size="42px" />
         <div class="mt-2">Carregando publicação...</div>
       </div>
 
-      
+      <!-- erro -->
       <q-banner v-else-if="!publicacao" class="rounded-lg bg-red-50 text-negative">
         <template #avatar>
           <q-icon name="error_outline" color="negative" />
@@ -44,7 +44,7 @@
           <div class="mb-2 flex flex-nowrap items-center gap-2">
             <q-chip
               dense
-              :color="publicacao.canal.cor"
+              :style="{ backgroundColor: publicacao.canal.cor }"
               text-color="white"
               :icon="publicacao.canal.icone"
               clickable
@@ -58,7 +58,7 @@
               color="primary"
               size="18px"
             >
-              <q-tooltip>Canal oficial</q-tooltip>
+              <q-tooltip>Canal principal</q-tooltip>
             </q-icon>
           </div>
 
@@ -80,10 +80,63 @@
         <q-card-section>
           <!-- corpo em HTML controlado (conteúdo institucional) -->
           <div class="corpo-publicacao text-[1.02rem] leading-relaxed text-gray-800" v-html="publicacao.corpo" />
+          <!-- Elemento para detectar fim de leitura -->
+          <div v-intersection="onFimConteudo" class="h-1 w-full" />
         </q-card-section>
 
-        <!-- reações -->
-        <template v-if="publicacao.reacoesHabilitadas">
+        <!-- Painel de Analytics (para o Autor) -->
+        <template v-if="ehAutor && publicacao.analytics">
+          <q-separator />
+          <q-card-section class="bg-blue-50/40 p-4">
+            <div class="flex items-center gap-2 mb-3 text-primary font-medium text-sm">
+              <q-icon name="analytics" size="20px" />
+              <span>Métricas da Publicação (Visão do Autor)</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <!-- Visualizações / Leituras -->
+              <div class="bg-white p-3 rounded-lg border border-gray-200/60 shadow-sm flex items-center gap-3">
+                <div class="h-10 w-10 rounded-full bg-blue-100 text-primary flex items-center justify-center">
+                  <q-icon name="visibility" size="20px" />
+                </div>
+                <div>
+                  <div class="text-xs text-gray-500 font-medium">Visualizações</div>
+                  <div class="text-lg font-bold text-gray-800">{{ publicacao.analytics.totalLeituras }}</div>
+                </div>
+              </div>
+
+              <!-- Reações -->
+              <div class="bg-white p-3 rounded-lg border border-gray-200/60 shadow-sm flex items-center gap-3">
+                <div class="h-10 w-10 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center">
+                  <q-icon name="favorite" size="20px" />
+                </div>
+                <div>
+                  <div class="text-xs text-gray-500 font-medium">Total Reações</div>
+                  <div class="text-lg font-bold text-gray-800">{{ totalReacoesAnalytics }}</div>
+                </div>
+              </div>
+
+              <!-- Média da Pesquisa -->
+              <div v-if="publicacao.analytics.pesquisa" class="bg-white p-3 rounded-lg border border-gray-200/60 shadow-sm flex items-center gap-3 col-span-2 sm:col-span-1">
+                <div class="h-10 w-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center">
+                  <q-icon name="star" size="20px" />
+                </div>
+                <div>
+                  <div class="text-xs text-gray-500 font-medium">Média Satisfação</div>
+                  <div class="text-lg font-bold text-gray-800">
+                    {{ publicacao.analytics.pesquisa.mediaNota ? publicacao.analytics.pesquisa.mediaNota.toFixed(1) : 'Sem votos' }}
+                    <span v-if="publicacao.analytics.pesquisa.totalRespostas" class="text-xs text-gray-400 font-normal">
+                      ({{ publicacao.analytics.pesquisa.totalRespostas }})
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </q-card-section>
+        </template>
+
+        <!-- Se não for autor: reações -->
+        <template v-if="!ehAutor && publicacao.reacoesHabilitadas">
           <q-separator />
           <q-card-section>
             <ReacoesBar
@@ -96,8 +149,9 @@
           </q-card-section>
         </template>
 
-        <!-- pesquisa de satisfação -->
-        <q-card-section v-if="publicacao.pesquisa" class="pt-0">
+        <!-- Se não for autor: pesquisa de satisfação após leitura completa -->
+        <q-card-section v-if="!ehAutor && publicacao.pesquisa && !jaRespondidoNaCarga && leuTodoConteudo" class="pt-0">
+          <q-separator class="mb-4" />
           <PesquisaSatisfacao
             :publicacao-id="publicacao.id"
             :pesquisa="publicacao.pesquisa"
@@ -118,6 +172,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from 'stores/authStore';
 import ReacoesBar from 'src/components/comunicacao/ReacoesBar.vue';
 import MidiaPublicacao from 'src/components/comunicacao/MidiaPublicacao.vue';
 import QuemReagiuDialog from 'src/components/comunicacao/QuemReagiuDialog.vue';
@@ -135,6 +190,7 @@ import showNotification from 'src/utils/quasarPlugins/notifyMessage';
 
 const route = useRoute();
 const router = useRouter();
+const authStore = useAuthStore();
 
 const publicacao = ref(null);
 const carregando = ref(true);
@@ -142,15 +198,40 @@ const quemReagiuAberto = ref(false);
 const listaReacoes = ref([]);
 const carregandoReacoes = ref(false);
 
+const leuTodoConteudo = ref(false);
+const jaRespondidoNaCarga = ref(false);
+
+const currentUserId = computed(
+  () => authStore.idUser || window.sessionStorage.getItem('user_id'),
+);
+const ehAutor = computed(
+  () => !!(publicacao.value?.autorId && publicacao.value.autorId === currentUserId.value),
+);
+
 const dataCompleta = computed(() =>
   publicacao.value ? formatarData(publicacao.value.dataPublicacao) : '',
 );
+
+const totalReacoesAnalytics = computed(() => {
+  if (!publicacao.value?.analytics?.reacoes) return 0;
+  return Object.values(publicacao.value.analytics.reacoes).reduce(
+    (acc, val) => acc + val,
+    0,
+  );
+});
+
+function onFimConteudo(entry) {
+  if (entry.isIntersecting) {
+    leuTodoConteudo.value = true;
+  }
+}
 
 async function carregar() {
   carregando.value = true;
   try {
     const dados = await buscarPublicacao(route.params.id);
     publicacao.value = dados;
+    jaRespondidoNaCarga.value = !!dados?.pesquisa?.jaRespondi;
     if (dados && !dados.lido) {
       await marcarLido(dados.id);
       publicacao.value.lido = true;
@@ -214,3 +295,4 @@ onMounted(carregar);
   color: var(--q-dark);
 }
 </style>
+

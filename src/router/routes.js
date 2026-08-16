@@ -54,6 +54,22 @@ const routes = [
             path: 'usuarios/editar/:id',
             component: () => import('pages/Admin/users/UserActionsForm.vue'),
           },
+          {
+            path: 'secretarias',
+            component: () => import('pages/Admin/secretarias/ListSecretarias.vue'),
+          },
+          {
+            path: 'comunicacao/canais',
+            component: () => import('pages/Admin/comunicacao/ListCanais.vue'),
+          },
+          {
+            path: 'comunicacao/publicacoes',
+            component: () => import('pages/Admin/comunicacao/ListPublicacoes.vue'),
+          },
+          {
+            path: 'comunicacao/publicacoes/:id/analytics',
+            component: () => import('pages/Admin/comunicacao/AnalyticsPublicacao.vue'),
+          },
         ],
       },
       {
@@ -88,6 +104,19 @@ const routes = [
             component: () => import('pages/servidor/comunicacao/DetalhePublicacao.vue'),
           },
         ],
+      },
+    ],
+  },
+  {
+    path: '/feedback',
+    component: () => import('layouts/MainLayout.vue'),
+    meta: { requiredLogin: true, requiredAdminLevel: true },
+    children: [
+      {
+        path: '',
+        name: 'feedbackDashboard',
+        component: () => import('pages/Feedback/FeedbackDashboard.vue'),
+        meta: { title: 'Métricas e Feedbacks' },
       },
     ],
   },
