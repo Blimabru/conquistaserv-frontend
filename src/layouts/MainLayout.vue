@@ -6,7 +6,7 @@
           <q-btn flat icon="menu" label="Menu" @click="leftDrawerOpen = !leftDrawerOpen" />
         </div>
 
-        <div>
+        <div class="absolute left-1/2 -translate-x-1/2">
           <q-toolbar-title style="line-height: normal">
             <LogoServConquista />
           </q-toolbar-title>
@@ -61,6 +61,9 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <!-- Assistente Virtual Vitória -->
+    <VitoriaChat />
   </q-layout>
 </template>
 
@@ -74,6 +77,7 @@ import { useAuthStore } from '../stores/authStore';
 import LogoServConquista from 'components/common/LogoServConquista.vue';
 import UserMenu from 'components/common/UserMenu.vue';
 import NotificationOpen from 'components/common/NotificationOpen.vue';
+import VitoriaChat from 'components/vitoria/VitoriaChat.vue';
 
 const router = useRouter();
 const route = useRoute();
