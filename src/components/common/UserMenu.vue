@@ -58,7 +58,7 @@ const userName = ref(window.sessionStorage.getItem('name_user') || 'Usuário');
 const accessLevel = window.sessionStorage.getItem('access_level');
 const secretariaNome = window.sessionStorage.getItem('secretaria_nome');
 const department = ref(
-  secretariaNome || (accessLevel === 'ADMIN' ? 'Administrador Global' : ''),
+    secretariaNome || (accessLevel === 'ADMIN' ? 'Administrador Global' : ''),
 );
 
 function goTo(route) {
