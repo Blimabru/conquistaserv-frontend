@@ -1,5 +1,5 @@
 <template>
-  <q-page class="bg-slate-50 min-h-screen p-4 md:p-6 lg:p-8 flex ">
+  <q-page class="bg-slate-50 min-h-screen p-4 md:p-6 lg:p-8 flex flex-col items-center w-full ">
     <div class="w-full max-w-6xl flex flex-col gap-6">
       
       <!-- 1. Top Buttons Grid -->

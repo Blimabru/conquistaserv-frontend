@@ -19,22 +19,34 @@
             </template>
           </q-input>
 
+          <q-btn
+            round
+            flat>
+              <q-icon
+                name="notifications"
+                size="24px"
+                class="text-white bg-white/10 rounded-full p-2"
+              />
+            <q-menu anchor="bottom end" self="top end" :offset="[0, 10]">
+              <NotificationOpen />
+            </q-menu>
+          </q-btn>
 
-            <q-btn round flat>
-              <q-avatar
-                size="43px"
-                icon="account_circle" />
-              
-              <q-menu 
-                auto-close 
-                :offset="[10, 15]" 
-                class="bg-transparent shadow-0 no-shadow"
-                style="border-radius: 28px; overflow: visible;"
-              >
-                <UserMenu />
-              </q-menu>
-            </q-btn>
-          
+          <q-btn round flat>
+            <q-avatar
+              size="43px"
+              icon="account_circle" />
+            
+            <q-menu 
+              auto-close 
+              :offset="[10, 15]" 
+              class="bg-transparent shadow-0 no-shadow"
+              style="border-radius: 28px; overflow: visible;"
+            >
+              <UserMenu />
+            </q-menu>
+          </q-btn>
+        
         </div>
 
       </q-toolbar>
@@ -61,6 +73,7 @@ import { useAuthStore } from '../stores/authStore';
 
 import LogoServConquista from 'components/common/LogoServConquista.vue';
 import UserMenu from 'components/common/UserMenu.vue';
+import NotificationOpen from 'components/common/NotificationOpen.vue';
 
 const router = useRouter();
 const route = useRoute();
