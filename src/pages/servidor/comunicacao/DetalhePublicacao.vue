@@ -125,7 +125,7 @@
                   <div class="text-xs text-gray-500 font-medium">Média Satisfação</div>
                   <div class="text-lg font-bold text-gray-800">
                     {{ publicacao.analytics.pesquisa.mediaNota ? publicacao.analytics.pesquisa.mediaNota.toFixed(1) : 'Sem votos' }}
-                    <span v-if="publicacao.analytics.pesquisa.totalRespostas" class="text-xs text-gray-400 font-normal">
+                    <span v-if="publicacao.analytics.pesquisa.totalRespostas" class="text-xs text-gray-500 font-normal">
                       ({{ publicacao.analytics.pesquisa.totalRespostas }})
                     </span>
                   </div>

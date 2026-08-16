@@ -20,8 +20,10 @@
                 icon="open_in_new"
                 size="sm"
                 class="shadow-sm"
+                aria-label="Abrir notícia sobre a nova equipe de gestão da SASHDS no site da Prefeitura (abre em nova aba)"
                 href="https://www.pmvc.ba.gov.br/prefeitura-promove-integracao-da-nova-equipe-de-gestao-da-sashds-e-reforca-compromisso-com-a-qualidade-dos-servicos/"
                 target="_blank"
+                rel="noopener noreferrer"
                 />
             </div>
 

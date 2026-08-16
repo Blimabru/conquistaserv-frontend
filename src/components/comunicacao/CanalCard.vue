@@ -25,13 +25,15 @@
             size="sm"
             :color="isFixado ? 'amber-6' : 'grey-4'"
             :icon="isFixado ? 'star' : 'star_border'"
+            :aria-label="isFixado ? `Remover ${canal.nome} dos atalhos` : `Fixar ${canal.nome} nos atalhos`"
+            :aria-pressed="isFixado"
             @click.stop="toggleFixar"
           >
             <q-tooltip>{{ isFixado ? 'Remover dos atalhos' : 'Fixar nos atalhos' }}</q-tooltip>
           </q-btn>
         </div>
         <div class="text-[13px] text-gray-600 leading-tight mt-0.5 line-clamp-2">{{ canal.descricao }}</div>
-        <div class="mt-1.5 text-[11px] font-medium text-gray-400">
+        <div class="mt-1.5 text-[11px] font-medium text-gray-500">
           {{ canal.totalPublicacoes }} {{ canal.totalPublicacoes === 1 ? 'publicação' : 'publicações' }}
         </div>
       </div>

@@ -129,14 +129,14 @@
           :key="m.url"
           class="group relative w-28 h-28 rounded-xl overflow-hidden shadow-sm border border-gray-200 bg-white hover:shadow-md transition-shadow"
         >
-          <img v-if="m.tipo === 'imagem'" :src="m.url" class="w-full h-full object-cover transition-transform group-hover:scale-105" />
+          <img v-if="m.tipo === 'imagem'" :src="m.url" :alt="`Mídia ${i + 1} da publicação`" class="w-full h-full object-cover transition-transform group-hover:scale-105" />
           <div v-else class="w-full h-full flex items-center justify-center bg-gray-50">
-            <q-icon name="play_circle_filled" size="40px" class="text-gray-400" />
+            <q-icon name="play_circle_filled" size="40px" class="text-gray-500" />
           </div>
           <button
             type="button"
-            class="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-red-500 transition-all backdrop-blur-sm"
-            title="Remover mídia"
+            class="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100 hover:bg-red-500 transition-all backdrop-blur-sm"
+            :aria-label="`Remover mídia ${i + 1}`"
             @click="removerMidia(i)"
           >
             <q-icon name="close" size="14px" />

@@ -1,5 +1,7 @@
 <template>
   <q-layout view="hHh Lpr lff">
+    <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo</a>
+
     <q-header>
       <q-toolbar class="row justify-between items-center bg-primary px-8">
         <div>
@@ -21,7 +23,8 @@
 
           <q-btn
             round
-            flat>
+            flat
+            aria-label="Notificações">
               <q-icon
                 name="notifications"
                 size="24px"
@@ -32,7 +35,7 @@
             </q-menu>
           </q-btn>
 
-          <q-btn round flat>
+          <q-btn round flat aria-label="Menu do usuário">
             <q-avatar
               size="43px"
               icon="account_circle" />
@@ -53,12 +56,16 @@
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered :width="220" class="q-py-md q-px-md bg-primary-dark w">
-      <q-list>
-        <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
-      </q-list>
+      <nav aria-label="Menu principal">
+        <!-- role="list" explícito: o q-list renderiza uma <div> sem role, e os itens
+             recebem role="listitem", que exige um pai "list" (WCAG 1.3.1). -->
+        <q-list role="list">
+          <EssentialLink v-for="link in links" :key="link.title" v-bind="link" />
+        </q-list>
+      </nav>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container id="conteudo-principal" tabindex="-1">
       <router-view />
     </q-page-container>
 

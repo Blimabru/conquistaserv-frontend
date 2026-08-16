@@ -24,6 +24,7 @@
           size="md"
           class="bg-pink-100 text-pink-600 shadow-lg border border-pink-200"
           icon="accessibility_new"
+          aria-label="Recursos de acessibilidade"
         />
       </div>
 

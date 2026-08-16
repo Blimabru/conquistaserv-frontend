@@ -13,20 +13,20 @@
       <!-- Legenda do passo -->
       <div
         v-if="store.step"
-        class="fixed bottom-8 left-8 max-w-[300px]"
+        class="fixed bottom-8 left-8 max-w-[320px] bg-white p-5 rounded-2xl shadow-2xl border border-gray-100"
         style="z-index: 9996"
       >
         <div class="flex flex-nowrap items-start justify-between gap-3">
-          <h3 class="text-lg font-bold text-white">{{ store.step.title }}</h3>
+          <h3 class="text-base font-bold text-gray-900">{{ store.step.title }}</h3>
           <button
             type="button"
-            class="shrink-0 mt-1 text-xs font-medium text-white/60 hover:text-white cursor-pointer border-none bg-transparent"
+            class="shrink-0 mt-0.5 text-xs font-semibold text-gray-400 hover:text-gray-800 cursor-pointer border-none bg-transparent transition-colors"
             @click="handleSkip"
           >
             Pular
           </button>
         </div>
-        <p class="mt-1 text-sm leading-relaxed text-white/70">{{ store.step.description }}</p>
+        <p class="mt-2 text-sm leading-relaxed text-gray-600">{{ store.step.description }}</p>
       </div>
 
       <!-- Navegação entre passos -->
