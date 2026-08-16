@@ -192,6 +192,11 @@ function configurarMenu() {
         link: '/admin/beneficios',
       },
       {
+        title: 'Bem-Estar',
+        icon: 'spa',
+        link: '/bemestar',
+      },
+      {
         title: 'Feedback',
         icon: 'chat_bubble_outline',
         link: '/feedback',
@@ -221,6 +226,11 @@ function configurarMenu() {
         title: 'Benefícios',
         icon: 'loyalty',
         link: '/beneficios',
+      },
+      {
+        title: 'Bem-Estar',
+        icon: 'spa',
+        link: '/bemestar',
       },
       {
         title: 'Documentos',
