@@ -4,37 +4,106 @@
     <q-btn
       flat
       no-caps
-      class="bg-white border border-slate-200 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all flex items-center justify-between text-left h-20"
+      class="relative overflow-hidden bg-white border border-slate-200 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all flex items-center justify-between text-left h-20 w-full"
+      to="/Servicos"
     >
-      <div class="font-bold text-blue-900 leading-tight text-sm">
+      <!-- Conteúdo de texto acima do ícone -->
+      <div class="font-bold text-blue-900 leading-tight text-sm z-10 flex justify-left text-left">
         Atendimento<br />Psicológico
       </div>
-      <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
-        <q-icon name="person" size="20px" />
-      </div>
+
+      <!-- Ícone decorativo posicionado no fundo do botão -->
+      <q-icon
+        name="person"
+        class="menu-card-bg-icon absolute -right-6 top-1/2 -translate-y-1/2 text-primary-dark pointer-events-none opacity-20"
+      />
     </q-btn>
 
     <!-- Card CIA do Desconto -->
     <q-btn
       flat
       no-caps
-      class="bg-white border border-slate-200 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all flex items-center justify-between text-left h-20"
+      class="relative overflow-hidden bg-white border border-slate-200 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all flex items-center justify-between text-left h-20 w-full"
+      to="/Beneficios"
     >
-      <div class="font-bold text-blue-900 leading-tight text-sm">
-        CIA<br />do desconto
+      <!-- Conteúdo de texto acima do ícone -->
+      <div class="font-bold text-blue-900 leading-tight text-sm z-10 flex justify-left text-left">
+        CIA do<br />Desconto
       </div>
-      <div class="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-sm shrink-0">
-        %
+
+      <!-- Ícone decorativo posicionado no fundo do botão -->
+      <q-icon
+        name="percent"
+        class="menu-card-bg-icon absolute -right-6 top-1/2 -translate-y-1/2 text-primary-dark pointer-events-none opacity-20"
+      />
+    </q-btn>
+  
+    <!-- Card Contra Cheque -->
+    <q-btn
+      flat
+      no-caps
+      class="relative overflow-hidden bg-white border border-slate-200 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all flex items-center justify-between text-left h-20 w-full"
+      to="/Servicos"
+    >
+      <!-- Conteúdo de texto acima do ícone -->
+      <div class="font-bold text-blue-900 leading-tight text-sm z-10 flex justify-left text-left">
+        Contra<br />Cheque
       </div>
+
+      <!-- Ícone decorativo posicionado no fundo do botão -->
+      <q-icon
+        name="attach_money"
+        class="menu-card-bg-icon absolute -right-6 top-1/2 -translate-y-1/2 text-primary-dark pointer-events-none opacity-20"
+      />
     </q-btn>
 
-    <!-- Placeholders Top Cards -->
-    <div
-      v-for="i in 8"
-      :key="'top-slot-' + i"
-      class="bg-slate-200/80 rounded-2xl border border-slate-200/60 h-20"
-    />
+    
+    <!-- Card Benefícios -->
+    <q-btn
+      flat
+      no-caps
+      class="relative overflow-hidden bg-white border border-slate-200 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all flex items-center justify-between text-left h-20 w-full"
+      to="/Beneficios"
+    >
+      <!-- Conteúdo de texto acima do ícone -->
+      <div class="font-bold text-blue-900 leading-tight text-sm z-10 flex justify-left text-left">
+        Benefícios
+      </div>
+
+      <!-- Ícone decorativo posicionado no fundo do botão -->
+      <q-icon
+        name="loyalty"
+        class="menu-card-bg-icon absolute -right-6 top-1/2 -translate-y-1/2 text-primary-dark pointer-events-none opacity-20"
+      />
+    </q-btn>
+
+    
+    <!-- Serviços -->
+    <q-btn
+      flat
+      no-caps
+      class="relative overflow-hidden bg-white border border-slate-200 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all flex items-center justify-between text-left h-20 w-full"
+      to="/Servicos"
+    >
+      <!-- Conteúdo de texto acima do ícone -->
+      <div class="font-bold text-blue-900 leading-tight text-sm z-10 flex justify-left text-left">
+        Serviços
+      </div>
+
+      <!-- Ícone decorativo posicionado no fundo do botão -->
+      <q-icon
+        name="apps"
+        class="menu-card-bg-icon absolute -right-6 top-1/2 -translate-y-1/2 text-primary-dark pointer-events-none opacity-20"
+      />
+    </q-btn>
+    
   </section>
 </template>
 <script setup>
 </script>
+
+<style scoped>
+.menu-card-bg-icon {
+    font-size: 85px;
+}
+</style>

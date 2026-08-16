@@ -1,6 +1,6 @@
 <template>
   <q-page class="bg-[#F8FAFC] min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-[1280px]">
+    <div class="mx-auto max-w-[1280px]" data-tour="servicos-secao">
 
       <!-- Cabeçalho -->
       <div class="mb-6">

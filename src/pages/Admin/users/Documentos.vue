@@ -1,6 +1,6 @@
 <template>
   <q-page class="bg-[#F8FAFC] min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-[1280px]">
+    <div class="mx-auto max-w-[1280px]" data-tour="documentos-secao">
 
       <!-- Cabeçalho -->
       <div class="mb-6">
@@ -62,8 +62,9 @@
             class="grid grid-cols-1 gap-4 md:grid-cols-2"
           >
             <DocumentCard
-              v-for="doc in filteredDocuments"
+              v-for="(doc, index) in filteredDocuments"
               :key="doc.id || doc.title"
+              :data-tour="index === 0 ? 'documentos-card-0' : undefined"
               :title="doc.title"
               :description="doc.description"
               :version="doc.version || 'v1.0'"
