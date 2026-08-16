@@ -1,6 +1,16 @@
 <template>
   <q-page class="bg-[#F8FAFC] min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-[1280px]">
+    
+    <!-- Visualização de Detalhes do Benefício -->
+    <div v-if="selectedBenefit">
+      <BenefitDetailView
+        :benefit="selectedBenefit"
+        @back="selectedBenefit = null"
+      />
+    </div>
+
+    <!-- Listagem Principal de Benefícios -->
+    <div v-else class="mx-auto max-w-[1280px]">
 
       <!-- Cabeçalho -->
       <div class="mb-6">
@@ -46,7 +56,7 @@
         </div>
       </div>
 
-      <!-- Destaque -->
+      <!-- Destaque: Exatamente no modelo original -->
       <q-card
         flat
         bordered
@@ -77,7 +87,8 @@
             color="secondary"
             label="Saiba mais"
             no-caps
-            class="rounded-lg px-5 self-start md:self-auto"
+            class="rounded-lg px-5 self-start md:self-auto cursor-pointer"
+            @click="openBenefitDetails(highlightBenefit)"
           />
         </div>
       </q-card>
@@ -93,8 +104,10 @@
           :title="benefit.title"
           :description="benefit.description"
           :icon="benefit.icon"
-          :action="benefit.action"
+          :action="'Ver benefício'"
           :badge="benefit.badge"
+          :category="benefit.category"
+          @view="openBenefitDetails(benefit)"
         />
       </div>
 
@@ -122,9 +135,11 @@
 <script setup>
 import { computed, ref } from 'vue'
 import BenefitCard from 'src/components/cards/BenefitCard.vue'
+import BenefitDetailView from 'src/components/cards/BenefitDetailView.vue'
 
 const search = ref('')
 const selectedCategory = ref('Todos')
+const selectedBenefit = ref(null)
 
 const categories = [
   'Todos',
@@ -135,55 +150,314 @@ const categories = [
   'Previdência'
 ]
 
+const highlightBenefit = {
+  title: 'Plano de Saúde',
+  description:
+    'Consulte informações sobre seu plano de saúde, cobertura e serviços disponíveis.',
+  longDescription:
+    'Plano de assistência médica e hospitalar com ampla rede credenciada em Vitória da Conquista e região, cobrindo consultas, exames, urgências, internações e cirurgias eletivas para servidores e dependentes.',
+  icon: 'favorite_border',
+  action: 'Ver benefício',
+  category: 'Saúde',
+  status: 'Ativo',
+  procedures: [
+    'Consultas médicas em mais de 35 especialidades credenciadas',
+    'Exames laboratoriais e diagnósticos por imagem de alta complexidade (Ressonância, Tomografia, Ultrassom)',
+    'Atendimento de urgência e emergência 24h na rede hospitalar conveniada',
+    'Internações clínicas, cirúrgicas e terapia intensiva (UTI)',
+    'Sessões de fisioterapia, fonoaudiologia, psicologia e nutrição',
+    'Parto e assistência obstétrica integral'
+  ],
+  eligibility: [
+    'Servidores públicos municipais efetivos, estáveis e comissionados ativos',
+    'Aposentados e pensionistas vinculados ao regime próprio de previdência municipal',
+    'Dependentes diretos: Cônjuge/companheiro(a), filhos até 21 anos (ou até 24 se universitários)',
+    'Menores sob guarda ou tutela judicial devidamente comprovada'
+  ],
+  locations: [
+    {
+      name: 'Hospital Samur (Pronto-Socorro e Internação)',
+      address: 'Av. Irecê, 145 - Bairro Brasil',
+      phone: '(77) 2101-5000',
+      email: 'atendimento@samur.com.br',
+      hours: '24 horas'
+    },
+    {
+      name: 'Clínica Mais Saúde Servidor',
+      address: 'Rua Coronel Gugé, 280 - Centro',
+      phone: '(77) 3424-8900',
+      email: 'saude.servidor@pmvc.ba.gov.br',
+      hours: 'Segunda a Sexta, 07:30 às 17:30'
+    },
+    {
+      name: 'Laboratório Central Municipal',
+      address: 'Praça Guadalajara, s/n - Recreio',
+      phone: '(77) 3422-7744',
+      email: 'labcentral@pmvc.ba.gov.br',
+      hours: 'Segunda a Sexta, 06:30 às 16:00'
+    }
+  ],
+  downloads: [
+    { name: 'Guia do Usuário e Rede Credenciada 2026', size: '2.4 MB', type: 'PDF' },
+    { name: 'Formulário de Inclusão de Dependentes', size: '480 KB', type: 'PDF' },
+    { name: 'Termo de Adesão e Solicitação de Carteirinha Digital', size: '320 KB', type: 'PDF' },
+    { name: 'Tabela de Coparticipação e Especialidades', size: '650 KB', type: 'PDF' }
+  ]
+}
+
 const benefits = [
   {
     title: 'Plano de Saúde',
     description:
       'Consulte informações sobre seu plano de saúde, cobertura e serviços disponíveis.',
+    longDescription:
+      'Plano de assistência médica e hospitalar com ampla rede credenciada em Vitória da Conquista e região, cobrindo consultas, exames, urgências, internações e cirurgias eletivas para servidores e dependentes.',
     icon: 'favorite_border',
     action: 'Ver benefício',
-    category: 'Saúde'
+    category: 'Saúde',
+    status: 'Ativo',
+    procedures: [
+      'Consultas médicas em mais de 35 especialidades credenciadas',
+      'Exames laboratoriais e diagnósticos por imagem de alta complexidade (Ressonância, Tomografia, Ultrassom)',
+      'Atendimento de urgência e emergência 24h na rede hospitalar conveniada',
+      'Internações clínicas, cirúrgicas e terapia intensiva (UTI)',
+      'Sessões de fisioterapia, fonoaudiologia, psicologia e nutrição',
+      'Parto e assistência obstétrica integral'
+    ],
+    eligibility: [
+      'Servidores públicos municipais efetivos, estáveis e comissionados ativos',
+      'Aposentados e pensionistas vinculados ao regime próprio de previdência municipal',
+      'Dependentes diretos: Cônjuge/companheiro(a), filhos até 21 anos (ou até 24 se universitários)',
+      'Menores sob guarda ou tutela judicial devidamente comprovada'
+    ],
+    locations: [
+      {
+        name: 'Hospital Samur (Pronto-Socorro e Internação)',
+        address: 'Av. Irecê, 145 - Bairro Brasil',
+        phone: '(77) 2101-5000',
+        email: 'atendimento@samur.com.br',
+        hours: '24 horas'
+      },
+      {
+        name: 'Clínica Mais Saúde Servidor',
+        address: 'Rua Coronel Gugé, 280 - Centro',
+        phone: '(77) 3424-8900',
+        email: 'saude.servidor@pmvc.ba.gov.br',
+        hours: 'Segunda a Sexta, 07:30 às 17:30'
+      },
+      {
+        name: 'Laboratório Central Municipal',
+        address: 'Praça Guadalajara, s/n - Recreio',
+        phone: '(77) 3422-7744',
+        email: 'labcentral@pmvc.ba.gov.br',
+        hours: 'Segunda a Sexta, 06:30 às 16:00'
+      }
+    ],
+    downloads: [
+      { name: 'Guia do Usuário e Rede Credenciada 2026', size: '2.4 MB', type: 'PDF' },
+      { name: 'Formulário de Inclusão de Dependentes', size: '480 KB', type: 'PDF' },
+      { name: 'Termo de Adesão e Solicitação de Carteirinha Digital', size: '320 KB', type: 'PDF' },
+      { name: 'Tabela de Coparticipação e Especialidades', size: '650 KB', type: 'PDF' }
+    ]
   },
   {
     title: 'Auxílio Alimentação',
     description:
       'Consulte valores, regras e informações sobre o benefício.',
+    longDescription:
+      'Benefício mensal de caráter indenizatório destinado a subsidiar as despesas com alimentação do servidor municipal em efetivo exercício de suas funções.',
     icon: 'restaurant',
     action: 'Ver benefício',
-    category: 'Alimentação'
+    category: 'Alimentação',
+    status: 'Ativo',
+    procedures: [
+      'Crédito mensal automático depositado até o 5º dia útil de cada mês',
+      'Utilização exclusiva para compra de gêneros alimentícios em supermercados, feiras, mercearias e açougues conveniados',
+      'Aceito em mais de 450 estabelecimentos comerciais de Vitória da Conquista e distritos',
+      'Consulta de saldo e extrato em tempo real via aplicativo do cartão do servidor'
+    ],
+    eligibility: [
+      'Servidores públicos municipais em efetivo exercício de cargo público',
+      'Jornada de trabalho igual ou superior a 20 horas semanais',
+      'Não acumulação indevida com benefício similar em outros órgãos municipais'
+    ],
+    locations: [
+      {
+        name: 'Coordenação de Gestão de Pessoas (RH Central)',
+        address: 'Praça Joaquim Correia, 21 - Centro',
+        phone: '(77) 3424-8515',
+        email: 'rh.beneficios@pmvc.ba.gov.br',
+        hours: 'Segunda a Sexta, 08:00 às 17:00'
+      },
+      {
+        name: 'Central de Atendimento ao Servidor - Cartão Alimentação',
+        address: 'Av. Frei Benjamin, 1200 - Bairro Brasil',
+        phone: '0800 770 5000',
+        email: 'atendimento@cartaoservidor.com.br',
+        hours: 'Segunda a Sábado, 08:00 às 20:00'
+      }
+    ],
+    downloads: [
+      { name: 'Regulamento Oficial do Auxílio Alimentação Municipal', size: '1.1 MB', type: 'PDF' },
+      { name: 'Requerimento de 2ª Via do Cartão Alimentação', size: '280 KB', type: 'PDF' },
+      { name: 'Lista de Mercados e Estabelecimentos Credenciados', size: '890 KB', type: 'PDF' }
+    ]
   },
   {
     title: 'Auxílio Transporte',
     description:
       'Confira as informações e regras para utilização do auxílio.',
+    longDescription:
+      'Concessão de crédito de transporte para deslocamento residência-trabalho e vice-versa, garantindo mobilidade aos servidores municipais.',
     icon: 'directions_bus',
     action: 'Ver benefício',
-    category: 'Transporte'
+    category: 'Transporte',
+    status: 'Ativo',
+    procedures: [
+      'Recarga mensal eletrônica no Cartão Bem / Vale Transporte Eletrônico',
+      'Cobertura de linhas urbanas e linhas rurais operadas pelas concessionárias municipais',
+      'Reajuste automático conforme tabela tarifária vigente do município',
+      'Possibilidade de inclusão de trajetos de integração interbairros'
+    ],
+    eligibility: [
+      'Servidores que realizam despesas com transporte coletivo público urbano ou interdistrital',
+      'Declaração atualizada de endereço residencial e local de lotação',
+      'Distância mínima de 1 km entre a residência e o local de trabalho'
+    ],
+    locations: [
+      {
+        name: 'Secretaria de Mobilidade Urbana (SEMOB)',
+        address: 'Rua Guanambi, 65 - Bairro Brasil',
+        phone: '(77) 3424-8990',
+        email: 'transporte.servidor@pmvc.ba.gov.br',
+        hours: 'Segunda a Sexta, 08:00 às 17:00'
+      },
+      {
+        name: 'Posto Central ATUV - Vale Transporte',
+        address: 'Praça Marcelino Mendes, s/n - Centro',
+        phone: '(77) 3422-8100',
+        email: 'contato@atuv.com.br',
+        hours: 'Segunda a Sexta, 07:00 às 18:00'
+      }
+    ],
+    downloads: [
+      { name: 'Formulário de Solicitação e Atualização de Trajeto', size: '390 KB', type: 'PDF' },
+      { name: 'Termo de Compromisso e Declaração de Residência', size: '310 KB', type: 'PDF' },
+      { name: 'Mapa de Linhas e Horários do Transporte Coletivo', size: '1.8 MB', type: 'PDF' }
+    ]
   },
   {
     title: 'Convênios',
     description:
       'Confira os convênios disponíveis para servidores municipais.',
+    longDescription:
+      'Parcerias exclusivas com faculdades, escolas de idiomas, academias, óticas e centros culturais com descontos de 15% a 60% para servidores e dependentes.',
     icon: 'handshake',
-    action: 'Ver convênios',
+    action: 'Ver benefício',
     badge: 'Novo',
-    category: 'Convênios'
+    category: 'Convênios',
+    status: 'Ativo',
+    procedures: [
+      'Apresentação do crachá funcional ou contracheque do mês recente',
+      'Desconto aplicado diretamente na matrícula, mensalidade ou pagamento',
+      'Extensivo aos dependentes de 1º grau (mediante comprovação de parentesco)',
+      'Sem carência ou fidelidade além das regras da instituição conveniada'
+    ],
+    eligibility: [
+      'Todos os servidores públicos municipais ativos, aposentados e comissionados',
+      'Estagiários vinculados à Prefeitura Municipal de Vitória da Conquista',
+      'Dependentes legais (cônjuges e filhos)'
+    ],
+    locations: [
+      {
+        name: 'Coordenação de Parcerias e Convênios do Servidor',
+        address: 'Praça Joaquim Correia, 21 - Anexo I',
+        phone: '(77) 3424-8500',
+        email: 'convenios@pmvc.ba.gov.br',
+        hours: 'Segunda a Sexta, 08:00 às 17:00'
+      },
+      {
+        name: 'Rede de Faculdades e Escolas Parceiras (FAINOR, UniFTC, Santo Agostinho)',
+        address: 'Diversos polos em Vitória da Conquista',
+        phone: '(77) 3161-1000',
+        email: 'parcerias.conquista@educacao.com.br',
+        hours: 'Atendimento nos respectivos campi'
+      }
+    ],
+    downloads: [
+      { name: 'Catálogo Geral de Empresas e Instituições Conveniadas 2026', size: '3.5 MB', type: 'PDF' },
+      { name: 'Declaração de Vínculo Funcional para Convênios', size: '240 KB', type: 'PDF' },
+      { name: 'Guia de Vantagens e Cupons no Comércio Local', size: '1.4 MB', type: 'PDF' }
+    ]
   },
   {
     title: 'Previdência',
     description:
       'Acesse informações relacionadas à previdência do servidor.',
+    longDescription:
+      'Gestão previdenciária e acompanhamento funcional através do Instituto de Previdência dos Servidores Públicos Municipais de Vitória da Conquista.',
     icon: 'shield',
-    action: 'Consultar',
-    category: 'Previdência'
+    action: 'Ver benefício',
+    category: 'Previdência',
+    status: 'Ativo',
+    procedures: [
+      'Simulação de tempo de contribuição e regras de transição de aposentadoria',
+      'Solicitação e emissão de Certidão de Tempo de Contribuição (CTC)',
+      'Abertura de processos de aposentadoria voluntária, por idade ou invalidez',
+      'Concessão de pensão por morte e auxílio-reclusão aos dependentes'
+    ],
+    eligibility: [
+      'Servidores públicos municipais titulares de cargo efetivo',
+      'Servidores aposentados e pensionistas vinculados ao RPPS municipal'
+    ],
+    locations: [
+      {
+        name: 'Sede do Instituto de Previdência Municipal (PREVCON)',
+        address: 'Av. Jesiel Norberto, 400 - Candeias',
+        phone: '(77) 3420-9100',
+        email: 'atendimento@prevcon.ba.gov.br',
+        hours: 'Segunda a Sexta, 08:00 às 16:30'
+      }
+    ],
+    downloads: [
+      { name: 'Guia de Orientação Previdenciária e Aposentadoria', size: '2.1 MB', type: 'PDF' },
+      { name: 'Requerimento de Certidão de Tempo de Contribuição (CTC)', size: '420 KB', type: 'PDF' },
+      { name: 'Formulário de Atualização Cadastral e Prova de Vida', size: '350 KB', type: 'PDF' }
+    ]
   },
   {
     title: 'Benefícios e Descontos',
     description:
       'Consulte descontos e condições especiais disponíveis aos servidores.',
+    longDescription:
+      'Clube de vantagens municipal com ampla rede de parceiros em farmácias, clínicas odontológicas, lazer, restaurantes e combustíveis com descontos diferenciados.',
     icon: 'percent',
-    action: 'Ver opções',
-    category: 'Convênios'
+    action: 'Ver benefício',
+    category: 'Convênios',
+    status: 'Ativo',
+    procedures: [
+      'Descontos instantâneos no balcão apresentando contracheque ou carteira virtual',
+      'Parcerias com redes de farmácias com até 45% de desconto em genéricos',
+      'Descontos em academias e centros de atividades físicas credenciados',
+      'Validação rápida via QR Code do portal'
+    ],
+    eligibility: [
+      'Todos os servidores públicos municipais da administração direta e indireta',
+      'Cônjuges e dependentes cadastrados'
+    ],
+    locations: [
+      {
+        name: 'Central de Benefícios do Servidor',
+        address: 'Praça Joaquim Correia, 21 - Centro',
+        phone: '(77) 3424-8500',
+        email: 'beneficios@pmvc.ba.gov.br',
+        hours: 'Segunda a Sexta, 08:00 às 17:00'
+      }
+    ],
+    downloads: [
+      { name: 'Lista Completa de Farmácias e Descontos em Medicamentos', size: '1.2 MB', type: 'PDF' },
+      { name: 'Manual do Clube de Descontos do Servidor', size: '980 KB', type: 'PDF' }
+    ]
   }
 ]
 
@@ -207,5 +481,11 @@ const filteredBenefits = computed(() => {
 function clearFilters() {
   search.value = ''
   selectedCategory.value = 'Todos'
+}
+
+function openBenefitDetails(benefit) {
+  const target = benefits.find(b => b.title === benefit.title) || benefit
+  selectedBenefit.value = target
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 </script>

@@ -3,10 +3,10 @@
     <!-- Cabeçalho -->
     <div class="text-center">
       <h2 class="text-lg md:text-xl font-bold tracking-tight text-white">
-        Recentes
+        Mais acessados
       </h2>
       <p class="mt-1 text-xs text-white/80 font-normal">
-        Ultimos documentos adicionados
+        Ultimos documentos baixados
       </p>
     </div>
 
