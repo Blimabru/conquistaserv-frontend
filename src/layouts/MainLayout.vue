@@ -6,7 +6,7 @@
           <q-btn flat icon="menu" label="Menu" @click="leftDrawerOpen = !leftDrawerOpen" />
         </div>
 
-        <div>
+        <div class="absolute left-1/2 -translate-x-1/2">
           <q-toolbar-title style="line-height: normal">
             <LogoServConquista />
           </q-toolbar-title>
@@ -36,17 +36,17 @@
             <q-avatar
               size="43px"
               icon="account_circle" />
-            
-            <q-menu 
-              auto-close 
-              :offset="[10, 15]" 
+
+            <q-menu
+              auto-close
+              :offset="[10, 15]"
               class="bg-transparent shadow-0 no-shadow"
               style="border-radius: 28px; overflow: visible;"
             >
               <UserMenu />
             </q-menu>
           </q-btn>
-        
+
         </div>
 
       </q-toolbar>
@@ -61,31 +61,34 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <!-- Assistente Virtual Vitória -->
+    <VitoriaChat />
     <OnboardingTour />
 
     <!-- FOOTER ADICIONADO -->
     <q-footer class="bg-dark text-white q-py-md">
       <div class="row justify-center items-center q-gutter-xl">
         <!-- Logo Hackathon -->
-        <img 
-          src="/images/Code4City.png" 
-          alt="Logo Hackathon" 
+        <img
+          src="/images/Code4City.png"
+          alt="Logo Hackathon"
           class="object-contain"
           style="max-height: 60px; width: auto;"
         />
 
         <!-- Logo Hub -->
-        <img 
-          src="/images/LOGO_HUB.png" 
-          alt="Logo Hub" 
+        <img
+          src="/images/LOGO_HUB.png"
+          alt="Logo Hub"
           class="object-contain"
           style="max-height: 60px; width: auto;"
         />
 
         <!-- Logo Prefeitura -->
-        <img 
-          src="/images/LogoPMVC.jpg" 
-          alt="Logo Prefeitura" 
+        <img
+          src="/images/LogoPMVC.jpg"
+          alt="Logo Prefeitura"
           class="object-contain"
           style="max-height: 60px; width: auto;"
         />
@@ -105,6 +108,7 @@ import { useOnboardingStore } from '../stores/onboardingStore';
 import LogoServConquista from 'components/common/LogoServConquista.vue';
 import UserMenu from 'components/common/UserMenu.vue';
 import NotificationOpen from 'components/common/NotificationOpen.vue';
+import VitoriaChat from 'components/vitoria/VitoriaChat.vue';
 import OnboardingTour from 'components/common/OnboardingTour.vue';
 
 const router = useRouter();
@@ -139,7 +143,7 @@ function configurarMenu() {
   const accessLevel = (window.sessionStorage.getItem('access_level') || (authStore.isAdmin ? 'ADMIN' : '')).toUpperCase();
   const rawUserName = window.sessionStorage.getItem('name_user') || authStore.nameUser;
   getFirstName(rawUserName ? rawUserName : 'Maria Silva');
-  
+
   links.value = [];
 
   if (accessLevel === 'ADMIN') {
