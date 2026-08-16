@@ -38,8 +38,8 @@ jobs:
           VERSION=1.0.0
           PORT=8080
           PROTOCOL=https
-          BASE_URL=https://conquistaserv.brainstormlabs.online/
-          API_BASE_URL=https://conquistaserv.brainstormlabs.online/api/
+          BASE_URL=https://servconquista.brainstormlabs.online/
+          API_BASE_URL=https://servconquista.brainstormlabs.online/api/
           EOF
 
       - name: Instalar Quasar CLI globalmente
