@@ -4,7 +4,7 @@
         <div class="lg:col-span-7 bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col justify-between relative overflow-hidden">
         <!-- Botão Ação Superior Direito -->
         <a
-            href="https://www.pmvc.ba.gov.br/prefeitura-promove-integracao-da-nova-equipe-de-gestao-da-sashds-e-reforca-compromisso-com-a-qualidade-dos-servicos/"
+            href="https://servconquista.brainstormlabs.online/comunicacao"
             target="_blank"
             rel="noopener noreferrer"
             class="block no-underline text-inherit cursor-pointer group"

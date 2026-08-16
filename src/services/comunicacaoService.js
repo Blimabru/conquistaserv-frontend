@@ -1,25 +1,48 @@
 import { api } from 'src/boot/axios';
 import * as mock from 'src/mocks/comunicacao.mock';
+import {
+  ID_PUBLICACAO_FIXA,
+  publicacaoFixa,
+  reagirFixa,
+  removerReacaoFixa,
+  listarReacoesFixa,
+} from 'src/mocks/publicacaoFixa';
 
 const USE_MOCK =
   process.env.MOCK_API === 'true' || process.env.MOCK_API === true;
+
+// A publicação fixa só entra na primeira página do feed geral, sem busca e
+// fora da aba de destaques — para não poluir resultados filtrados.
+function cabePublicacaoFixa({ pagina, busca, apenasDestaques }) {
+  return pagina === 1 && !busca && !apenasDestaques;
+}
 
 function comDelay(valor, ms = 320) {
   return new Promise((resolve) => setTimeout(() => resolve(valor), ms));
 }
 
 export async function listarFeed(params = {}) {
-  if (USE_MOCK) return comDelay(mock.listarFeed(params));
   const {
     pagina = 1,
     itensPorPagina = 10,
     busca = '',
     apenasDestaques = false,
   } = params;
-  const { data } = await api.get(
-    `comunicacao/publicacoes?pagina=${pagina}&itensPorPagina=${itensPorPagina}&busca=${busca}&destaques=${apenasDestaques}`,
-  );
-  return data;
+
+  const resposta = USE_MOCK
+    ? await comDelay(mock.listarFeed(params))
+    : (
+        await api.get(
+          `comunicacao/publicacoes?pagina=${pagina}&itensPorPagina=${itensPorPagina}&busca=${busca}&destaques=${apenasDestaques}`,
+        )
+      ).data;
+
+  if (!cabePublicacaoFixa({ pagina, busca, apenasDestaques })) return resposta;
+
+  return {
+    ...resposta,
+    data: [publicacaoFixa(), ...(resposta.data || [])],
+  };
 }
 
 export async function listarPorCanal(canalId, params = {}) {
@@ -32,18 +55,21 @@ export async function listarPorCanal(canalId, params = {}) {
 }
 
 export async function buscarPublicacao(id) {
+  if (id === ID_PUBLICACAO_FIXA) return publicacaoFixa();
   if (USE_MOCK) return comDelay(mock.buscarPublicacao(id));
   const { data } = await api.get(`comunicacao/publicacoes/${id}`);
   return data;
 }
 
 export async function marcarLido(id) {
+  if (id === ID_PUBLICACAO_FIXA) return publicacaoFixa();
   if (USE_MOCK) return comDelay(mock.marcarLido(id), 120);
   const { data } = await api.post(`comunicacao/publicacoes/${id}/lido`);
   return data;
 }
 
 export async function reagir(id, tipo) {
+  if (id === ID_PUBLICACAO_FIXA) return comDelay(reagirFixa(tipo), 150);
   if (USE_MOCK) return comDelay(mock.reagir(id, tipo), 150);
   const { data } = await api.put(`comunicacao/publicacoes/${id}/reacao`, {
     tipo,
@@ -52,12 +78,14 @@ export async function reagir(id, tipo) {
 }
 
 export async function removerReacao(id) {
+  if (id === ID_PUBLICACAO_FIXA) return comDelay(removerReacaoFixa(), 150);
   if (USE_MOCK) return comDelay(mock.removerReacao(id), 150);
   const { data } = await api.delete(`comunicacao/publicacoes/${id}/reacao`);
   return data;
 }
 
 export async function listarReacoes(id) {
+  if (id === ID_PUBLICACAO_FIXA) return comDelay(listarReacoesFixa());
   if (USE_MOCK) return comDelay(mock.listarReacoes(id));
   const { data } = await api.get(`comunicacao/publicacoes/${id}/reacoes`);
   return data;
