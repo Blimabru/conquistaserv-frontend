@@ -27,7 +27,7 @@
           <!-- Botão direto "Preciso de ajuda agora" (Sem modal) -->
           <button
             type="button"
-            class="inline-flex items-center gap-2 rounded-2xl bg-[#E2007A] px-5 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:bg-[#c20069] hover:shadow-lg active:scale-95 cursor-pointer border-none animate-pulse-subtle"
+            class="inline-flex items-center gap-2 rounded-2xl bg-[#E2007A] px-5 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:bg-[#c20069] hover:shadow-lg active:scale-95 cursor-pointer border-none"
           >
             <q-icon name="crisis_alert" size="20px" />
             <span>Preciso de ajuda agora</span>
@@ -164,11 +164,11 @@ const servicosNast = [
   {
     title: 'Saúde Mental',
     icon: 'psychology',
-    iconBg: '#F3E8FF',
-    iconColor: '#9333EA',
-    btnBg: '#FAF5FF',
-    btnTextColor: '#9333EA',
-    btnBorder: '#E9D5FF',
+    iconBg: '#E0F2FE',
+    iconColor: '#045DA5',
+    btnBg: '#F0F9FF',
+    btnTextColor: '#045DA5',
+    btnBorder: '#BAE6FD',
     items: [
       'Psicologia',
       'Psiquiatria',
@@ -183,9 +183,9 @@ const servicosNast = [
     title: 'Saúde Ocupacional',
     icon: 'medical_services',
     iconBg: '#E0F2FE',
-    iconColor: '#0284C7',
+    iconColor: '#045DA5',
     btnBg: '#F0F9FF',
-    btnTextColor: '#0284C7',
+    btnTextColor: '#045DA5',
     btnBorder: '#BAE6FD',
     items: [
       'Medicina do Trabalho',
@@ -200,11 +200,11 @@ const servicosNast = [
   {
     title: 'Segurança do Trabalho',
     icon: 'engineering',
-    iconBg: '#FEF3C7',
-    iconColor: '#D97706',
-    btnBg: '#FFFBEB',
-    btnTextColor: '#D97706',
-    btnBorder: '#FDE68A',
+    iconBg: '#E0F2FE',
+    iconColor: '#045DA5',
+    btnBg: '#F0F9FF',
+    btnTextColor: '#045DA5',
+    btnBorder: '#BAE6FD',
     items: [
       'Ergonomia',
       'EPI',
@@ -218,11 +218,11 @@ const servicosNast = [
   {
     title: 'Saúde e Bem-Estar',
     icon: 'accessibility_new',
-    iconBg: '#DCFCE7',
-    iconColor: '#16A34A',
-    btnBg: '#F0FDF4',
-    btnTextColor: '#16A34A',
-    btnBorder: '#BBF7D0',
+    iconBg: '#E0F2FE',
+    iconColor: '#045DA5',
+    btnBg: '#F0F9FF',
+    btnTextColor: '#045DA5',
+    btnBorder: '#BAE6FD',
     items: [
       'Fisioterapia',
       'Ginástica laboral',
@@ -236,11 +236,11 @@ const servicosNast = [
   {
     title: 'Serviço Social',
     icon: 'volunteer_activism',
-    iconBg: '#FCE7F3',
-    iconColor: '#DB2777',
-    btnBg: '#FDF2F8',
-    btnTextColor: '#DB2777',
-    btnBorder: '#FBCFE8',
+    iconBg: '#E0F2FE',
+    iconColor: '#045DA5',
+    btnBg: '#F0F9FF',
+    btnTextColor: '#045DA5',
+    btnBorder: '#BAE6FD',
     items: [
       'Orientações',
       'Acolhimento',
@@ -257,10 +257,10 @@ const programasNast = [
   {
     title: 'FeliS',
     subtitle: 'Felicidade Interna do Servidor',
-    subtitleColor: '#CA8A04',
+    subtitleColor: '#045DA5',
     icon: 'sentiment_very_satisfied',
-    iconBg: '#FEF9C3',
-    iconColor: '#CA8A04',
+    iconBg: '#E0F2FE',
+    iconColor: '#045DA5',
     description: 'Programa de valorização e bem-estar voltado para a felicidade, relações positivas e clima saudável no ambiente de trabalho.',
     targetAudience: 'Todos os servidores',
     nextActivity: '28/08/2026 — Encontro mensal',
@@ -269,10 +269,10 @@ const programasNast = [
   {
     title: 'GiNast',
     subtitle: 'Corpo e Mente',
-    subtitleColor: '#16A34A',
+    subtitleColor: '#045DA5',
     icon: 'directions_run',
-    iconBg: '#DCFCE7',
-    iconColor: '#16A34A',
+    iconBg: '#E0F2FE',
+    iconColor: '#045DA5',
     description: 'Atividades de ginástica laboral e práticas corporais para promover saúde física, flexibilidade, relaxamento e disposição.',
     targetAudience: 'Todos os servidores',
     nextActivity: '19/08/2026 — Ginástica laboral 7h',
@@ -281,10 +281,10 @@ const programasNast = [
   {
     title: 'Servir de Exemplo',
     subtitle: 'Reconhecimento e Inspiração',
-    subtitleColor: '#0284C7',
+    subtitleColor: '#045DA5',
     icon: 'auto_awesome',
     iconBg: '#E0F2FE',
-    iconColor: '#0284C7',
+    iconColor: '#045DA5',
     description: 'Iniciativa de reconhecimento de servidores que se destacam pelo comprometimento, gentileza e qualidade no atendimento público.',
     targetAudience: 'Todos os servidores',
     nextActivity: '01/09/2026 — Cerimônia de premiação',
@@ -293,10 +293,10 @@ const programasNast = [
   {
     title: 'Entre Nós Mulheres',
     subtitle: 'Saúde e Sororidade',
-    subtitleColor: '#DB2777',
+    subtitleColor: '#045DA5',
     icon: 'diversity_1',
-    iconBg: '#FCE7F3',
-    iconColor: '#DB2777',
+    iconBg: '#E0F2FE',
+    iconColor: '#045DA5',
     description: 'Espaço de acolhimento, debates sobre saúde da mulher, maternidade, liderança e fortalecimento para servidoras municipais.',
     targetAudience: 'Servidoras municipais',
     nextActivity: '22/08/2026 — Roda de conversa',
@@ -305,10 +305,10 @@ const programasNast = [
   {
     title: 'Atenção Plena',
     subtitle: 'Mindfulness',
-    subtitleColor: '#EA580C',
+    subtitleColor: '#045DA5',
     icon: 'self_improvement',
-    iconBg: '#FFEDD5',
-    iconColor: '#EA580C',
+    iconBg: '#E0F2FE',
+    iconColor: '#045DA5',
     description: 'Práticas de meditação guiada e mindfulness para redução do estresse, aumento de foco e equilíbrio emocional.',
     targetAudience: 'Todos os servidores',
     nextActivity: '20/08/2026 — Sessão semanal 12h',
@@ -317,10 +317,10 @@ const programasNast = [
   {
     title: 'Campanhas de Saúde e Segurança',
     subtitle: 'Prevenção Contínua',
-    subtitleColor: '#DC2626',
+    subtitleColor: '#045DA5',
     icon: 'health_and_safety',
-    iconBg: '#FFE4E6',
-    iconColor: '#DC2626',
+    iconBg: '#E0F2FE',
+    iconColor: '#045DA5',
     description: 'Campanhas anuais temáticas (Setembro Amarelo, Outubro Rosa, Novembro Azul e SIPAT) com palestras e exames preventivos.',
     targetAudience: 'Todos os servidores',
     nextActivity: '10/09/2026 — Abertura Setembro Amarelo',
