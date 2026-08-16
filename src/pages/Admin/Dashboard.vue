@@ -1,47 +1,39 @@
 <template>
-  <q-page padding>
-    <div class="row flex justify-around">
-      <CardDashboard :infoDashboard="infoDashboard" />
+  <q-page class="bg-slate-50 min-h-screen p-4 md:p-6 lg:p-8 flex ">
+    <div class="w-full max-w-6xl flex flex-col gap-6">
+      
+      <!-- 1. Top Buttons Grid -->
+      <TopButtonsGrid />
+
+      <!-- 2. Hero / Destaques Grid -->
+      <DestaquesGrid />
+      <!-- 3. Feed de Notícias & Widgets Laterais -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Feed de Notícias (Esquerda) -->
+        <FeedNoticias />
+        <!-- Sidebar / Widgets (Direita) -->
+        <SideBarWidgets />
+        
+      </section>
+
+      <!-- Botão Flutuante (Acessibilidade / Suporte) -->
+      <div class="fixed bottom-6 right-6 z-50">
+        <q-btn
+          round
+          size="md"
+          class="bg-pink-100 text-pink-600 shadow-lg border border-pink-200"
+          icon="accessibility_new"
+        />
+      </div>
+
     </div>
   </q-page>
 </template>
 
 <script setup>
-import CardDashboard from 'src/components/dashboard/CardDashboard.vue';
-import { ref } from 'vue';
-
-const infoDashboard = ref([
-  {
-    amount: 10,
-    icon: 'home',
-    iconColor: 'green',
-    backgroundColor:
-      'linear-gradient(to left, rgba(200, 228, 213, 0.3), rgba(255, 255, 255, 0.98))',
-    amountColor: 'black',
-    title: 'Início',
-    size_icon: '5em',
-  },
-  {
-    amount: 5,
-    icon: 'settings',
-    iconColor: 'blue',
-    backgroundColor:
-      'linear-gradient(to left, rgba(249, 233, 184, 0.2), rgba(255, 253, 249, 0.89))',
-    amountColor: 'black',
-    title: 'Administradores',
-    size_icon: '5em',
-  },
-  {
-    amount: 15,
-    icon: 'favorite',
-    iconColor: 'red',
-    backgroundColor:
-      'linear-gradient(to left, rgba(95, 246, 236, 0.2), rgba(255, 255, 255, 0.87))',
-    amountColor: 'black',
-    title: 'Favoritos',
-    size_icon: '5em',
-  },
-]);
+import TopButtonsGrid from 'components/dashboard/TopButtonsGrid.vue'
+import DestaquesGrid from 'components/dashboard/DestaquesGrid.vue'
+import FeedNoticias from 'components/dashboard/FeedNoticias.vue'
+import SideBarWidgets from 'components/dashboard/SideBarWidgets.vue'
 </script>
-
-<style scoped></style>
