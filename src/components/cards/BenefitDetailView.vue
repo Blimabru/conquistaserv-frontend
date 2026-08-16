@@ -1,31 +1,22 @@
 <template>
   <div class="mx-auto max-w-[1280px] pb-12 animate-fade-in">
     <!-- Barra Superior de Navegação (Voltar) -->
-    <div class="mb-6 flex items-center justify-between">
+    <div class="mb-6 flex items-center">
       <button
         type="button"
-        class="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#045DA5] shadow-xs transition-all hover:bg-blue-50 hover:border-[#045DA5] active:scale-95 cursor-pointer"
+        class="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-primary shadow-xs transition-all hover:bg-gray-50 hover:border-primary active:scale-95 cursor-pointer"
         @click="$emit('back')"
       >
         <q-icon name="arrow_back" size="18px" />
         <span>Voltar para Benefícios</span>
       </button>
-
-      <!-- Status de Adesão do Usuário -->
-      <div class="inline-flex items-center gap-2 rounded-full bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 text-xs font-semibold text-emerald-700 shadow-2xs">
-        <span class="relative flex h-2.5 w-2.5">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-        </span>
-        <span>Status da sua adesão: <strong class="font-bold text-emerald-800">{{ benefit?.status || 'Ativo' }}</strong></span>
-      </div>
     </div>
 
     <!-- Banner Principal do Benefício -->
-    <div class="mb-8 overflow-hidden rounded-3xl bg-gradient-to-r from-[#045DA5] to-[#024881] p-6 md:p-10 text-white shadow-lg relative">
-      <!-- Ícone decorativo de fundo -->
-      <div class="absolute right-6 -bottom-6 text-white/10 pointer-events-none select-none hidden md:block">
-        <q-icon :name="benefit?.icon || 'loyalty'" size="180px" />
+    <div class="mb-8 overflow-hidden rounded-3xl bg-primary p-6 md:p-10 text-white shadow-lg relative">
+      <!-- Ícone decorativo de fundo (maior e à direita) -->
+      <div class="absolute -right-12 top-1/2 -translate-y-1/2 text-white/10 pointer-events-none select-none hidden md:block">
+        <q-icon :name="benefit?.icon || 'loyalty'" size="280px" />
       </div>
 
       <div class="relative z-10 max-w-3xl">
@@ -33,39 +24,18 @@
           <span class="inline-flex items-center rounded-full bg-white/20 backdrop-blur-xs px-3 py-1 text-xs font-semibold text-white tracking-wide border border-white/20">
             {{ benefit?.category || 'Serviço Municipal' }}
           </span>
-          <span v-if="benefit?.badge" class="inline-flex items-center rounded-full bg-[#E2007A] px-3 py-1 text-xs font-semibold text-white tracking-wide">
+          <span v-if="benefit?.badge" class="inline-flex items-center rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-white tracking-wide">
             {{ benefit.badge }}
           </span>
         </div>
 
-        <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight text-white leading-tight !m-0 !p-0">
+        <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-white leading-tight !m-0 !p-0">
           {{ benefit?.title }} — Detalhes do Benefício
         </h1>
 
         <p class="mt-3 text-sm md:text-base text-white/90 leading-relaxed font-normal !mb-0">
           {{ benefit?.longDescription || benefit?.description }}
         </p>
-
-        <div class="mt-6 flex flex-wrap items-center gap-3 pt-2">
-          <q-btn
-            unelevated
-            color="secondary"
-            label="Solicitar / Atualizar Adesão"
-            icon="how_to_reg"
-            no-caps
-            class="rounded-xl px-5 py-2.5 text-sm font-semibold shadow-md active:scale-95"
-            @click="handleAction('adesao')"
-          />
-          <q-btn
-            outline
-            color="white"
-            label="Falar com a Central de Benefícios"
-            icon="headset_mic"
-            no-caps
-            class="rounded-xl px-4 py-2.5 text-sm font-semibold hover:bg-white/10"
-            @click="handleAction('contato')"
-          />
-        </div>
       </div>
     </div>
 
@@ -79,11 +49,11 @@
         <div class="rounded-3xl border border-gray-200 bg-white p-6 md:p-8 shadow-xs">
           <!-- Cabeçalho alinhado e compacto -->
           <div class="flex items-center gap-3.5 mb-5 border-b border-gray-100 pb-4">
-            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-[#045DA5]">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-primary">
               <q-icon name="checklist" size="24px" />
             </div>
             <div class="min-w-0 flex-1">
-              <h2 class="section-title text-base md:text-lg font-bold text-gray-900">
+              <h2 class="section-title text-base md:text-lg font-semibold text-gray-900">
                 Procedimentos Cobertos & Regras de Utilização
               </h2>
               <p class="section-subtitle text-xs text-gray-500">
@@ -113,7 +83,7 @@
               <q-icon name="verified_user" size="24px" />
             </div>
             <div class="min-w-0 flex-1">
-              <h2 class="section-title text-base md:text-lg font-bold text-gray-900">
+              <h2 class="section-title text-base md:text-lg font-semibold text-gray-900">
                 Critérios de Elegibilidade
               </h2>
               <p class="section-subtitle text-xs text-gray-500">
@@ -143,7 +113,7 @@
               <q-icon name="location_on" size="24px" />
             </div>
             <div class="min-w-0 flex-1">
-              <h2 class="section-title text-base md:text-lg font-bold text-gray-900">
+              <h2 class="section-title text-base md:text-lg font-semibold text-gray-900">
                 Locais Participantes & Postos de Atendimento
               </h2>
               <p class="section-subtitle text-xs text-gray-500">
@@ -158,8 +128,8 @@
               :key="idx"
               class="rounded-2xl border border-gray-200 bg-slate-50/50 p-4 transition-all hover:bg-slate-50"
             >
-              <h3 class="text-sm md:text-base font-bold text-gray-900 flex items-center gap-2 !m-0 !p-0">
-                <q-icon name="apartment" size="18px" class="text-[#045DA5]" />
+              <h3 class="text-sm md:text-base font-semibold text-gray-900 flex items-center gap-2 !m-0 !p-0">
+                <q-icon name="apartment" size="18px" class="text-primary" />
                 {{ loc.name }}
               </h3>
 
@@ -193,8 +163,8 @@
         <!-- Card: Downloads de Formulários -->
         <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-xs">
           <div class="flex items-center gap-2.5 mb-5 border-b border-gray-100 pb-3">
-            <q-icon name="cloud_download" size="22px" class="text-[#045DA5]" />
-            <h2 class="section-title text-base font-bold text-gray-900">
+            <q-icon name="cloud_download" size="22px" class="text-primary" />
+            <h2 class="section-title text-base font-semibold text-gray-900">
               Formulários & Downloads
             </h2>
           </div>
@@ -225,7 +195,7 @@
               <button
                 type="button"
                 aria-label="Baixar arquivo"
-                class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#045DA5] text-white transition-transform hover:scale-105 active:scale-95 border-none cursor-pointer"
+                class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-white transition-transform hover:scale-105 active:scale-95 border-none cursor-pointer"
                 @click.stop="downloadDoc(doc)"
               >
                 <q-icon name="download" size="16px" />
@@ -235,10 +205,10 @@
         </div>
 
         <!-- Card: Suporte e Atendimento ao Servidor -->
-        <div class="rounded-3xl bg-[#045DA5] p-6 text-white shadow-md">
+        <div class="rounded-3xl bg-primary p-6 text-white shadow-md">
           <div class="flex items-center gap-2.5 mb-3">
             <q-icon name="support_agent" size="26px" />
-            <h2 class="text-base font-bold !m-0 !p-0">Dúvidas sobre o benefício?</h2>
+            <h2 class="text-base font-semibold !m-0 !p-0">Dúvidas sobre o benefício?</h2>
           </div>
 
           <p class="text-xs text-white/85 leading-relaxed !mb-0 mt-2">

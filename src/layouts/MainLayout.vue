@@ -119,36 +119,36 @@ function configurarMenu() {
         link: '/admin/secretarias',
       },
       {
-        title: 'Gerenciar Publicações',
+        title: 'Publicações',
         icon: 'article',
         link: '/admin/comunicacao/publicacoes',
       },
-       {
-        title: 'Gerenciar Canais',
+      {
+        title: 'Canais',
         icon: 'list_alt',
         link: '/admin/comunicacao/canais',
       },
       {
-        title: 'Benefícios',
-        icon: 'loyalty',
-        link: '/beneficios',
+        title: 'Serviços',
+        icon: 'apps',
+        link: '/admin/servicos',
       },
       {
         title: 'Documentos',
-        icon: 'article',
-        link: '/documentos',
+        icon: 'description',
+        link: '/admin/documentos',
       },
       {
-        title: 'Serviços',
-        icon: 'apps',
-        link: '/servicos',
+        title: 'Benefícios',
+        icon: 'loyalty',
+        link: '/admin/beneficios',
       },
       {
         title: 'Feedback',
         icon: 'chat_bubble_outline',
         link: '/feedback',
       },
-            {
+      {
         title: 'Usuários',
         icon: 'group',
         link: '/admin/usuarios',

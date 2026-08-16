@@ -34,14 +34,12 @@ const props = defineProps({
   }
 });
 
-// Geração de insights baseados nos dados reais sem inventar (Conforme requisito do prompt)
 const insights = computed(() => {
   const result = [];
   const m = props.metrics;
   
   if (!m || !m.total || m.total === 0) return result;
 
-  // Insight 1: Satisfação geral
   if (m.positivasPct > 70) {
     result.push({
       icon: 'sentiment_very_satisfied',
@@ -56,7 +54,6 @@ const insights = computed(() => {
     });
   }
 
-  // Insight 2: Principal problema
   if (m.categorias && m.categorias.length > 0) {
     const piorCategoria = m.categorias[0];
     const pctCategoria = Math.round((piorCategoria.count / m.total) * 100);
@@ -71,7 +68,6 @@ const insights = computed(() => {
     }
   }
 
-  // Insight 3: Destaque de serviço
   if (m.servicos && m.servicos.length > 1) {
     const melhor = m.servicos[0];
     const pior = m.servicos[m.servicos.length - 1];

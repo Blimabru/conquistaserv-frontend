@@ -46,8 +46,14 @@
         </div>
       </div>
 
+      <!-- Spinner de Carregamento -->
+      <div v-if="loading" class="flex flex-col items-center justify-center py-16">
+        <q-spinner-dots color="primary" size="40px" />
+        <p class="mt-3 text-sm text-gray-500 font-medium">Carregando documentos...</p>
+      </div>
+
       <!-- Grid Principal: Documentos (2 colunas) + Sidebar Recentes -->
-      <div class="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px] xl:grid-cols-[1fr_350px] items-start">
+      <div v-else class="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px] xl:grid-cols-[1fr_350px] items-start">
 
         <!-- Grid de Documentos: 2 colunas -->
         <div>
@@ -110,11 +116,13 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import DocumentCard from 'src/components/cards/DocumentCard.vue'
 import RecentDocuments from 'src/components/common/RecentDocuments.vue'
 import DocumentPreviewModal from 'src/components/modals/DocumentPreviewModal.vue'
+import { listarDocumentos, listarDocumentosRecentes } from 'src/services/documentos/documentosService'
+import { dataRelativa } from 'src/helpers/comunicacao/formatters'
 
 const $q = useQuasar()
 
@@ -122,174 +130,42 @@ const search = ref('')
 const selectedCategory = ref('Todos')
 const showPreviewModal = ref(false)
 const selectedDoc = ref(null)
+const documents = ref([])
+const recentDocuments = ref([])
+const loading = ref(true)
 
-const categories = [
-  'Todos',
-  'Administrativo',
-  'Gratificações',
-  'Educação'
-]
-
-const documents = [
-  {
-    id: 1,
-    title: 'ED-F-005 FOLHA DE PONTO',
-    version: 'v1.0',
-    description: 'Documento oficial para registro e controle de frequência mensal do servidor.',
-    category: 'Administrativo',
-    tagLabel: 'Administrativo',
-    fileId: '1A0D6XtauRGoD670cjXAMdcmlzKsmLkks',
-    url: 'https://drive.google.com/file/d/1A0D6XtauRGoD670cjXAMdcmlzKsmLkks/view?usp=drivesdk',
-    previewUrl: 'https://drive.google.com/file/d/1A0D6XtauRGoD670cjXAMdcmlzKsmLkks/preview'
-  },
-  {
-    id: 2,
-    title: 'ED-F-006 ALTERAÇÃO DE CARGA HORÁRIA',
-    version: 'v1.0',
-    description: 'Formulário para solicitação e ajuste de carga horária e jornada de trabalho.',
-    category: 'Administrativo',
-    tagLabel: 'Administrativo',
-    fileId: '13hldbltNfztWE0AoMZ319PVLqZp8eXin',
-    url: 'https://drive.google.com/file/d/13hldbltNfztWE0AoMZ319PVLqZp8eXin/view?usp=drivesdk',
-    previewUrl: 'https://drive.google.com/file/d/13hldbltNfztWE0AoMZ319PVLqZp8eXin/preview'
-  },
-  {
-    id: 3,
-    title: 'ED-F-007 REQUERIMENTO GRATIFICAÇÃO DE PSF',
-    version: 'v1.0',
-    description: 'Requerimento para solicitação de gratificação do Programa Saúde da Família.',
-    category: 'Gratificações',
-    tagLabel: 'Gratificações',
-    fileId: '1w5denY0BcUM__80kuNzKY3CNv-hTEFPT',
-    url: 'https://drive.google.com/file/d/1w5denY0BcUM__80kuNzKY3CNv-hTEFPT/view?usp=drivesdk',
-    previewUrl: 'https://drive.google.com/file/d/1w5denY0BcUM__80kuNzKY3CNv-hTEFPT/preview'
-  },
-  {
-    id: 4,
-    title: 'ED-F-008 REQUERIMENTO GRATIFICAÇÃO NASF',
-    version: 'v1.0',
-    description: 'Requerimento para concessão de gratificação do Núcleo de Apoio à Saúde da Família.',
-    category: 'Gratificações',
-    tagLabel: 'Gratificações',
-    fileId: '1pYbuGTIFwBLHY_x7s6bkVrV-OgV7l535',
-    url: 'https://drive.google.com/file/d/1pYbuGTIFwBLHY_x7s6bkVrV-OgV7l535/view?usp=drivesdk',
-    previewUrl: 'https://drive.google.com/file/d/1pYbuGTIFwBLHY_x7s6bkVrV-OgV7l535/preview'
-  },
-  {
-    id: 5,
-    title: 'ED-F-009 REQUERIMENTO GRATIFICAÇÃO CEMERF',
-    version: 'v1.0',
-    description: 'Requerimento de gratificação para atuação no Centro Municipal de Reabilitação Física.',
-    category: 'Gratificações',
-    tagLabel: 'Gratificações',
-    fileId: '1PuqROCodIktX9xq46IQjmhqxUlPl1uot',
-    url: 'https://drive.google.com/file/d/1PuqROCodIktX9xq46IQjmhqxUlPl1uot/view?usp=drivesdk',
-    previewUrl: 'https://drive.google.com/file/d/1PuqROCodIktX9xq46IQjmhqxUlPl1uot/preview'
-  },
-  {
-    id: 6,
-    title: 'ED-F-010 REQUERIMENTO GRATIFICAÇÃO SERVIÇO ESPECIAL',
-    version: 'v1.0',
-    description: 'Requerimento para concessão de gratificação por execução de serviços especiais.',
-    category: 'Gratificações',
-    tagLabel: 'Gratificações',
-    fileId: '1rsY3X9O1Go0QLJmHpscczifhlKAhv16T',
-    url: 'https://drive.google.com/file/d/1rsY3X9O1Go0QLJmHpscczifhlKAhv16T/view?usp=drivesdk',
-    previewUrl: 'https://drive.google.com/file/d/1rsY3X9O1Go0QLJmHpscczifhlKAhv16T/preview'
-  },
-  {
-    id: 7,
-    title: 'ED-F-011 REQUERIMENTO GRATIFICAÇÃO REGÊNCIA DE CLASSE',
-    version: 'v1.0',
-    description: 'Requerimento de gratificação de regência de classe para docentes da rede.',
-    category: 'Educação',
-    tagLabel: 'Educação',
-    fileId: '1EjrxnTA8Lkte3-V058Zy3L4PDHpPrmyf',
-    url: 'https://drive.google.com/file/d/1EjrxnTA8Lkte3-V058Zy3L4PDHpPrmyf/view?usp=drivesdk',
-    previewUrl: 'https://drive.google.com/file/d/1EjrxnTA8Lkte3-V058Zy3L4PDHpPrmyf/preview'
-  },
-  {
-    id: 8,
-    title: 'ED-F-012 REQUERIMENTO GRATIFICAÇÃO REGÊNCIA DE CLASSE - ALUNO ESPECIAL',
-    version: 'v1.0',
-    description: 'Gratificação de regência de classe para atendimento a alunos com necessidades especiais.',
-    category: 'Educação',
-    tagLabel: 'Educação',
-    fileId: '1xMlKTN8db5NniuTHnuIthzGf1EhyO-AC',
-    url: 'https://drive.google.com/file/d/1xMlKTN8db5NniuTHnuIthzGf1EhyO-AC/view?usp=drivesdk',
-    previewUrl: 'https://drive.google.com/file/d/1xMlKTN8db5NniuTHnuIthzGf1EhyO-AC/preview'
-  },
-  {
-    id: 9,
-    title: 'ED-F-013 REQUERIMENTO GRATIFICAÇÃO EXERCÍCIO EM ZONA RURAL - PROFESSOR',
-    version: 'v1.0',
-    description: 'Requerimento de gratificação por exercício docente em unidades escolares da zona rural.',
-    category: 'Educação',
-    tagLabel: 'Educação',
-    fileId: '1Ja0d3VspAGYCsf-EEWb48tyip7Scn9qU',
-    url: 'https://drive.google.com/file/d/1Ja0d3VspAGYCsf-EEWb48tyip7Scn9qU/view?usp=drivesdk',
-    previewUrl: 'https://drive.google.com/file/d/1Ja0d3VspAGYCsf-EEWb48tyip7Scn9qU/preview'
-  },
-  {
-    id: 10,
-    title: 'ED-F-014 REQUERIMENTO GRATIFICAÇÃO REGÊNCIA DE CLASSE - EDUCAÇÃO INFANTIL',
-    version: 'v1.0',
-    description: 'Requerimento de gratificação de regência de classe na educação infantil municipal.',
-    category: 'Educação',
-    tagLabel: 'Educação',
-    fileId: '1jFM_A2me8J0EW2BALXlSKO-jYwyH1hxl',
-    url: 'https://drive.google.com/file/d/1jFM_A2me8J0EW2BALXlSKO-jYwyH1hxl/view?usp=drivesdk',
-    previewUrl: 'https://drive.google.com/file/d/1jFM_A2me8J0EW2BALXlSKO-jYwyH1hxl/preview'
+function formatarDocumento(d) {
+  return {
+    id: d.id,
+    title: d.titulo,
+    version: d.versao || 'v1.0',
+    description: d.descricao,
+    category: d.categoria,
+    tagLabel: d.categoria,
+    tagColor: d.corTag || '#E2007A',
+    fileId: d.fileId,
+    url: d.url,
+    previewUrl: d.previewUrl || (d.url && d.url.includes('/view') ? d.url.replace('/view', '/preview') : d.url),
+    createdAt: d.createdAt,
   }
-]
+}
 
-const recentDocuments = [
-  {
-    title: 'ED-F-005 FOLHA DE PONTO',
-    time: '10 min atrás',
-    description: 'Documento oficial para registro e controle de frequência mensal do servidor.',
-    tagLabel: 'Administrativo',
-    category: 'Administrativo',
-    fileId: '1A0D6XtauRGoD670cjXAMdcmlzKsmLkks',
-    url: 'https://drive.google.com/file/d/1A0D6XtauRGoD670cjXAMdcmlzKsmLkks/view?usp=drivesdk',
-    previewUrl: 'https://drive.google.com/file/d/1A0D6XtauRGoD670cjXAMdcmlzKsmLkks/preview'
-  },
-  {
-    title: 'ED-F-006 ALTERAÇÃO DE CARGA HORÁRIA',
-    time: '1 hora atrás',
-    description: 'Formulário para solicitação e ajuste de carga horária e jornada de trabalho.',
-    tagLabel: 'Administrativo',
-    category: 'Administrativo',
-    fileId: '13hldbltNfztWE0AoMZ319PVLqZp8eXin',
-    url: 'https://drive.google.com/file/d/13hldbltNfztWE0AoMZ319PVLqZp8eXin/view?usp=drivesdk',
-    previewUrl: 'https://drive.google.com/file/d/13hldbltNfztWE0AoMZ319PVLqZp8eXin/preview'
-  },
-  {
-    title: 'ED-F-007 REQUERIMENTO GRATIFICAÇÃO DE PSF',
-    time: 'Hoje',
-    description: 'Requerimento para solicitação de gratificação do Programa Saúde da Família.',
-    tagLabel: 'Gratificações',
-    category: 'Gratificações',
-    fileId: '1w5denY0BcUM__80kuNzKY3CNv-hTEFPT',
-    url: 'https://drive.google.com/file/d/1w5denY0BcUM__80kuNzKY3CNv-hTEFPT/view?usp=drivesdk',
-    previewUrl: 'https://drive.google.com/file/d/1w5denY0BcUM__80kuNzKY3CNv-hTEFPT/preview'
-  },
-  {
-    title: 'ED-F-011 REQUERIMENTO GRATIFICAÇÃO REGÊNCIA DE CLASSE',
-    time: 'Ontem',
-    description: 'Requerimento de gratificação de regência de classe para docentes da rede.',
-    tagLabel: 'Educação',
-    category: 'Educação',
-    fileId: '1EjrxnTA8Lkte3-V058Zy3L4PDHpPrmyf',
-    url: 'https://drive.google.com/file/d/1EjrxnTA8Lkte3-V058Zy3L4PDHpPrmyf/view?usp=drivesdk',
-    previewUrl: 'https://drive.google.com/file/d/1EjrxnTA8Lkte3-V058Zy3L4PDHpPrmyf/preview'
+function formatarDocumentoRecente(d) {
+  return {
+    ...formatarDocumento(d),
+    time: dataRelativa(d.createdAt),
   }
-]
+}
+
+const categories = computed(() => {
+  const cats = new Set(documents.value.map((d) => d.category).filter(Boolean))
+  return ['Todos', ...cats]
+})
 
 const filteredDocuments = computed(() => {
   const searchTerm = search.value.toLowerCase().trim()
 
-  return documents.filter((document) => {
+  return documents.value.filter((document) => {
     const matchesCategory =
       selectedCategory.value === 'Todos' ||
       document.category === selectedCategory.value
@@ -310,7 +186,7 @@ function clearFilters() {
 
 function handleDownload(doc) {
   const title = typeof doc === 'object' ? doc.title : doc
-  const docObj = typeof doc === 'object' ? doc : documents.find(d => d.title === doc)
+  const docObj = typeof doc === 'object' ? doc : documents.value.find(d => d.title === doc)
 
   if (docObj?.fileId) {
     const directDownloadUrl = `https://drive.google.com/uc?export=download&id=${docObj.fileId}`
@@ -328,10 +204,30 @@ function handleDownload(doc) {
 }
 
 function handleView(doc) {
-  const docObj = typeof doc === 'object' ? doc : documents.find(d => d.title === doc)
+  const docObj = typeof doc === 'object' ? doc : documents.value.find(d => d.title === doc)
   if (docObj) {
     selectedDoc.value = docObj
     showPreviewModal.value = true
   }
 }
+
+async function carregarDados() {
+  loading.value = true
+  try {
+    const [docsData, recentesData] = await Promise.all([
+      listarDocumentos(50),
+      listarDocumentosRecentes(4),
+    ])
+    documents.value = (docsData || []).map(formatarDocumento)
+    recentDocuments.value = (recentesData || []).map(formatarDocumentoRecente)
+  } catch (error) {
+    console.error('Erro ao carregar documentos:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  carregarDados()
+})
 </script>
