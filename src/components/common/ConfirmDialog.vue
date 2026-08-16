@@ -11,7 +11,7 @@
 
         <h3 class="text-lg font-semibold text-gray-800 mb-1">{{ title }}</h3>
         <p class="text-sm text-gray-600" v-if="message">{{ message }}</p>
-        <p class="text-xs text-gray-400 mt-2" v-if="detail">{{ detail }}</p>
+        <p class="text-xs text-gray-500 mt-2" v-if="detail">{{ detail }}</p>
       </div>
 
       <div class="flex justify-center gap-3 px-6 pb-6">

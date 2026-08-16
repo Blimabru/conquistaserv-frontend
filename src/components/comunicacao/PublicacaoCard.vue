@@ -49,7 +49,7 @@
       <button
         v-if="temTextoLongo"
         type="button"
-        class="mt-1 text-[0.9rem] text-gray-500 bg-transparent border-none p-0 hover:text-gray-800 hover:underline focus:outline-none cursor-pointer"
+        class="mt-1 text-[0.9rem] text-gray-500 bg-transparent border-none p-0 hover:text-gray-800 hover:underline cursor-pointer"
         @click="expandido = !expandido"
       >
         {{ expandido ? 'Ver menos' : 'Ver mais' }}

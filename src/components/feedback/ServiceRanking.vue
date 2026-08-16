@@ -40,7 +40,7 @@
       </div>
     </div>
     
-    <div v-else class="py-8 flex flex-col items-center justify-center text-gray-400">
+    <div v-else class="py-8 flex flex-col items-center justify-center text-gray-500">
       <q-icon name="list_alt" size="lg" class="mb-2 opacity-50" />
       <p>Nenhum serviço avaliado no período</p>
     </div>

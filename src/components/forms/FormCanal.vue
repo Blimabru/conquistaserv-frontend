@@ -92,7 +92,7 @@
         <div class="md:col-span-4">
           <label class="block text-sm font-medium text-gray-600 mb-1 flex items-center gap-1">
             Ícone
-            <q-icon name="help_outline" size="15px" class="text-gray-400 cursor-help">
+            <q-icon name="help_outline" size="15px" class="text-gray-500 cursor-help">
               <q-tooltip class="bg-gray-800 text-xs shadow-4 border border-gray-700" style="font-size: 11px;">
                 Para usar outros ícones, acesse <b>fonts.google.com/icons</b><br>
                 e digite o nome exato do ícone (ex: "favorite")<br>

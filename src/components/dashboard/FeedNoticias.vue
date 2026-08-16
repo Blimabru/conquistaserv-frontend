@@ -18,7 +18,7 @@
                 </div>
                 <div class="flex flex-col justify-between flex-1">
                     <div>
-                        <span class="text-xs font-semibold text-slate-400">Reajuste, carreiras e novas regras</span>
+                        <span class="text-xs font-semibold text-slate-500">Reajuste, carreiras e novas regras</span>
                         <h4 class="text-lg font-bold text-blue-900 mt-1 mb-2 leading-snug">
                             Governo anuncia mudanças que afetam servidores públicos federais
                         </h4>
@@ -27,7 +27,7 @@
                             <li>Categorias cobram avanços nas negociações com o governo</li>
                         </ul>
                     </div>
-                    <span class="text-[11px] text-slate-400 font-medium">Há 4 horas · Servidores Públicos</span>
+                    <span class="text-[11px] text-slate-500 font-medium">Há 4 horas · Servidores Públicos</span>
                 </div>
             </a>
 
@@ -47,7 +47,7 @@
                 </div>
                 <div class="flex flex-col justify-between flex-1">
                     <div>
-                        <span class="text-xs font-semibold text-slate-400">Gestão Pública & Saúde do Servidor</span>
+                        <span class="text-xs font-semibold text-slate-500">Gestão Pública & Saúde do Servidor</span>
                         <h4 class="text-lg font-bold text-blue-900 mt-1 mb-2 leading-snug">
                             Prefeitura inaugura novos espaços para abrigar Secretaria Municipal de Gestão e Inovação e Nast
                         </h4>
@@ -56,7 +56,7 @@
                             <li>Estrutura mais ampla para cerca de 10 mil servidores municipais.</li>
                         </ul>
                     </div>
-                    <span class="text-[11px] text-slate-400 font-medium">18 de novembro de 2025 · Geral</span>
+                    <span class="text-[11px] text-slate-500 font-medium">18 de novembro de 2025 · Geral</span>
                 </div>
             </a>
 
@@ -73,7 +73,7 @@
                 </div>
                 <div class="flex flex-col justify-between flex-1">
                     <div>
-                        <span class="text-xs font-semibold text-slate-400">Trânsito & Concursos</span>
+                        <span class="text-xs font-semibold text-slate-500">Trânsito & Concursos</span>
                         <h4 class="text-lg font-bold text-blue-900 mt-1 mb-2 leading-snug">
                             Prefeitura autoriza concurso para o Simtrans e adere ao programa Vida no Trânsito
                         </h4>
@@ -82,7 +82,7 @@
                             <li>Adesão a programa voltado para a prevenção de acidentes e segurança viária no município.</li>
                         </ul>
                     </div>
-                    <span class="text-[11px] text-slate-400 font-medium">Mobilidade Urbana</span>
+                    <span class="text-[11px] text-slate-500 font-medium">Mobilidade Urbana</span>
                 </div>
             </a>
 
@@ -102,7 +102,7 @@
                     </div>
                     <div class="flex flex-col justify-between flex-1">
                         <div>
-                            <span class="text-xs font-semibold text-slate-400">Educação & Oportunidade</span>
+                            <span class="text-xs font-semibold text-slate-500">Educação & Oportunidade</span>
                             <h4 class="text-lg font-bold text-blue-900 mt-1 mb-2 leading-snug">
                                 Candidatos aprovados no programa Quem Aprende Conquista são recepcionados pela Prefeitura
                             </h4>
@@ -111,7 +111,7 @@
                                 <li>Iniciativa voltada à capacitação profissional, geração de renda e inserção no mercado de trabalho.</li>
                             </ul>
                         </div>
-                        <span class="text-[11px] text-slate-400 font-medium">Capacitação Profissional</span>
+                        <span class="text-[11px] text-slate-500 font-medium">Capacitação Profissional</span>
                     </div>
                 </a>
 

@@ -33,3 +33,11 @@
     </div>
   </div>
 </template>
+
+<script setup>
+// Logo textual do portal do servidor: "Serv" (secundária) sobre "Conquista" (branco).
+</script>
+
+<style scoped>
+
+</style>
