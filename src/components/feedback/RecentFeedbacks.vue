@@ -32,7 +32,7 @@
                 :class="i <= feedback.nota ? 'text-yellow-400' : 'text-gray-300'"
               />
             </div>
-            <span class="text-xs text-gray-400 font-medium">{{ formatDate(feedback.createdAt) }}</span>
+            <span class="text-xs text-gray-500 font-medium">{{ formatDate(feedback.createdAt) }}</span>
           </div>
         </div>
         
@@ -53,7 +53,7 @@
       </div>
     </div>
     
-    <div v-else class="py-12 flex flex-col items-center justify-center text-gray-400">
+    <div v-else class="py-12 flex flex-col items-center justify-center text-gray-500">
       <q-icon name="speaker_notes_off" size="xl" class="mb-3 opacity-30" />
       <p>Nenhum feedback recebido no período.</p>
     </div>

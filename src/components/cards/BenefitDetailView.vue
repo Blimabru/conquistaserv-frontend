@@ -135,19 +135,19 @@
 
               <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-600">
                 <div class="flex items-center gap-2">
-                  <q-icon name="place" size="16px" class="text-gray-400 shrink-0" />
+                  <q-icon name="place" size="16px" class="text-gray-500 shrink-0" />
                   <span>{{ loc.address }}</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <q-icon name="phone" size="16px" class="text-gray-400 shrink-0" />
+                  <q-icon name="phone" size="16px" class="text-gray-500 shrink-0" />
                   <span>{{ loc.phone }}</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <q-icon name="email" size="16px" class="text-gray-400 shrink-0" />
+                  <q-icon name="email" size="16px" class="text-gray-500 shrink-0" />
                   <span>{{ loc.email }}</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <q-icon name="schedule" size="16px" class="text-gray-400 shrink-0" />
+                  <q-icon name="schedule" size="16px" class="text-gray-500 shrink-0" />
                   <span>{{ loc.hours }}</span>
                 </div>
               </div>

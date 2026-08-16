@@ -22,7 +22,7 @@
             placeholder="Buscar serviço..."
             class="w-full rounded-full border border-gray-300 bg-white py-2.5 pl-5 pr-11 text-sm text-gray-700 placeholder-gray-400 shadow-2xs outline-none transition-all focus:border-[#045DA5] focus:ring-2 focus:ring-[#045DA5]/20"
           />
-          <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400">
+          <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500">
             <q-icon name="search" size="20px" />
           </span>
         </div>

@@ -6,9 +6,14 @@
     v-model:pagination="pagination_initial"
     flat
     bordered
+    :aria-label="title"
     class="rounded-2xl shadow-sm border border-gray-100"
     table-header-class="bg-gray-50/70 text-gray-600 font-semibold uppercase text-xs tracking-wider"
   >
+    <template v-slot:header-cell="props">
+      <q-th :props="props" scope="col">{{ props.col.label }}</q-th>
+    </template>
+
     <template v-slot:top>
       <div class="w-full flex flex-col md:flex-row justify-between items-center gap-4 py-2">
         <div class="w-full md:w-auto">
@@ -52,7 +57,7 @@
             <template v-slot:prepend>
               <q-icon
                 name="search"
-                class="text-gray-400 cursor-pointer hover:text-primary transition-colors"
+                class="text-gray-500 cursor-pointer hover:text-primary transition-colors"
                 @click="focusSearchInput"
               />
             </template>
@@ -64,6 +69,7 @@
             dense
             round
             color="grey-6"
+            aria-label="Limpar filtros"
             class="hover:text-primary hover:bg-blue-50 transition-colors"
             @click="clearAllFilters"
           >
@@ -92,14 +98,14 @@
         <q-chip
           v-if="props.value"
           color="amber-8"
-          text-color="white"
+          text-color="grey-10"
           size="sm"
           icon="star"
           class="font-medium rounded-full px-3 py-0.5 shadow-sm"
         >
           Principal
         </q-chip>
-        <span v-else class="text-gray-400 text-xs">—</span>
+        <span v-else class="text-gray-500 text-xs">—</span>
       </q-td>
     </template>
 
@@ -115,6 +121,7 @@
               :color="acao.color"
               :icon="acao.icon"
               size="sm"
+              :aria-label="rotuloAcao(acao, scope.row)"
               class="hover:bg-gray-100 transition-colors duration-200"
               @click="acao.action(scope.row)"
             >
@@ -255,15 +262,27 @@ function findInfomaion() {
   emits('getUsers', filter.value, pagination_initial.value.page);
 }
 
+// Nome acessível da ação incluindo o registro da linha, para que o leitor de tela
+// anuncie "Excluir: Folha de Ponto" em vez de repetir só "botão" (WCAG 4.1.2).
+function rotuloAcao(acao, row) {
+  const identificador =
+    row?.titulo || row?.nome || row?.name || row?.login || row?.descricao || '';
+  return identificador ? `${acao.label}: ${identificador}` : acao.label;
+}
+
+// Compara sem diferenciar maiúsculas: a API devolve "ATIVO"/"BLOQUEADO", e o mapa
+// anterior só cobria "Ativo"/"Inativo" — todo chip caía no cinza padrão, que além
+// de errado tinha contraste de 2,67:1 com o texto branco (WCAG 1.4.3).
 const defineColor = (situacao) => {
   const coresPorSituacao = {
-    Ativo: 'teal-9',
-    Inativo: 'red-10',
+    ativo: 'teal-9',
+    inativo: 'red-10',
+    bloqueado: 'red-10',
   };
 
-  const corPadrao = 'grey';
+  const corPadrao = 'grey-8';
 
-  return coresPorSituacao[situacao] || corPadrao;
+  return coresPorSituacao[String(situacao || '').toLowerCase()] || corPadrao;
 };
 </script>
 

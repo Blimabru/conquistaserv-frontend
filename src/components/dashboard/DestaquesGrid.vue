@@ -11,7 +11,7 @@
             >
             <div class="flex justify-between items-start">
                 <span class="text-xs font-semibold text-slate-400 tracking-wide uppercase">
-                Assistência Social & Gestão
+                Code4City
                 </span>
                 <q-btn
                 round
@@ -20,17 +20,19 @@
                 icon="open_in_new"
                 size="sm"
                 class="shadow-sm"
+                aria-label="Abrir notícia sobre a nova equipe de gestão da SASHDS no site da Prefeitura (abre em nova aba)"
                 href="https://www.pmvc.ba.gov.br/prefeitura-promove-integracao-da-nova-equipe-de-gestao-da-sashds-e-reforca-compromisso-com-a-qualidade-dos-servicos/"
                 target="_blank"
+                rel="noopener noreferrer"
                 />
             </div>
 
             <div class="my-6">
                 <h2 class="text-2xl md:text-3xl font-extrabold text-blue-900 leading-tight mb-4 group-hover:text-blue-700 transition-colors">
-                Prefeitura promove integração da nova equipe de gestão da SASDHS e reforça compromisso com serviços
+                Brainstorm Labs é a equipe vencedora do Code4City
                 </h2>
                 <p class="text-slate-500 text-sm md:text-base leading-relaxed">
-                Encontro reuniu gestores e servidores da pasta para alinhar diretrizes de trabalho e fortalecer o atendimento socioassistencial à população.
+                Conheça a equipe vencedora do primeiro Hackathon de Inovação Pública da Prefeitura de Vitória da Conquista.
                 </p>
             </div>
 
@@ -83,6 +85,8 @@
                 </p>
                 </div>
             </a>
+
+            
         </div>
 
         

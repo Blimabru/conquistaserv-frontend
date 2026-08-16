@@ -58,7 +58,8 @@
             size="8px"
             color="negative"
             icon="close"
-            class="absolute top-0 right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-sm z-10"
+            :aria-label="`Remover atalho do canal ${canal.nome}`"
+            class="absolute top-0 right-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100 transition-opacity duration-200 shadow-sm z-10"
             @click.prevent="removerAtalho(canal.id)"
           >
             <q-tooltip>Remover atalho</q-tooltip>
@@ -74,11 +75,11 @@
         @click="modalDescobrirAberto = true"
       >
         <div class="flex h-[64px] w-[64px] items-center justify-center rounded-full transition-transform duration-200 group-hover:scale-105 border-[3px] border-transparent p-1">
-          <div class="flex h-full w-full items-center justify-center rounded-full border-2 border-dashed border-gray-300 bg-white text-gray-400 group-hover:border-gray-400 group-hover:text-gray-500 group-hover:bg-gray-50">
+          <div class="flex h-full w-full items-center justify-center rounded-full border-2 border-dashed border-gray-300 bg-white text-gray-500 group-hover:border-gray-400 group-hover:text-gray-500 group-hover:bg-gray-50">
             <q-icon name="add" size="28px" />
           </div>
         </div>
-        <span class="text-[13px] font-medium text-gray-400 truncate w-full text-center group-hover:text-gray-500">Canais</span>
+        <span class="text-[13px] font-medium text-gray-500 truncate w-full text-center group-hover:text-gray-500">Canais</span>
       </div>
 
     </div>
