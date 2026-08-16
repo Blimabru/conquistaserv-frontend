@@ -89,7 +89,7 @@ $vitoria-height: 620px;
   z-index: 10000;
   width: $vitoria-width;
   height: $vitoria-height;
-  max-height: calc(100vh - 56px);
+  max-height: calc(100dvh - 56px);
   max-width: calc(100vw - 32px);
   background: $vitoria-bg;
   border-radius: $vitoria-radius;
@@ -438,7 +438,7 @@ $vitoria-height: 620px;
 
 /* ---------- Input Area ---------- */
 .vitoria-input {
-  padding: 8px 16px 14px;
+  padding: 8px 16px calc(14px + env(safe-area-inset-bottom, 0px));
   flex-shrink: 0;
 
   &__wrapper {
@@ -461,7 +461,7 @@ $vitoria-height: 620px;
     border: none;
     background: transparent;
     font-family: 'Poppins', sans-serif;
-    font-size: 13px;
+    font-size: 16px; /* iOS requires 16px minimum to prevent auto-zoom */
     color: #2d2d3a;
     outline: none;
     height: 30px;
@@ -823,8 +823,8 @@ $vitoria-height: 620px;
     bottom: 0;
     right: 0;
     width: 100vw;
-    height: 100vh;
-    max-height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
     max-width: 100vw;
     border-radius: 0;
   }

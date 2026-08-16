@@ -1,12 +1,12 @@
 <template>
-  <q-page class="flex flex-center p-4 sm:p-8">
+  <q-page class="flex flex-center p-0 sm:p-4 md:p-8">
     <!-- Card Principal -->
     <div
-      class="w-full max-w-6xl min-h-[640px] bg-white rounded-[40px] md:rounded-[56px] shadow-2xl overflow-hidden flex flex-col md:flex-row relative"
+      class="w-full max-w-6xl min-h-[100dvh] sm:min-h-[640px] bg-white rounded-none sm:rounded-[40px] md:rounded-[56px] shadow-none sm:shadow-2xl overflow-hidden flex flex-col md:flex-row relative"
     >
       <!-- LADO ESQUERDO: Imagem de fundo / Marca d'água e Tipografia -->
       <div
-        class="w-full md:w-1/2 relative min-h-[280px] md:min-h-full flex items-center justify-start p-8 md:p-14 overflow-hidden bg-slate-50"
+        class="w-full md:w-1/2 relative min-h-[35dvh] sm:min-h-[280px] md:min-h-full flex items-center justify-start p-8 md:p-14 overflow-hidden bg-slate-50"
       >
         <img
           src="../assets/images/imagem-de-fundo.svg"
@@ -24,7 +24,7 @@
 
       <!-- LADO DIREITO: Painel de Autenticação -->
       <div
-        class="w-full md:w-1/2 flex items-center justify-center p-6 sm:p-10 md:p-12 bg-gradient-to-b from-slate-50/50 to-white md:bg-none"
+        class="w-full md:w-1/2 flex-1 flex items-center justify-center p-6 sm:p-10 md:p-12 bg-gradient-to-b from-slate-50/50 to-white md:bg-none"
       >
         <!-- Card Interno do Formulário -->
         <div
@@ -175,12 +175,12 @@ async function login() {
 
 <style scoped>
 :deep(.login-input .q-field__control) {
-  height: 38px;
-  padding: 0;
+  min-height: 44px;
+  padding-top: 8px;
 }
 
 :deep(.login-input input) {
-  font-size: 0.95rem;
+  font-size: 16px; /* iOS requires 16px minimum to prevent auto-zoom */
   color: #334155;
 }
 
