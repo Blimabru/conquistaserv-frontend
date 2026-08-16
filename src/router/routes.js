@@ -40,6 +40,11 @@ const routes = [
         meta: { requiredLogin: true },
       },
       {
+        path: 'bemestar',
+        component: () => import('pages/Admin/users/BemEstar.vue'),
+        meta: { requiredLogin: true },
+      },
+      {
         // Rotas administrativas: sempre prefixadas com /admin/*
         path: 'admin',
         meta: { requiredLogin: true, requiredAdminLevel: true },
