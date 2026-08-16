@@ -117,7 +117,11 @@ function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function waitForTarget(key, attempts = 40, delay = 60) {
+// Espera o alvo aparecer no DOM. O limite é generoso (~7s) porque em celular a
+// rota é carregada sob demanda e a lista vem de uma chamada à API: com o limite
+// curto anterior o passo era desenhado sem destaque, dando a impressão de que o
+// tour não tinha mudado de tela.
+function waitForTarget(key, attempts = 110, delay = 65) {
   return new Promise((resolve) => {
     let tries = 0;
     const tick = () => {

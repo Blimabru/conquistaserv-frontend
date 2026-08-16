@@ -84,8 +84,26 @@ export const useOnboardingStore = defineStore('onboarding', {
 
     async _goToStepRoute(router) {
       const targetRoute = this.step?.route;
-      if (targetRoute && router && router.currentRoute.value.path !== targetRoute) {
+      if (!targetRoute || !router) return;
+      if (router.currentRoute.value.path === targetRoute) return;
+
+      try {
         await router.push(targetRoute);
+      } catch (erro) {
+        // O vue-router rejeita a promise em navegação duplicada, cancelada ou
+        // redirecionada. Sem este catch a rejeição interrompe o fluxo depois do
+        // passo já ter avançado, e o tour mostra o texto do passo seguinte sem
+        // ter trocado de tela.
+        const tipo = erro?.type;
+        const ehAbortoEsperado =
+          tipo === 4 /* duplicated */ ||
+          tipo === 8 /* aborted */ ||
+          tipo === 16 /* cancelled */ ||
+          tipo === 2 /* redirected */;
+
+        if (!ehAbortoEsperado) {
+          console.error('Onboarding: falha ao navegar para', targetRoute, erro);
+        }
       }
     },
   },
