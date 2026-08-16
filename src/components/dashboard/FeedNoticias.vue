@@ -11,7 +11,7 @@
             >
                 <div class="w-full sm:w-5/12 h-44 rounded-2xl overflow-hidden shrink-0">
                     <img
-                        src="/public/images/FotoSheila.jpeg"
+                        src="/images/FotoSheila.jpeg"
                         alt="Governo anuncia mudanças"
                         class="w-full h-full object-cover"
                     />
@@ -40,7 +40,7 @@
             >
                 <div class="w-full sm:w-5/12 h-44 rounded-2xl bg-slate-200 shrink-0 overflow-hidden">
                     <img
-                        src="/public/images/FotoNast.jpg"
+                        src="/images/FotoNast.jpg"
                         alt="Inauguração da nova sede da Semgi e Nast"
                         class="w-full h-full object-cover"
                     />
@@ -69,7 +69,7 @@
             >
                 <div class="w-full sm:w-5/12 h-44 rounded-2xl bg-slate-200 shrink-0 overflow-hidden">
                     <!-- Opcional: imagem da notícia -->
-                        <img src="/public/images/FotoSimtrans.jpg" alt="Concurso Simtrans e Programa Vida no Trânsito" class="w-full h-full object-cover" /> 
+                        <img src="/images/FotoSimtrans.jpg" alt="Concurso Simtrans e Programa Vida no Trânsito" class="w-full h-full object-cover" /> 
                 </div>
                 <div class="flex flex-col justify-between flex-1">
                     <div>
@@ -95,7 +95,7 @@
                     <div class="w-full sm:w-5/12 h-44 rounded-2xl bg-slate-200 shrink-0 overflow-hidden">
                         <!-- Opcional: imagem da notícia -->
                         <img 
-                            src="/public/images/FotoNoticia4.jpg" 
+                            src="/images/FotoNoticia4.jpg" 
                             alt="Candidatos aprovados no Quem Aprende Conquista" 
                             class="w-full h-full object-cover" 
                         />

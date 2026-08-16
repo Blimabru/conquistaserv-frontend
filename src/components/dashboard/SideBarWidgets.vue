@@ -4,12 +4,12 @@
 
         <!-- Widget 1: Acesso Rápido -->
         <div class="bg-white border border-slate-100 rounded-3xl p-5 shadow-sm">
-        <div class="flex items-center gap-2 mb-4">
-            <q-img class="w-6 h-6" src="/public/icons/trust-icon.png" />
-            <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Conheça seus benefícios</span>
-        </div>
-        <q-separator />
-        <div class="divide-y divide-slate-100 pt-4">
+            <div class="flex items-center gap-2 mb-4">
+                <q-img class="w-6 h-6" src="/icons/trust-icon.png" />
+                <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Conheça seus benefícios</span>
+            </div>
+            <q-separator />
+            <div class="divide-y divide-slate-100 pt-4">
 
             <!-- Item 1: Atendimento Psicológico -->
             <!-- Adicionado: relative overflow-hidden flex items-center justify-between cursor-pointer hover:bg-slate-50 rounded-xl px-2 -mx-2 -->
