@@ -90,44 +90,44 @@
         </div>
 
         <div class="md:col-span-4">
-          <label class="block text-sm font-medium text-gray-600 mb-1">Ícone</label>
-          <div class="relative cursor-pointer">
-            <q-input
-              dense
-              outlined
-              v-model="form.icone"
-              class="rounded-lg bg-white cursor-pointer"
-              hint="Selecione um ícone"
-              :rules="[val => !!val || '*Campo obrigatório']"
-              hide-bottom-space
-              readonly
-            >
-              <template v-slot:prepend>
-                <q-icon :name="form.icone || 'help_outline'" class="text-primary" />
-              </template>
-              <template v-slot:append>
-                <q-icon name="arrow_drop_down" />
-              </template>
-            </q-input>
-            <!-- Overlay to capture clicks and open popup without focusing input -->
-            <div class="absolute inset-0 z-10 cursor-pointer">
-              <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <div class="p-3 bg-white w-72 max-h-64 overflow-y-auto grid grid-cols-5 gap-2 rounded-xl shadow-lg border border-gray-100">
-                  <div
-                    v-for="icon in iconesDisponiveis"
-                    :key="icon"
-                    @click="form.icone = icon"
-                    v-close-popup
-                    class="flex items-center justify-center w-11 h-11 rounded-lg cursor-pointer transition-all duration-200"
-                    :class="form.icone === icon ? 'bg-blue-100 text-primary shadow-sm border border-blue-200 scale-105' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-800'"
-                    :title="icon"
-                  >
-                    <q-icon :name="icon" size="sm" />
-                  </div>
-                </div>
-              </q-popup-proxy>
-            </div>
-          </div>
+          <label class="block text-sm font-medium text-gray-600 mb-1 flex items-center gap-1">
+            Ícone
+            <q-icon name="help_outline" size="15px" class="text-gray-400 cursor-help">
+              <q-tooltip class="bg-gray-800 text-xs shadow-4 border border-gray-700" style="font-size: 11px;">
+                Para usar outros ícones, acesse <b>fonts.google.com/icons</b><br>
+                e digite o nome exato do ícone (ex: "favorite")<br>
+                e pressione "Enter" para adicionar.
+              </q-tooltip>
+            </q-icon>
+          </label>
+          <q-select
+            dense
+            outlined
+            v-model="form.icone"
+            :options="iconOptions"
+            use-input
+            hide-selected
+            fill-input
+            input-debounce="0"
+            new-value-mode="add-unique"
+            @filter="filterIcons"
+            class="rounded-lg bg-white"
+            hint="Nome de Material Icon"
+          >
+            <template v-slot:option="scope">
+              <q-item v-bind="scope.itemProps" dense>
+                <q-item-section avatar>
+                  <q-icon :name="scope.opt" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="text-sm">{{ scope.opt }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
+            <template v-slot:append>
+              <q-icon :name="form.icone || 'help_outline'" />
+            </template>
+          </q-select>
         </div>
 
         <div class="md:col-span-12">
@@ -179,13 +179,29 @@ const props = defineProps({
   loading: { type: Boolean, default: false },
 });
 
-const iconesDisponiveis = [
+const allIcons = [
   'campaign', 'groups', 'star', 'event', 'work', 
   'code', 'health_and_safety', 'palette', 'warning', 'info', 
   'forum', 'local_activity', 'sports', 'menu_book', 'school', 
   'directions_car', 'favorite', 'thumb_up', 'emoji_events', 'article',
-  'newspaper', 'tips_and_updates', 'gavel', 'map', 'restaurant'
+  'newspaper', 'tips_and_updates', 'gavel', 'map', 'restaurant',
+  'account_balance', 'local_police', 'engineering', 'eco', 'directions_bus',
+  'monetization_on', 'public', 'family_restroom', 'handshake', 'business'
 ];
+const iconOptions = ref([...allIcons]);
+
+function filterIcons(val, update) {
+  update(() => {
+    if (val === '') {
+      iconOptions.value = allIcons;
+    } else {
+      const needle = val.toLowerCase();
+      iconOptions.value = allIcons.filter(
+        v => v.toLowerCase().includes(needle)
+      );
+    }
+  });
+}
 
 const form = ref({
   nome: '',

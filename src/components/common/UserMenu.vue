@@ -43,6 +43,24 @@
             class="menu-card-bg-icon absolute -right-4 top-1/2 -translate-y-1/2 text-primary-dark pointer-events-none"
         />
         </div>
+
+        <!-- Card Tour do Sistema -->
+        <div
+        v-if="!authStore.isAdmin"
+        class="relative overflow-hidden flex items-center p-3.5 bg-white hover:bg-grey-5 rounded-2xl cursor-pointer transition-all duration-200"
+        @click="verTourNovamente"
+        >
+        <div class="flex flex-col z-10 max-w-[70%]">
+            <span class="font-bold text-sm text-grey-9">Ver tour do sistema</span>
+            <span class="text-xs text-grey-7">Reveja a apresentação das funções do portal</span>
+        </div>
+
+        <!-- Ícone decorativo de fundo -->
+        <q-icon
+            name="explore"
+            class="menu-card-bg-icon absolute -right-4 top-1/2 -translate-y-1/2 text-primary-dark pointer-events-none"
+        />
+        </div>
     </div>
 </template>
 
@@ -50,9 +68,11 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from 'stores/authStore';
+import { useOnboardingStore } from 'stores/onboardingStore';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const onboardingStore = useOnboardingStore();
 
 const userName = ref(window.sessionStorage.getItem('name_user') || 'Usuário');
 const accessLevel = window.sessionStorage.getItem('access_level');
@@ -63,6 +83,10 @@ const department = ref(
 
 function goTo(route) {
     router.push(route);
+}
+
+function verTourNovamente() {
+    onboardingStore.start(router);
 }
 
 function logout() {

@@ -39,7 +39,7 @@
             @click="openInNewTab(document?.url)"
           >
             <q-icon name="open_in_new" size="15px" />
-            <span>Abrir no Drive</span>
+            <span>Abrir em nova aba</span>
           </button>
 
           <button
@@ -68,8 +68,8 @@
           class="flex-1 w-full max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-md bg-white border border-gray-200 relative flex flex-col"
         >
           <iframe
-            v-if="document?.previewUrl"
-            :src="document.previewUrl"
+            v-if="document?.url"
+            :src="document.url"
             class="w-full h-full border-none flex-1"
             allow="autoplay"
           ></iframe>
@@ -81,15 +81,8 @@
             <q-icon name="info" size="48px" class="text-blue-500 mb-3" />
             <h3 class="text-base font-semibold text-gray-800">Visualização de Documento</h3>
             <p class="mt-1 text-sm text-gray-500 max-w-md">
-              Clique no botão abaixo para acessar o documento diretamente no Google Drive.
+              Este documento não tem um arquivo disponível para visualização.
             </p>
-            <button
-              type="button"
-              class="mt-4 rounded-xl bg-[#045DA5] px-5 py-2 text-xs font-semibold text-white cursor-pointer border-none"
-              @click="openInNewTab(document?.url)"
-            >
-              Abrir no Google Drive
-            </button>
           </div>
         </div>
       </div>

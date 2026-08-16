@@ -65,19 +65,44 @@
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-600 mb-1">Ícone</label>
-          <q-input
+          <label class="block text-sm font-medium text-gray-600 mb-1 flex items-center gap-1">
+            Ícone
+            <q-icon name="help_outline" size="15px" class="text-gray-400 cursor-help">
+              <q-tooltip class="bg-gray-800 text-xs shadow-4 border border-gray-700" style="font-size: 11px;">
+                Para usar outros ícones, acesse <b>fonts.google.com/icons</b><br>
+                e digite o nome exato do ícone (ex: "favorite")<br>
+                e pressione "Enter" para adicionar.
+              </q-tooltip>
+            </q-icon>
+          </label>
+          <q-select
             dense
             outlined
             v-model="form.icone"
-            placeholder="account_balance"
+            :options="iconOptions"
+            use-input
+            hide-selected
+            fill-input
+            input-debounce="0"
+            new-value-mode="add-unique"
+            @filter="filterIcons"
             class="rounded-lg bg-white"
             hint="Nome de Material Icon"
           >
+            <template v-slot:option="scope">
+              <q-item v-bind="scope.itemProps" dense>
+                <q-item-section avatar>
+                  <q-icon :name="scope.opt" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="text-sm">{{ scope.opt }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
             <template v-slot:append>
               <q-icon :name="form.icone || 'help_outline'" />
             </template>
-          </q-input>
+          </q-select>
         </div>
       </div>
     </div>
@@ -114,6 +139,40 @@ const form = ref({
   cor: '#045DA5',
   icone: 'account_balance',
 });
+
+const allIcons = [
+  'account_balance',
+  'health_and_safety',
+  'school',
+  'local_police',
+  'engineering',
+  'eco',
+  'directions_bus',
+  'monetization_on',
+  'public',
+  'family_restroom',
+  'sports_soccer',
+  'festival',
+  'gavel',
+  'handshake',
+  'groups',
+  'campaign',
+  'business'
+];
+const iconOptions = ref([...allIcons]);
+
+function filterIcons(val, update) {
+  update(() => {
+    if (val === '') {
+      iconOptions.value = allIcons;
+    } else {
+      const needle = val.toLowerCase();
+      iconOptions.value = allIcons.filter(
+        v => v.toLowerCase().includes(needle)
+      );
+    }
+  });
+}
 
 const canalVinculado = ref(null);
 

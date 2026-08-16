@@ -11,7 +11,6 @@
   >
     <template v-slot:top>
       <div class="w-full flex flex-col md:flex-row justify-between items-center gap-4 py-2">
-        <!-- Botão Adicionar -->
         <div class="w-full md:w-auto">
           <q-btn
             color="primary"
@@ -24,7 +23,6 @@
           />
         </div>
 
-        <!-- Filtros Dinâmicos -->
         <div v-if="filters && filters.length" class="flex-1 flex flex-wrap gap-3 items-center justify-center w-full md:w-auto">
           <div v-for="filterOption in filters" :key="filterOption.label" class="min-w-[140px] flex-1 md:flex-none">
             <q-select
@@ -40,7 +38,6 @@
           </div>
         </div>
 
-        <!-- Busca e Limpar Filtros -->
         <div class="w-full md:w-auto flex flex-1 items-center justify-end gap-2">
           <q-input
             v-model="filter"
@@ -218,13 +215,11 @@ const props = defineProps({
   },
 });
 
-//referencia para o input de pesquisa
 const searchInput = ref(null);
 const focusSearchInput = () => {
   searchInput.value.focus();
 };
 
-//paginação
 const filter = ref('');
 const pagination_initial = ref({
   sortBy: props.sortBy,
@@ -260,10 +255,8 @@ function findInfomaion() {
   emits('getUsers', filter.value, pagination_initial.value.page);
 }
 
-//mudar cores de acordo com status ou situacao
 const defineColor = (situacao) => {
   const coresPorSituacao = {
-    //adicione aqui todas as cores e situações que desejar
     Ativo: 'teal-9',
     Inativo: 'red-10',
   };

@@ -49,6 +49,18 @@ const routes = [
             component: () => import('pages/Admin/Dashboard.vue'),
           },
           {
+            path: 'servicos',
+            component: () => import('pages/Admin/servicos/ListServicos.vue'),
+          },
+          {
+            path: 'documentos',
+            component: () => import('pages/Admin/documentos/ListDocumentos.vue'),
+          },
+          {
+            path: 'beneficios',
+            component: () => import('pages/Admin/beneficios/ListBeneficios.vue'),
+          },
+          {
             path: 'usuarios',
             component: () => import('pages/Admin/users/ListUsers.vue'),
           },

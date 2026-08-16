@@ -61,6 +61,36 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+    <OnboardingTour />
+
+    <!-- FOOTER ADICIONADO -->
+    <q-footer class="bg-dark text-white q-py-md">
+      <div class="row justify-center items-center q-gutter-xl">
+        <!-- Logo Hackathon -->
+        <img 
+          src="/images/Code4City.png" 
+          alt="Logo Hackathon" 
+          class="object-contain"
+          style="max-height: 60px; width: auto;"
+        />
+
+        <!-- Logo Hub -->
+        <img 
+          src="/images/LOGO_HUB.png" 
+          alt="Logo Hub" 
+          class="object-contain"
+          style="max-height: 60px; width: auto;"
+        />
+
+        <!-- Logo Prefeitura -->
+        <img 
+          src="/images/LogoPMVC.jpg" 
+          alt="Logo Prefeitura" 
+          class="object-contain"
+          style="max-height: 60px; width: auto;"
+        />
+      </div>
+    </q-footer>
   </q-layout>
 </template>
 
@@ -70,15 +100,18 @@ import EssentialLink from 'components/common/EssentialLink.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useAuthStore } from '../stores/authStore';
+import { useOnboardingStore } from '../stores/onboardingStore';
 
 import LogoServConquista from 'components/common/LogoServConquista.vue';
 import UserMenu from 'components/common/UserMenu.vue';
 import NotificationOpen from 'components/common/NotificationOpen.vue';
+import OnboardingTour from 'components/common/OnboardingTour.vue';
 
 const router = useRouter();
 const route = useRoute();
 const $q = useQuasar();
 const authStore = useAuthStore();
+const onboardingStore = useOnboardingStore();
 const leftDrawerOpen = ref(false);
 const access = ref('');
 const userName = ref('');
@@ -87,6 +120,10 @@ const links = ref([]);
 
 onMounted(() => {
   configurarMenu();
+
+  if (authStore.needsOnboarding) {
+    setTimeout(() => onboardingStore.start(router), 600);
+  }
 });
 
 watch(() => route.path, () => {
@@ -119,36 +156,36 @@ function configurarMenu() {
         link: '/admin/secretarias',
       },
       {
-        title: 'Gerenciar Publicações',
+        title: 'Publicações',
         icon: 'article',
         link: '/admin/comunicacao/publicacoes',
       },
-       {
-        title: 'Gerenciar Canais',
+      {
+        title: 'Canais',
         icon: 'list_alt',
         link: '/admin/comunicacao/canais',
       },
       {
-        title: 'Benefícios',
-        icon: 'loyalty',
-        link: '/beneficios',
+        title: 'Serviços',
+        icon: 'apps',
+        link: '/admin/servicos',
       },
       {
         title: 'Documentos',
-        icon: 'article',
-        link: '/documentos',
+        icon: 'description',
+        link: '/admin/documentos',
       },
       {
-        title: 'Serviços',
-        icon: 'apps',
-        link: '/servicos',
+        title: 'Benefícios',
+        icon: 'loyalty',
+        link: '/admin/beneficios',
       },
       {
         title: 'Feedback',
         icon: 'chat_bubble_outline',
         link: '/feedback',
       },
-            {
+      {
         title: 'Usuários',
         icon: 'group',
         link: '/admin/usuarios',
