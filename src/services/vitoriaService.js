@@ -54,6 +54,41 @@ export const vitoriaService = {
   },
 
   /**
+   * Envia uma mensagem de áudio para a Vitória e retorna a resposta
+   * @param {Blob} audioBlob - O arquivo de áudio gravado
+   * @param {string} sessionId - ID da sessão para manter contexto
+   * @param {object} context - Contexto adicional (página atual, etc.)
+   * @returns {Promise<{answer: string, sessionId: string}>}
+   */
+  async sendAudioMessage(audioBlob, sessionId, context = {}) {
+    try {
+      const formData = new FormData();
+      formData.append('audio', audioBlob, 'audio.webm');
+      formData.append('sessionId', sessionId);
+      formData.append('context', JSON.stringify({
+        userName: context.userName,
+        currentPage: context.currentPageTitle || context.currentPage
+      }));
+
+      const { data } = await api.post('ai/audio-chat', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      return {
+        answer: data.answer || 'Desculpe, não consegui processar seu áudio.',
+        sessionId: data.sessionId || sessionId,
+      };
+    } catch (error) {
+      console.error('[VitoriaService] Erro ao enviar áudio:', error);
+      return {
+        answer: 'Hmm, não consegui ouvir direito. Verifica sua internet ou tente gravar novamente! 🎤',
+        sessionId,
+      };
+    }
+  },
+
+  /**
    * Busca o histórico de uma sessão
    * @param {string} sessionId
    * @returns {Promise<Array>}

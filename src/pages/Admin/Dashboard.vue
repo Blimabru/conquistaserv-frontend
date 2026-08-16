@@ -17,15 +17,7 @@
         
       </section>
 
-      <!-- Botão Flutuante (Acessibilidade / Suporte) -->
-      <div class="fixed bottom-6 right-6 z-50">
-        <q-btn
-          round
-          size="md"
-          class="bg-pink-100 text-pink-600 shadow-lg border border-pink-200"
-          icon="accessibility_new"
-        />
-      </div>
+
 
     </div>
   </q-page>

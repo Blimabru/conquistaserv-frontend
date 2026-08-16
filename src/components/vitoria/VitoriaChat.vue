@@ -7,7 +7,13 @@
     @click="vitoriaStore.openChat()"
     aria-label="Abrir assistente Vitória"
   >
-    <div class="vitoria-fab__blob"></div>
+    <div class="vitoria-fab__inner">
+      <div class="vitoria-fab__blob"></div>
+      <div class="vitoria-fab__text">
+        <span class="vitoria-fab__title">Vitória</span>
+        <span class="vitoria-fab__subtitle">Assistente Inteligente</span>
+      </div>
+    </div>
   </button>
 
   <!-- Chat Popup -->
@@ -75,15 +81,17 @@
               <q-icon name="record_voice_over" />
             </button>
             <button
+              v-if="!inputText.trim() || isRecording"
               class="vitoria-input__mic"
-              :class="{'vitoria-input__mic--active': isListening}"
+              :class="{'vitoria-input__mic--active': isRecording}"
               @click="toggleMic"
               aria-label="Microfone">
               <q-icon name="mic" />
             </button>
             <button
+              v-else
               class="vitoria-input__send"
-              :disabled="!inputText.trim() || vitoriaStore.isLoading"
+              :disabled="vitoriaStore.isLoading"
               @click="sendMessage"
               aria-label="Enviar"
             >
@@ -97,12 +105,7 @@
       <template v-else>
         <!-- Header -->
         <div class="vitoria-header">
-          <div class="vitoria-header__audio-icon">
-            <span class="vitoria-header__bar"></span>
-            <span class="vitoria-header__bar"></span>
-            <span class="vitoria-header__bar"></span>
-            <span class="vitoria-header__bar"></span>
-          </div>
+          <div class="vitoria-header__blob"></div>
           <div class="vitoria-header__info">
             <p class="vitoria-header__name">Vitória</p>
             <p class="vitoria-header__tagline">A assistente de quem serve a sociedade.</p>
@@ -127,7 +130,10 @@
             <!-- Avatar só para assistente -->
             <div v-if="msg.role === 'assistant'" class="vitoria-msg__avatar"></div>
 
-            <div class="vitoria-msg__bubble" v-html="formatMessage(msg.content)">
+            <div v-if="msg.type === 'audio'" class="vitoria-msg__bubble bg-transparent !p-0">
+              <audio :src="msg.audioUrl" controls class="w-full max-w-[220px]" style="height: 40px;"></audio>
+            </div>
+            <div v-else class="vitoria-msg__bubble" v-html="formatMessage(msg.content)">
             </div>
           </div>
 
@@ -163,15 +169,17 @@
               <q-icon name="record_voice_over" />
             </button>
             <button
+              v-if="!inputText.trim() || isRecording"
               class="vitoria-input__mic"
-              :class="{'vitoria-input__mic--active': isListening}"
+              :class="{'vitoria-input__mic--active': isRecording}"
               @click="toggleMic"
               aria-label="Microfone">
               <q-icon name="mic" />
             </button>
             <button
+              v-else
               class="vitoria-input__send"
-              :disabled="!inputText.trim() || vitoriaStore.isLoading"
+              :disabled="vitoriaStore.isLoading"
               @click="sendMessage"
               aria-label="Enviar"
             >
@@ -204,9 +212,10 @@ const chatInput = ref(null);
 
 // Voice and Speech state
 const isVoiceMode = ref(false);
-const isListening = ref(false);
 const isAiSpeaking = ref(false);
-let recognition = null;
+const isRecording = ref(false);
+let mediaRecorder = null;
+let audioChunks = [];
 
 // Mapa de rotas para nomes legíveis
 const pageNameMap = {
@@ -375,7 +384,9 @@ async function clearChat() {
  */
 function formatMessage(text) {
   if (!text) return '';
-  return marked.parse(text);
+  // Corrige problema comum da IA inserir espaço indesejado no markdown
+  const sanitizedText = text.replace(/\]\s+\(/g, '](');
+  return marked.parse(sanitizedText);
 }
 
 // Navegação em links internos injetados pela IA
@@ -396,9 +407,9 @@ function toggleVoiceMode() {
   isVoiceMode.value = !isVoiceMode.value;
   if (!isVoiceMode.value) {
     if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-    if (isListening.value && recognition) recognition.stop();
+    if (isRecording.value && mediaRecorder) toggleMic();
   } else {
-    if (!isListening.value && recognition) toggleMic();
+    if (!isRecording.value) toggleMic();
   }
 }
 
@@ -432,7 +443,8 @@ if ('speechSynthesis' in window) {
   };
 }
 
-// ==== Speech-to-Text (Microfone) ====
+// ==== Gravação de Áudio e Reconhecimento Visual ====
+let recognition = null;
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SpeechRecognition();
@@ -441,41 +453,88 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   recognition.interimResults = true;
 
   recognition.onresult = (event) => {
+    if (!isRecording.value) return;
     const transcript = Array.from(event.results)
       .map(result => result[0].transcript)
       .join('');
     inputText.value = transcript;
   };
-
-  recognition.onend = () => {
-    isListening.value = false;
-    // Opcional: Enviar mensagem automaticamente ao parar de falar
-    // if (inputText.value.trim() && isVoiceMode.value) sendMessage();
-  };
-
-  recognition.onerror = (event) => {
-    console.error('Erro no reconhecimento de voz:', event.error);
-    isListening.value = false;
-  };
 }
 
-function toggleMic() {
-  if (!recognition) {
-    alert('Desculpe, seu navegador não suporta o recurso de ditado por voz.');
+async function toggleMic() {
+  if (isRecording.value && mediaRecorder) {
+    mediaRecorder.stop();
+    if (recognition) recognition.stop();
     return;
   }
-  
-  if (isListening.value) {
-    recognition.stop();
-  } else {
-    // Pede permissão e começa a ouvir
-    try {
-      recognition.start();
-      isListening.value = true;
-    } catch (e) {
-      console.error(e);
-      isListening.value = false;
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+    inputText.value = ''; // Limpa para mostrar a transcrição
+
+    if (recognition) {
+      try { recognition.start(); } catch(e) { console.error('Erro no recognition:', e); }
     }
+
+    mediaRecorder.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        audioChunks.push(event.data);
+      }
+    };
+
+    mediaRecorder.onstop = async () => {
+      const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      isRecording.value = false;
+      
+      // Para as faixas do microfone
+      stream.getTracks().forEach(track => track.stop());
+
+      const finalTranscript = inputText.value.trim();
+      inputText.value = ''; // limpa a barra de digitação ao enviar
+
+      // Adiciona mensagem localmente
+      vitoriaStore.addUserMessage(finalTranscript || 'Áudio enviado', 'audio', audioUrl);
+      vitoriaStore.setLoading(true);
+
+      try {
+        const response = await vitoriaService.sendAudioMessage(
+          audioBlob,
+          vitoriaStore.sessionId,
+          {
+            currentPage: vitoriaStore.currentPage,
+            currentPageTitle: vitoriaStore.currentPageTitle,
+            userName: authStore.nameUser
+          }
+        );
+
+        vitoriaStore.setLoading(false);
+
+        const chunks = response.answer.split('|||').map(s => s.trim()).filter(s => s);
+        for (let i = 0; i < chunks.length; i++) {
+          if (i > 0) {
+            vitoriaStore.setLoading(true);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            vitoriaStore.setLoading(false);
+          }
+          vitoriaStore.addAssistantMessage(chunks[i]);
+          if (isVoiceMode.value) speakText(chunks[i]);
+        }
+      } catch (error) {
+        vitoriaStore.setLoading(false);
+        const errorMsg = 'Poxa, tive um probleminha para ouvir seu áudio. Pode tentar de novo?';
+        vitoriaStore.addAssistantMessage(errorMsg);
+        if (isVoiceMode.value) speakText(errorMsg);
+      }
+    };
+
+    mediaRecorder.start();
+    isRecording.value = true;
+  } catch (error) {
+    console.error('Erro ao acessar microfone:', error);
+    alert('Não foi possível acessar seu microfone. Verifique as permissões.');
   }
 }
 

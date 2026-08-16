@@ -33,10 +33,12 @@ export const useVitoriaStore = defineStore('vitoria', {
       this.currentPageTitle = title || path;
     },
 
-    addUserMessage(content) {
+    addUserMessage(content, type = 'text', audioUrl = null) {
       this.messages.push({
         role: 'user',
         content,
+        type,
+        audioUrl,
         timestamp: new Date().toISOString(),
       });
       this.hasInteracted = true;
